@@ -1,4 +1,4 @@
-package com.ekotyoo.njawi.ui.theme
+package com.ekotyoo.njawi.presentation.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

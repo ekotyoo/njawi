@@ -1,4 +1,4 @@
-package com.ekotyoo.njawi.ui.theme
+package com.ekotyoo.njawi.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

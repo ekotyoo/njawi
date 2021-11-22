@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "381802667272",
+    "project_id": "njawi-1db21",
+    "storage_bucket": "njawi-1db21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381802667272:android:4884e3ecfa124a5bef60bd",
+        "android_client_info": {
+          "package_name": "com.ekotyoo.njawi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "381802667272-g7n695v9rmpfl5678dcv0k2vhg1u157h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq-W0SfRIrAj21oSGEG642dhjFKzvo1dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "381802667272-g7n695v9rmpfl5678dcv0k2vhg1u157h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
