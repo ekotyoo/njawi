@@ -4,13 +4,16 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ekotyoo.njawi.presentation.quiz.components.NjawiButton
@@ -18,10 +21,16 @@ import com.ekotyoo.njawi.presentation.quiz.components.Slot
 import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
-import com.ekotyoo.njawi.R;
+import com.ekotyoo.njawi.R
 
 @Composable
-fun PlayQuizScreen(headerImg: Int) {
+fun PlayQuizScreen(
+    headerImg: Int,
+    viewModel: PlayQuizViewModel
+) {
+    val progress: Float by viewModel.progress.observeAsState(initial = 0f)
+    val currentAnswer: List<String> by viewModel.currentAnswer
+        .observeAsState(initial = mutableListOf())
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,9 +44,9 @@ fun PlayQuizScreen(headerImg: Int) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HeaderImage(image = headerImg)
-        TimeLeftIndicator(progress = 80f)
-        WordsSlot(words = words)
-        WordsOption(words = words)
+        TimeLeftIndicator(progress = progress)
+        WordsSlot(words = currentAnswer)
+        WordsOption(words = words, viewModel = viewModel)
     }
 }
 
@@ -46,7 +55,7 @@ const val sentence = "bapak sare kula adus nanging dereng panjenengan menika"
 val words = sentence.split(" ").shuffled()
 
 @Composable
-fun WordsOption(words: List<String>) {
+fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
     FlowRow(
         mainAxisSpacing = 8.dp,
         crossAxisSpacing = 8.dp,
@@ -57,7 +66,9 @@ fun WordsOption(words: List<String>) {
 
     ) {
         words.forEach { word ->
-            NjawiButton(text = word.replaceFirstChar { it.uppercase() })
+            NjawiButton(text = word.replaceFirstChar { it.uppercase() }, onClick = {
+                viewModel.addAnswer(word)
+            })
         }
     }
 }
@@ -73,7 +84,7 @@ fun WordsSlot(words: List<String>) {
             .fillMaxHeight(0.3f)
     ) {
         words.forEach {
-            Slot()
+            Slot(text = it)
         }
     }
 

@@ -47,7 +47,7 @@ fun DefaultPreview() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02))
-            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "Anjing", Modifier.size(height = 500.dp, width = 500.dp))
+            Image(painter = painterResource(id = R.drawable.img_susun_kalimat), contentDescription = "Anjing", Modifier.size(height = 500.dp, width = 500.dp))
             GoogleButton(
                 modifier = Modifier.width(280.dp),
                 shape = RoundedCornerShape(24.dp),
