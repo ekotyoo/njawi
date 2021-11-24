@@ -26,5 +26,7 @@ fun Slot(text: String = ""){
                 shape = Shapes.medium,
                 elevation = 3.dp
             )
-    )
+    ) {
+        NjawiButton(text = text, onClick = {})
+    }
 }

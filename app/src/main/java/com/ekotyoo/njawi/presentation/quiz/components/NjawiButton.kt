@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import com.ekotyoo.njawi.presentation.theme.*
 
 @Composable
-fun NjawiButton(text: String) {
+fun NjawiButton(text: String, onClick: () -> Unit) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         colors = ButtonDefaults.buttonColors(backgroundColor = Orange),
         shape = Shapes.medium,
         contentPadding = PaddingValues(vertical = 0.dp, horizontal = 8.dp) ,
