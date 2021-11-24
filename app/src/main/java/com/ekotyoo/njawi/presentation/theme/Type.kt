@@ -18,6 +18,10 @@ val Typography = Typography(
         button = TextStyle(
                 fontFamily = FontFamily(Font(R.font.luckiest_guy, FontWeight.W400)),
                 fontSize = 18.sp,
+        ),
+        body2 = TextStyle(
+                fontFamily = FontFamily(Font(R.font.poppins_bold)),
+                fontSize = 16.sp
         )
         /* Other default text styles to override
     button = TextStyle(

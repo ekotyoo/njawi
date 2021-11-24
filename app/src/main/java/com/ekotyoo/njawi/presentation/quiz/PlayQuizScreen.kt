@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ekotyoo.njawi.presentation.quiz.components.NjawiButton
 import com.ekotyoo.njawi.presentation.quiz.components.Slot
 import com.ekotyoo.njawi.presentation.theme.*
