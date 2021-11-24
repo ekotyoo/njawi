@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
+import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.domain.models.Question
 import com.ekotyoo.njawi.domain.models.Quiz
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            PlayQuizScreen()
+            PlayQuizScreen(headerImg = R.drawable.img_susun_kalimat)
         }
     }
 }
