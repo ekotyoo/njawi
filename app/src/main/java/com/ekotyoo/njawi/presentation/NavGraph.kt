@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.auth.LoginScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 
 @Composable
 fun SetupNavGraph(
@@ -24,7 +25,7 @@ fun SetupNavGraph(
         composable(
             route = Screen.Quiz.route
         ){
-            PlayQuizScreen(headerImg = R.drawable.img_susun_kalimat)
+            PlayQuizScreen(headerImg = R.drawable.img_susun_kalimat, PlayQuizViewModel())
         }
     }
 }
