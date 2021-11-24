@@ -29,8 +29,8 @@ fun GoogleButton(
     shape: Shape = Shapes.medium,
     borderColor: Color = Color(0xFFFFDB02),
     backgroundColor: Color = Color(0xFFFFB002),
-    textStyle: TextStyle = Typography.body1,
-    progressIndicatorColor: Color = MaterialTheme.colors.primary,
+    textStyle: TextStyle = Typography.body2,
+    progressIndicatorColor: Color = Color.White,
     onClicked: () -> Unit
 ) {
     var clicked by remember { mutableStateOf(false) }

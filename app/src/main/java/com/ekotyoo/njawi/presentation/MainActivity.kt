@@ -17,9 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.domain.models.Question
-import com.ekotyoo.njawi.domain.models.Quiz
+import com.ekotyoo.njawi.presentation.auth.LoginScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.Blue
@@ -32,12 +33,19 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
+import com.ekotyoo.njawi.presentation.theme.NjawiTheme
+
+class MainActivity : ComponentActivity() {
+    lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            PlayQuizScreen(headerImg = R.drawable.img_susun_kalimat, PlayQuizViewModel())
+            NjawiTheme {
+                navController = rememberNavController()
+                SetupNavGraph(navController = navController)
+            }
         }
 
     }
