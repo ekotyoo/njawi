@@ -21,7 +21,7 @@ fun NjawiButton(text: String, onClick: () -> Unit) {
         shape = Shapes.medium,
         contentPadding = PaddingValues(vertical = 0.dp, horizontal = 8.dp) ,
         modifier = Modifier
-            .width(IntrinsicSize.Min)
+            .width(IntrinsicSize.Max)
             .border(3.dp, Black, Shapes.medium)
             .padding(3.dp)
             .border(5.dp, LightOrange, Shapes.medium)

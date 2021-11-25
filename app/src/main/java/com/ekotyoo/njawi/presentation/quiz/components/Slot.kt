@@ -2,6 +2,7 @@ package com.ekotyoo.njawi.presentation.quiz.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -12,10 +13,10 @@ import com.ekotyoo.njawi.presentation.theme.Blue
 import com.ekotyoo.njawi.presentation.theme.Shapes
 
 @Composable
-fun Slot(text: String = ""){
+fun Slot(text: String = "", onClick: () -> Unit){
     Box(
         modifier = Modifier
-            .width(70.dp)
+            .width(IntrinsicSize.Min)
             .height(40.dp)
             .background(
                 color = Blue,
@@ -27,6 +28,6 @@ fun Slot(text: String = ""){
                 elevation = 3.dp
             )
     ) {
-        NjawiButton(text = text, onClick = {})
+        NjawiButton(text = text, onClick = onClick)
     }
 }

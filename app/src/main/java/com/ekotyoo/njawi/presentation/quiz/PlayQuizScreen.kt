@@ -1,20 +1,26 @@
 package com.ekotyoo.njawi.presentation.quiz
 
+import android.util.Log
+import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ekotyoo.njawi.presentation.quiz.components.NjawiButton
@@ -24,6 +30,7 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.ekotyoo.njawi.R
 
+@ExperimentalAnimationApi
 @Composable
 fun PlayQuizScreen(
     headerImg: Int,
@@ -32,28 +39,45 @@ fun PlayQuizScreen(
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
         .observeAsState(initial = mutableListOf())
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Red, Blue)
+    val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
+    val words: List<String> by viewModel.words.observeAsState(initial = listOf())
+    val density = LocalDensity.current
+
+    Box() {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(Red, Blue)
+                    )
                 )
-            )
-            .padding(all = 16.dp),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        HeaderImage(image = headerImg)
-        TimeLeftIndicator(progress = progress)
-        WordsSlot(words = currentAnswer)
-        WordsOption(words = words, viewModel = viewModel)
+                .padding(all = 16.dp),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HeaderImage(image = headerImg)
+            TimeLeftIndicator(progress = progress)
+            WordsSlot(words = currentAnswer, viewModel = viewModel)
+            WordsOption(words = words, viewModel = viewModel)
+        }
+        if(isCorrect) {
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInVertically(
+                    initialOffsetY = { with(density) { -1000.dp.roundToPx() } }
+                ) + expandVertically(
+                    expandFrom = Alignment.Top
+                ) + fadeIn(
+                    initialAlpha = 0.3f
+                ),
+                exit = slideOutVertically() + shrinkVertically() + fadeOut()
+            ) {
+                ResultDialog(viewModel = viewModel)
+            }
+        }
     }
 }
-
-
-const val sentence = "bapak sare kula adus nanging dereng panjenengan menika"
-val words = sentence.split(" ").shuffled()
 
 @Composable
 fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
@@ -75,7 +99,7 @@ fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
 }
 
 @Composable
-fun WordsSlot(words: List<String>) {
+fun WordsSlot(words: List<String>, viewModel: PlayQuizViewModel) {
     FlowRow(
         mainAxisSpacing = 8.dp,
         crossAxisSpacing = 8.dp,
@@ -84,11 +108,56 @@ fun WordsSlot(words: List<String>) {
             .fillMaxWidth()
             .fillMaxHeight(0.3f)
     ) {
-        words.forEach {
-            Slot(text = it)
+        words.forEach { word ->
+            Slot(text = word) {
+                viewModel.removeAnswer(word)
+            }
         }
     }
+}
 
+@Composable
+fun ResultDialog(
+    viewModel: PlayQuizViewModel,
+) {
+    Box (
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .animateContentSize()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(Black.copy(alpha = 0.6f))
+        )
+        Column (
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .background(color = Orange, shape = Shapes.medium)
+                .border(4.dp, color = Black, shape = Shapes.medium)
+                .border(16.dp, color = LightOrange, shape = Shapes.medium)
+                .padding(16.dp)
+                .padding(20.dp)
+
+        ) {
+            Text(text = "Hasil", style = Typography.button)
+            Text(text = "Skor kamu: 1000", style = Typography.button)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row {
+                NjawiButton(text = "Ulangi") {
+                    viewModel.restartGame()
+                }
+                Spacer(Modifier.width(8.dp))
+                NjawiButton(text = "Lanjutkan") {
+                    viewModel.restartGame()
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -151,6 +220,14 @@ fun TimeLeftIndicator(progress: Float) {
         }
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Preview() {
+    NjawiTheme {
+
+    }
 }
 
 
