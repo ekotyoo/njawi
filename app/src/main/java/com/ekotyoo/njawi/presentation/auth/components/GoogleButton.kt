@@ -36,7 +36,7 @@ fun GoogleButton(
     var clicked by remember { mutableStateOf(false) }
 
     Surface(
-        modifier = modifier.clickable { clicked = !clicked },
+        modifier = modifier.clickable { onClicked() },
         shape = shape,
         border = BorderStroke(width = 3.dp, color = borderColor),
         color = backgroundColor
