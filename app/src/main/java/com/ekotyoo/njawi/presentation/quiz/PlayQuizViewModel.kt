@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ekotyoo.njawi.common.Constants
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Scheduler
@@ -19,12 +20,17 @@ class PlayQuizViewModel : ViewModel () {
     private var _progress = MutableLiveData<Float>()
     private var _currentAnswer = MutableLiveData<List<String>>()
     private var _isCorrect = MutableLiveData<Boolean>()
-    private var _isPlaying = MutableLiveData<Boolean>()
-    private var _words = MutableLiveData<List<String>>()
+    private var _currentIndex = MutableLiveData<Int>()
+    private var _shuffledWords = MutableLiveData<List<String>>()
+    private var _correctWords = MutableLiveData<List<String>>()
+
+
     val progress: LiveData<Float> = _progress
     val currentAnswer: LiveData<List<String>> = _currentAnswer
+    val currentIndex: LiveData<Int> = _currentIndex
     val isCorrect: LiveData<Boolean> = _isCorrect
-    val words: LiveData<List<String>> = _words
+    val shuffledWords: LiveData<List<String>> = _shuffledWords
+    val correctWords: LiveData<List<String>> = _correctWords
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
@@ -35,18 +41,20 @@ class PlayQuizViewModel : ViewModel () {
         }
         .observeOn(AndroidSchedulers.mainThread())
 
-    private val correctSentence = "bapak sare kula adus"
-    private val correctWords = correctSentence.split(" ").toMutableList()
+    private val quiz = Constants.getQuiz()
+
 
     init {
         startGame()
     }
 
     private fun startGame() {
+        _currentIndex.value = 0
         _isCorrect.value = false
-        val tempWords = correctWords.toMutableList()
+        _correctWords.value = quiz.questions[currentIndex.value!!].targetSentence.split(" ").toMutableList()
+        val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
         shuffle(tempWords)
-        _words.value = tempWords
+        _shuffledWords.value = tempWords
         startTimer()
     }
 
@@ -54,10 +62,23 @@ class PlayQuizViewModel : ViewModel () {
         _progress.value = 0f
         _currentAnswer.value = mutableListOf<String>()
         _isCorrect.value = false
-        val tempWords = correctWords.toMutableList()
+        val tempWords = shuffledWords.value!!.toMutableList()
         shuffle(tempWords)
-        _words.value = tempWords
+        _shuffledWords.value = tempWords
         startTimer()
+    }
+
+    fun nextQuestion() {
+        if (_currentIndex.value!! < quiz.questions.size - 1) {
+            _currentIndex.value = _currentIndex.value!! + 1
+            _isCorrect.value = false
+            _currentAnswer.value = mutableListOf()
+            _correctWords.value = quiz.questions[currentIndex.value!!].targetSentence.split(" ").toMutableList()
+            val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
+            shuffle(tempWords)
+            _shuffledWords.value = tempWords
+            startTimer()
+        }
     }
 
     private fun startTimer() {
@@ -90,7 +111,7 @@ class PlayQuizViewModel : ViewModel () {
     private fun checkResult() {
         if (currentAnswer.value != null)
         {
-            _isCorrect.value = isEqual(currentAnswer.value!!, correctWords)
+            _isCorrect.value = isEqual(currentAnswer.value!!, correctWords.value!!)
         }
     }
 
@@ -100,7 +121,7 @@ class PlayQuizViewModel : ViewModel () {
         _currentAnswer.value = tempList
         removeOption(answer)
 
-        if (currentAnswer.value!!.size == correctWords.size) {
+        if (currentAnswer.value!!.size == correctWords.value!!.size) {
             checkResult()
         }
     }
@@ -113,15 +134,15 @@ class PlayQuizViewModel : ViewModel () {
     }
 
     private fun removeOption(option: String) {
-        val tempList : MutableList<String> = _words.value!!.toMutableList()
+        val tempList : MutableList<String> = _shuffledWords.value!!.toMutableList()
         tempList.remove(option)
-        _words.value = tempList
+        _shuffledWords.value = tempList
     }
 
     private fun addOption(option: String) {
-        val tempList : MutableList<String> = _words.value!!.toMutableList()
+        val tempList : MutableList<String> = _shuffledWords.value!!.toMutableList()
         tempList.add(option)
-        _words.value = tempList
+        _shuffledWords.value = tempList
     }
 
     private fun <T> shuffle(list: MutableList<T>)

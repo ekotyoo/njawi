@@ -40,7 +40,7 @@ fun PlayQuizScreen(
     val currentAnswer: List<String> by viewModel.currentAnswer
         .observeAsState(initial = mutableListOf())
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
-    val words: List<String> by viewModel.words.observeAsState(initial = listOf())
+    val words: List<String> by viewModel.shuffledWords.observeAsState(initial = listOf())
     val density = LocalDensity.current
 
     Box() {
@@ -61,20 +61,14 @@ fun PlayQuizScreen(
             WordsSlot(words = currentAnswer, viewModel = viewModel)
             WordsOption(words = words, viewModel = viewModel)
         }
-        if(isCorrect) {
-            AnimatedVisibility(
-                visible = true,
-                enter = slideInVertically(
-                    initialOffsetY = { with(density) { -1000.dp.roundToPx() } }
-                ) + expandVertically(
-                    expandFrom = Alignment.Top
-                ) + fadeIn(
-                    initialAlpha = 0.3f
-                ),
-                exit = slideOutVertically() + shrinkVertically() + fadeOut()
-            ) {
-                ResultDialog(viewModel = viewModel)
-            }
+        AnimatedVisibility(
+            visible = isCorrect,
+            enter = fadeIn(
+                initialAlpha = 0f
+            ) ,
+            exit = fadeOut()
+        ) {
+            ResultDialog(viewModel = viewModel)
         }
     }
 }
@@ -88,9 +82,9 @@ fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.3f)
-
     ) {
         words.forEach { word ->
+
             NjawiButton(text = word.replaceFirstChar { it.uppercase() }, onClick = {
                 viewModel.addAnswer(word)
             })
@@ -98,6 +92,7 @@ fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
     }
 }
 
+@ExperimentalAnimationApi
 @Composable
 fun WordsSlot(words: List<String>, viewModel: PlayQuizViewModel) {
     FlowRow(
@@ -124,7 +119,6 @@ fun ResultDialog(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .animateContentSize()
     ) {
         Box(
             modifier = Modifier
@@ -153,7 +147,7 @@ fun ResultDialog(
                 }
                 Spacer(Modifier.width(8.dp))
                 NjawiButton(text = "Lanjutkan") {
-                    viewModel.restartGame()
+                    viewModel.nextQuestion()
                 }
             }
         }
