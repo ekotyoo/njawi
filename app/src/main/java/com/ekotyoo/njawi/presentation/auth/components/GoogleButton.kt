@@ -33,13 +33,10 @@ fun GoogleButton(
     progressIndicatorColor: Color = Color.White,
     onClicked: () -> Unit
 ) {
-    val clicked by remember { mutableStateOf(false) }
+    var clicked by remember { mutableStateOf(false) }
 
     Surface(
-        modifier = modifier
-            .clickable {
-                onClicked()
-           },
+        modifier = modifier.clickable { onClicked() },
         shape = shape,
         border = BorderStroke(width = 3.dp, color = borderColor),
         color = backgroundColor
@@ -77,6 +74,7 @@ fun GoogleButton(
                     strokeWidth = 2.dp,
                     color = progressIndicatorColor
                 )
+                onClicked()
             }
         }
     }

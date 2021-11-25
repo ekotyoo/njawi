@@ -5,7 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.ekotyoo.njawi.presentation.auth.LoginScreen
+import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,8 +18,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NjawiTheme {
-                navController = rememberNavController()
-                SetupNavGraph(navController = navController)
+                LoginScreen(authViewModel = AuthViewModel())
             }
         }
 
