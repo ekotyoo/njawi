@@ -7,6 +7,9 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.presentation.auth.LoginScreen
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
+import com.ekotyoo.njawi.presentation.profile.PhotographerCard
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +21,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NjawiTheme {
-                LoginScreen(authViewModel = AuthViewModel())
+                PhotographerCard(title = "Achievement")
             }
         }
 

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ekotyoo.njawi.R
@@ -29,7 +30,7 @@ val pacifico = FontFamily(Font(R.font.pacifico_regular))
 
 @Composable
 fun LoginView(onClick: () -> Unit, errorText: String?) {
-    Scaffold {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -41,12 +42,13 @@ fun LoginView(onClick: () -> Unit, errorText: String?) {
                         ),
                     )
                 )
-                .padding(19.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
-            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(500.dp))
+            Text(text = "Njawi", fontSize = 30.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Normal)
+            Spacer(modifier = Modifier.height(100.dp))
+            Image(painter = painterResource(id = R.drawable.inu5), contentDescription = "App_icon", Modifier.size(300.dp))
+            Spacer(modifier = Modifier.height(50.dp))
             GoogleButton(
                 modifier = Modifier.width(280.dp),
                 shape = RoundedCornerShape(24.dp),
@@ -57,6 +59,7 @@ fun LoginView(onClick: () -> Unit, errorText: String?) {
                     Log.d("Login Google button", "clicked")
                 }
             )
+            Spacer(modifier = Modifier.height(10.dp))
             GoogleButton(
                 modifier = Modifier.width(280.dp),
                 shape = RoundedCornerShape(24.dp),
@@ -70,8 +73,15 @@ fun LoginView(onClick: () -> Unit, errorText: String?) {
                 Text(text = it)
             }
         }
-    }
+
 }
+
+@Preview
+@Composable
+fun PreviewLogin(){
+    LoginScreen(authViewModel = AuthViewModel())
+}
+
 
 @Composable
 fun LoginScreen(authViewModel: AuthViewModel){

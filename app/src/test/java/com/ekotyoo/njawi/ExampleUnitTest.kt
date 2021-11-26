@@ -1,7 +1,6 @@
 package com.ekotyoo.njawi
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**
