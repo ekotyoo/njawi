@@ -1,7 +1,9 @@
 package com.ekotyoo.njawi.presentation.quiz
 
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +20,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,9 +43,12 @@ fun PlayQuizScreen(
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
         .observeAsState(initial = mutableListOf())
-    val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
+    val isDone: Boolean by viewModel.isDone.observeAsState(initial = false)
     val words: List<String> by viewModel.shuffledWords.observeAsState(initial = listOf())
-    val density = LocalDensity.current
+
+    val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
+    val deadImages: List<Int> = listOf(R.drawable.dead_1, R.drawable.dead_2, R.drawable.dead_3, R.drawable.dead_4, R.drawable.dead_5, R.drawable.dead_6, R.drawable.dead_6, R.drawable.dead_7)
+
 
     Box() {
         Column(
@@ -56,13 +63,17 @@ fun PlayQuizScreen(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderImage(image = headerImg)
+            if (isDone) {
+                HeaderAnimation(deadImages)
+            } else {
+                HeaderAnimation(runImages)
+            }
             TimeLeftIndicator(progress = progress)
             WordsSlot(words = currentAnswer, viewModel = viewModel)
             WordsOption(words = words, viewModel = viewModel)
         }
         AnimatedVisibility(
-            visible = isCorrect,
+            visible = isDone,
             enter = fadeIn(
                 initialAlpha = 0f
             ) ,
@@ -147,7 +158,6 @@ fun ResultDialog(
                 }
                 Spacer(Modifier.width(8.dp))
                 NjawiButton(text = "Lanjutkan") {
-                    viewModel.nextQuestion()
                 }
             }
         }
@@ -158,6 +168,49 @@ fun ResultDialog(
 fun HeaderImage(image: Int) {
     Image(
         painter = painterResource(id = image),
+        contentDescription = "",
+        alignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth(0.7f)
+            .height(200.dp)
+    )
+}
+
+@Composable
+fun HeaderAnimation(
+    images: List<Int>
+) {
+    val resource: Painter
+    val infiniteTransition = rememberInfiniteTransition()
+    val animationState = infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 500,
+                easing = LinearEasing
+            )
+        )
+    )
+    if (animationState.value <= 0.125f)
+        resource = painterResource(id = images[0])
+    else if (animationState.value > 0.125f && animationState.value <= 0.25f)
+        resource = painterResource(id = images[1])
+    else if (animationState.value > 0.25f && animationState.value <= 0.375f)
+        resource = painterResource(id = images[2])
+    else if (animationState.value > 0.375f && animationState.value <= 0.5f)
+        resource = painterResource(id = images[3])
+    else if (animationState.value > 0.5f && animationState.value <= 0.625f)
+        resource = painterResource(id = images[4])
+    else if (animationState.value > 0.625f && animationState.value <= 0.75f)
+        resource = painterResource(id = images[5])
+    else if (animationState.value > 0.75f && animationState.value <= 0.875f)
+        resource = painterResource(id = images[6])
+    else
+        resource = painterResource(id = images[7])
+
+    Image(
+        painter = resource,
         contentDescription = "",
         alignment = Alignment.Center,
         modifier = Modifier

@@ -1,9 +1,13 @@
 package com.ekotyoo.njawi.presentation.quiz
 
+import android.app.Application
+import android.content.Context
+import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.common.Constants
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -19,6 +23,7 @@ class PlayQuizViewModel : ViewModel () {
 
     private var _progress = MutableLiveData<Float>()
     private var _currentAnswer = MutableLiveData<List<String>>()
+    private var _isDone = MutableLiveData<Boolean>()
     private var _isCorrect = MutableLiveData<Boolean>()
     private var _currentIndex = MutableLiveData<Int>()
     private var _shuffledWords = MutableLiveData<List<String>>()
@@ -28,13 +33,14 @@ class PlayQuizViewModel : ViewModel () {
     val progress: LiveData<Float> = _progress
     val currentAnswer: LiveData<List<String>> = _currentAnswer
     val currentIndex: LiveData<Int> = _currentIndex
+    val isDone: LiveData<Boolean> = _isDone
     val isCorrect: LiveData<Boolean> = _isCorrect
     val shuffledWords: LiveData<List<String>> = _shuffledWords
     val correctWords: LiveData<List<String>> = _correctWords
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
-        .interval(1000, 10, TimeUnit.MILLISECONDS)
+        .interval(0, 10, TimeUnit.MILLISECONDS)
         .subscribeOn(Schedulers.io())
         .takeWhile {
             (it < 1500) && (isCorrect.value == false)
@@ -51,6 +57,7 @@ class PlayQuizViewModel : ViewModel () {
     private fun startGame() {
         _currentIndex.value = 0
         _isCorrect.value = false
+        _isDone.value = false
         _correctWords.value = quiz.questions[currentIndex.value!!].targetSentence.split(" ").toMutableList()
         val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
         shuffle(tempWords)
@@ -59,16 +66,13 @@ class PlayQuizViewModel : ViewModel () {
     }
 
     fun restartGame() {
-        _progress.value = 0f
+        _subscriptions.clear()
         _currentAnswer.value = mutableListOf<String>()
-        _isCorrect.value = false
-        val tempWords = shuffledWords.value!!.toMutableList()
-        shuffle(tempWords)
-        _shuffledWords.value = tempWords
-        startTimer()
+        startGame()
     }
 
-    fun nextQuestion() {
+    private fun nextQuestion() {
+        _subscriptions.clear()
         if (_currentIndex.value!! < quiz.questions.size - 1) {
             _currentIndex.value = _currentIndex.value!! + 1
             _isCorrect.value = false
@@ -78,6 +82,8 @@ class PlayQuizViewModel : ViewModel () {
             shuffle(tempWords)
             _shuffledWords.value = tempWords
             startTimer()
+        } else {
+            _isDone.value = true
         }
     }
 
@@ -101,7 +107,7 @@ class PlayQuizViewModel : ViewModel () {
     private fun onComplete() {
         stopTimer()
         checkResult()
-        Log.d("onComplete", "Done")
+        nextQuestion()
     }
 
     private fun stopTimer() {
@@ -123,6 +129,9 @@ class PlayQuizViewModel : ViewModel () {
 
         if (currentAnswer.value!!.size == correctWords.value!!.size) {
             checkResult()
+            if (isCorrect.value!!) {
+                nextQuestion()
+            }
         }
     }
 
@@ -164,5 +173,10 @@ class PlayQuizViewModel : ViewModel () {
 
         first.forEachIndexed { index, value -> if (second[index] != value) { return false} }
         return true
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        _subscriptions.dispose()
     }
 }
