@@ -13,18 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
-class LandingScreen : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            NjawiTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Vrizas")
-                    Greeting("Izza")
-                }
-            }
-        }
-    }
+@Composable
+fun LandingScreen() {
 
 }
 

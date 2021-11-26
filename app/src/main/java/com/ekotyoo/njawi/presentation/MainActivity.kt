@@ -38,13 +38,27 @@ import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import com.ekotyoo.njawi.presentation.theme.Red
 import kotlinx.coroutines.delay
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            Surface(color = MaterialTheme.colors.background) {
-                Navigation()
+            Box() {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            brush = Brush.linearGradient(
+                                colors = listOf(Red, Blue)
+                            )
+                        )
+                        .padding(all = 16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Navigation()
+                }
             }
 //            PlayQuizScreen()
         }
@@ -73,7 +87,7 @@ fun SplashScreen(navController: NavController) {
     }
     LaunchedEffect(key1 = true) {
         scale.animateTo(
-            targetValue =  0.3f,
+            targetValue =  0.7f,
             animationSpec = tween(
                 durationMillis = 500,
                 easing = {
@@ -91,10 +105,7 @@ fun SplashScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = "Logo",
-            modifier = Modifier
-                .scale(scale.value)
-                .fillMaxWidth(0.5f)
-            ,
+            modifier = Modifier.scale(scale.value),
         )
     }
 }
