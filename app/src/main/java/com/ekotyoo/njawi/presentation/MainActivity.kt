@@ -1,5 +1,6 @@
 package com.ekotyoo.njawi.presentation
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.animation.OvershootInterpolator
 import android.window.SplashScreen
@@ -39,10 +40,25 @@ import com.ekotyoo.njawi.presentation.theme.Red
 import kotlinx.coroutines.delay
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var navController: NavHostController
+
+    private lateinit var mediaPlayer: MediaPlayer
+
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mediaPlayer = MediaPlayer.create(this, R.raw.quiz)
+        mediaPlayer.isLooping = true
+        mediaPlayer.start()
+
+
         setContent {
             Box() {
                 Column(
@@ -60,8 +76,12 @@ class MainActivity : ComponentActivity() {
                     Navigation()
                 }
             }
-//            PlayQuizScreen()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.stop()
     }
 }
 
