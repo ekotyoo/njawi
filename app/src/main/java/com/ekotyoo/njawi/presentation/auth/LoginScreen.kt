@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +32,7 @@ import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModelFactory
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.auth.utils.GoogleApiContract
+import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import com.google.android.gms.common.api.ApiException
 import com.squareup.moshi.Moshi
 
@@ -51,32 +53,36 @@ fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
                     )
                 )
                 .padding(19.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
-            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(500.dp))
-            Column() {
-                
+            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(400.dp))
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                GoogleButton(
+                    modifier = Modifier.width(280.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    text = "Login with Google",
+                    loadingText = "Login Account...",
+                    onClicked = {
+                        onClick()
+                        Log.d("Login Google button", "clicked")
+                    }
+                )
+                Spacer(modifier = Modifier.height(19.dp))
+                GoogleButton(
+                    modifier = Modifier.width(280.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    onClicked = {
+                        onClick()
+                        Log.d("Sign Up Google button", "clicked")
+                    }
+                )
             }
-            GoogleButton(
-                modifier = Modifier.width(280.dp),
-                shape = RoundedCornerShape(24.dp),
-                text = "Login with Google",
-                loadingText = "Login Account...",
-                onClicked = {
-                    onClick()
-                    Log.d("Login Google button", "clicked")
-                }
-            )
-            GoogleButton(
-                modifier = Modifier.width(280.dp),
-                shape = RoundedCornerShape(24.dp),
-                onClicked = {
-                    onClick()
-                    Log.d("Sign Up Google button", "clicked")
-                }
-            )
 //            errorText?.let {
 //                Spacer(modifier = Modifier.height(3.dp))
 //                Text(text = it)
