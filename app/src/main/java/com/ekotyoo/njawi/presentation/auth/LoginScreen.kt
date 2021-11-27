@@ -1,5 +1,6 @@
 package com.ekotyoo.njawi.presentation.auth
 
+import android.app.Application
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
@@ -9,26 +10,34 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
-import com.ekotyoo.njawi.presentation.auth.utils.AuthResultContract
+import com.ekotyoo.njawi.presentation.auth.model.AuthViewModelFactory
+import com.ekotyoo.njawi.presentation.auth.model.User
+import com.ekotyoo.njawi.presentation.auth.utils.GoogleApiContract
 import com.google.android.gms.common.api.ApiException
-import kotlinx.coroutines.launch
+import com.squareup.moshi.Moshi
 
 val pacifico = FontFamily(Font(R.font.pacifico_regular))
 
 @Composable
-fun LoginView(onClick: () -> Unit, errorText: String?) {
+fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -47,6 +56,9 @@ fun LoginView(onClick: () -> Unit, errorText: String?) {
         ) {
             Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
             Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(500.dp))
+            Column() {
+                
+            }
             GoogleButton(
                 modifier = Modifier.width(280.dp),
                 shape = RoundedCornerShape(24.dp),
@@ -65,41 +77,57 @@ fun LoginView(onClick: () -> Unit, errorText: String?) {
                     Log.d("Sign Up Google button", "clicked")
                 }
             )
-            errorText?.let {
-                Spacer(modifier = Modifier.height(3.dp))
-                Text(text = it)
-            }
+//            errorText?.let {
+//                Spacer(modifier = Modifier.height(3.dp))
+//                Text(text = it)
+//            }
         }
     }
 }
 
 @Composable
-fun LoginScreen(authViewModel: AuthViewModel){
-
-    val coroutineScope = rememberCoroutineScope()
-    var text by remember { mutableStateOf<String?>(null)}
-    val user by remember(authViewModel){authViewModel.user}.collectAsState()
+fun AuthScreen(navController: NavController) {
     val signInRequestCode = 1
+    val context = LocalContext.current
+
+    val mSignInViewModel: AuthViewModel = viewModel(
+        factory = AuthViewModelFactory(context.applicationContext as Application)
+    )
+
+    val state = mSignInViewModel.googleUser.observeAsState()
+    val user = state.value
+
+    val isError = rememberSaveable { mutableStateOf(false) }
 
     val authResultLauncher =
-        rememberLauncherForActivityResult(contract = AuthResultContract()){ task ->
+        rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
             try {
-                val account = task?.getResult(ApiException::class.java)
-                if (account==null){
-                    text = "Google sign in failed"
-                }else{
-                    coroutineScope.launch {
-                        account.email?.let { account.displayName?.let { it1 -> authViewModel.signIn(email = it, displayName = it1) } }
-                    }
+                val gsa = task?.getResult(ApiException::class.java)
+
+                if (gsa != null) {
+                    mSignInViewModel.fetchSignInUser(gsa.email, gsa.displayName)
+                    Log.d("Usernam", gsa.email.toString())
+                } else {
+                    isError.value = true
+                    Log.d("Usernam", "error")
                 }
-            }catch (e:ApiException){
-                text="Google sign in failed"
+            } catch (e: ApiException) {
+                Log.d("Error in AuthScreen%s", e.toString())
             }
         }
-    LoginView(errorText = text,onClick = {text=null
-        authResultLauncher.launch(signInRequestCode)
-    })
-    user?.let{
-        HomeScreen()
+
+    LoginView(
+        onClick = { authResultLauncher.launch(signInRequestCode) },
+        mSignInViewModel
+    )
+
+    user?.let {
+        mSignInViewModel.hideLoading()
+
+        val moshi = Moshi.Builder().build()
+        val jsonAdapter = moshi.adapter(User::class.java).lenient()
+        val userJson = jsonAdapter.toJson(user)
+
+        navController.navigate(Screen.Home.route.replace("{user}", userJson))
     }
 }

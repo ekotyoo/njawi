@@ -55,13 +55,14 @@ class MainActivity : ComponentActivity() {
                 // get recreated on recomposition
                 val navController = rememberNavController()
                 Surface(color = Color.White) {
-                    Scaffold(
-                        bottomBar = {
-                            BottomNavigationBar(navController = navController)
-                        }, content = {
-                            NavHostContainer(navController = navController)
-                        }
-                    )
+//                    Scaffold(
+//                        bottomBar = {
+//                            BottomNavigationBar(navController = navController)
+//                        }, content = {
+//                            NavHostContainer(navController = navController)
+//                        }
+//                    )
+                    NavHostContainer(navController = navController)
                 }
             }
         }
