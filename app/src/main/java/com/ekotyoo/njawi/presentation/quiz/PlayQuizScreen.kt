@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ekotyoo.njawi.presentation.quiz.components.NjawiButton
 import com.ekotyoo.njawi.presentation.quiz.components.Slot
@@ -33,21 +34,21 @@ import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.ekotyoo.njawi.R
+import com.google.firebase.firestore.auth.User
 
 @ExperimentalAnimationApi
 @Composable
 fun PlayQuizScreen(
-    headerImg: Int,
-    viewModel: PlayQuizViewModel
+    viewModel: PlayQuizViewModel,
 ) {
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
         .observeAsState(initial = mutableListOf())
     val isDone: Boolean by viewModel.isDone.observeAsState(initial = false)
     val words: List<String> by viewModel.shuffledWords.observeAsState(initial = listOf())
-
     val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
     val deadImages: List<Int> = listOf(R.drawable.dead_1, R.drawable.dead_2, R.drawable.dead_3, R.drawable.dead_4, R.drawable.dead_5, R.drawable.dead_6, R.drawable.dead_6, R.drawable.dead_7)
+    val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
 
 
     Box() {
@@ -68,12 +69,13 @@ fun PlayQuizScreen(
             } else {
                 HeaderAnimation(runImages)
             }
+            ScoreIndicator(viewModel = viewModel)
             TimeLeftIndicator(progress = progress)
             WordsSlot(words = currentAnswer, viewModel = viewModel)
             WordsOption(words = words, viewModel = viewModel)
         }
         AnimatedVisibility(
-            visible = isDone,
+            visible = isCorrect,
             enter = fadeIn(
                 initialAlpha = 0f
             ) ,
@@ -81,6 +83,21 @@ fun PlayQuizScreen(
         ) {
             ResultDialog(viewModel = viewModel)
         }
+    }
+}
+
+@Composable
+fun ScoreIndicator(viewModel: PlayQuizViewModel) {
+    val correct: Int by viewModel.correctQuestions.observeAsState(initial = 0)
+    val total = viewModel.quiz.questions.size
+    Row (
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(40.dp)
+            ) {
+        Text(text = "Benar: $correct", style =  Typography.button, color = White)
+        Text(text = "Total: $total", style =  Typography.button, color = White)
     }
 }
 
@@ -126,6 +143,7 @@ fun WordsSlot(words: List<String>, viewModel: PlayQuizViewModel) {
 fun ResultDialog(
     viewModel: PlayQuizViewModel,
 ) {
+    val totalScore: Int = viewModel.totalScore.value!!
     Box (
         modifier = Modifier
             .fillMaxWidth()
@@ -133,35 +151,88 @@ fun ResultDialog(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
                 .background(Black.copy(alpha = 0.6f))
         )
-        Column (
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Box(
             modifier = Modifier
                 .align(Alignment.Center)
-                .background(color = Orange, shape = Shapes.medium)
-                .border(4.dp, color = Black, shape = Shapes.medium)
-                .border(16.dp, color = LightOrange, shape = Shapes.medium)
-                .padding(16.dp)
-                .padding(20.dp)
-
         ) {
-            Text(text = "Hasil", style = Typography.button)
-            Text(text = "Skor kamu: 1000", style = Typography.button)
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                NjawiButton(text = "Ulangi") {
-                    viewModel.restartGame()
-                }
-                Spacer(Modifier.width(8.dp))
-                NjawiButton(text = "Lanjutkan") {
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                resultOutside,
+                                resultOutsideBorder
+                            )
+                        ),
+                        shape = Shapes.medium
+                    )
+                    .border(3.dp, color = resultOutsideBorder, shape = Shapes.medium)
+                    .padding(20.dp, 40.dp, 20.dp, 20.dp)
+            ) {
+                Column (
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    resultCenter,
+                                    resultCenterBorder
+                                )
+                            ),
+                            shape = Shapes.medium
+                        )
+                        .border(3.dp, color = resultCenterBorder, shape = Shapes.medium)
+                        .padding(20.dp)
+
+                ) {
+                    Text(text = "Skor kamu: $totalScore", style = Typography.button, color = Color.White)
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row {
+                        NjawiButton(text = "Ulangi") {
+                            viewModel.restartGame()
+                        }
+                        Spacer(Modifier.width(8.dp))
+                        NjawiButton(text = "Lanjut") {
+                        }
+                    }
                 }
             }
+            Text(text = "Hasil", style = Typography.button.copy(fontSize = 24.sp), color = Color.White, modifier = Modifier
+                .align(
+                    Alignment.TopCenter
+                )
+                .padding(top = 4.dp))
         }
     }
+}
+
+@Composable
+fun TextWithShadow(
+    text: String,
+    modifier: Modifier
+) {
+    Text(
+        text = text,
+        color = Color.DarkGray,
+        style = Typography.button,
+        modifier = modifier
+            .offset(
+                x = 2.dp,
+                y = 2.dp
+            )
+            .alpha(0.75f)
+    )
+    Text(
+        text = text,
+        color = Color.White,
+        style = Typography.button,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -273,7 +344,7 @@ fun TimeLeftIndicator(progress: Float) {
 @Composable
 fun Preview() {
     NjawiTheme {
-
+        ResultDialog(viewModel = PlayQuizViewModel())
     }
 }
 

@@ -14,7 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(user: User){
+fun HomeScreen(){
     Scaffold() {
         innerPadding -> 
         Column(
@@ -24,9 +24,7 @@ fun HomeScreen(user: User){
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Hello, ${user.displayName}")
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(text = user.email)
+            Text(text = "Hello, World!")
         }
     }
 }

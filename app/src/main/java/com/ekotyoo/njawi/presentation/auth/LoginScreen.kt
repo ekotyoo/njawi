@@ -100,6 +100,6 @@ fun LoginScreen(authViewModel: AuthViewModel){
         authResultLauncher.launch(signInRequestCode)
     })
     user?.let{
-        HomeScreen(user = it)
+        HomeScreen()
     }
 }
