@@ -73,5 +73,6 @@ dependencies {
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation("me.nikhilchaudhari:composeNeumorphism:1.0.0-alpha02")
 
 }

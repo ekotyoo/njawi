@@ -30,7 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.BottomNavigationBar
 import com.ekotyoo.njawi.presentation.auth.pacifico
+import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.profile.components.expandbox
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
@@ -42,15 +44,7 @@ fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFFD24074),
-                        Color(0xFF77549A),
-                        Color(0xFF1268C3)
-                    ),
-                )
-            )) {
+            ) {
         Spacer(modifier = Modifier
             .height(30.dp)
             .fillMaxWidth())
@@ -96,8 +90,8 @@ fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
         }
         Spacer(modifier = Modifier.height(50.dp))
         expandbox(title = "Achievement")
-        expandbox(title = "LeaderBoard")
-
+        Spacer(modifier = Modifier.height(350.dp))
+        BottomNavigationBar()
 
     }
 }
@@ -114,6 +108,10 @@ fun expandboxreview(){
 @Composable
 fun PhotographerCardPreview() {
     NjawiTheme {
-        PhotographerCard(title = "Achievement")
+        Box {
+            Circle()
+            PhotographerCard(title = "Achievement")
+        }
+
     }
 }

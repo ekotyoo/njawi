@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -58,7 +59,12 @@ fun expandbox(modifier: Modifier = Modifier, title: String) {
                             ),
                         )
                     ), shape = RoundedCornerShape(15)
-                ),
+                )
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(15),
+
+                    ),
             shape = RoundedCornerShape(15),
         ) {
             Row(modifier = Modifier.padding(24.dp)) {
