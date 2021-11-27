@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "381802667272-smorhtbevgjbthne4vo45quis7eeaf43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ekotyoo.njawi",
+            "certificate_hash": "cebddb91fe50aa330ab15edf71f4484bd817aac2"
+          }
+        },
+        {
           "client_id": "381802667272-g7n695v9rmpfl5678dcv0k2vhg1u157h.apps.googleusercontent.com",
           "client_type": 3
         }
