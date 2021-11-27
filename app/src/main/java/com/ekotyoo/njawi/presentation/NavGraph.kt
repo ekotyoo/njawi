@@ -17,12 +17,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.ekotyoo.njawi.presentation.auth.HomeScreen
-import com.ekotyoo.njawi.presentation.auth.LoginScreen
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.squareup.moshi.Moshi
 
 @ExperimentalAnimationApi
 @Composable
@@ -31,16 +32,22 @@ fun NavHostContainer(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Auth.route
     ) {
-        composable(route = Screen.Home.route) {
+        composable(route = Screen.Home.route) { backStackEntry ->
+            val userJson = backStackEntry.arguments?.getString("user")
+
+            val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter(User::class.java)
+            val userObject = jsonAdapter.fromJson(userJson!!)
+
             HomeScreen()
         }
         composable(route = Screen.Quiz.route){
             PlayQuizScreen(viewModel = PlayQuizViewModel())
         }
         composable(route = Screen.Auth.route) {
-            LoginScreen(authViewModel = AuthViewModel())
+            AuthScreen(navController = navController)
         }
     }
 }
