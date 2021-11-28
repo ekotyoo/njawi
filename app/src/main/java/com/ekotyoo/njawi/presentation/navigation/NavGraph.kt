@@ -1,4 +1,4 @@
-package com.ekotyoo.njawi.presentation
+package com.ekotyoo.njawi.presentation.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.BottomNavigation
@@ -22,7 +22,11 @@ import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import androidx.compose.ui.tooling.preview.Preview
+import com.ekotyoo.njawi.presentation.AUTH_GRAPH_ROUTE
+import com.ekotyoo.njawi.presentation.HOME_GRAPH_ROUTE
+import com.ekotyoo.njawi.presentation.ROOT_GRAPH_ROUTE
+import com.ekotyoo.njawi.presentation.Screen
 import com.squareup.moshi.Moshi
 
 @ExperimentalAnimationApi
@@ -32,23 +36,11 @@ fun NavHostContainer(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.Auth.route
+        startDestination = AUTH_GRAPH_ROUTE,
+        route = ROOT_GRAPH_ROUTE
     ) {
-        composable(route = Screen.Home.route) { backStackEntry ->
-            val userJson = backStackEntry.arguments?.getString("user")
-
-            val moshi = Moshi.Builder().build()
-            val jsonAdapter = moshi.adapter(User::class.java)
-            val userObject = jsonAdapter.fromJson(userJson!!)
-
-            HomeScreen()
-        }
-        composable(route = Screen.Quiz.route){
-            PlayQuizScreen(viewModel = PlayQuizViewModel())
-        }
-        composable(route = Screen.Auth.route) {
-            AuthScreen(navController = navController)
-        }
+        authNavGraph(navController)
+        homeNavGraph(navController)
     }
 }
 
