@@ -32,10 +32,8 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.presentation.navigation.NavHostContainer
 import com.ekotyoo.njawi.common.navigation.NavHostContainer
 import com.ekotyoo.njawi.presentation.auth.AuthScreen
-import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme

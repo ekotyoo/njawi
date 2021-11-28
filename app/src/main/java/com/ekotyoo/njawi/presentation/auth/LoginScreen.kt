@@ -28,7 +28,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ekotyoo.njawi.HomeActivity
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModelFactory
 import com.ekotyoo.njawi.presentation.auth.model.User
