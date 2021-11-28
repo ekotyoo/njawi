@@ -27,7 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.presentation.Screen
+import com.ekotyoo.njawi.common.navigation.HOME_ROUTE
+import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModelFactory
 import com.ekotyoo.njawi.presentation.auth.model.User
@@ -112,10 +113,10 @@ fun AuthScreen(navController: NavController) {
 
                 if (gsa != null) {
                     mSignInViewModel.fetchSignInUser(gsa.email, gsa.displayName)
-                    Log.d("Usernam", gsa.email.toString())
+                    Log.d("Username", "Gsa Not Null")
                 } else {
                     isError.value = true
-                    Log.d("Usernam", "error")
+                    Log.d("Username", "error")
                 }
             } catch (e: ApiException) {
                 Log.d("Error in AuthScreen%s", e.toString())
@@ -134,6 +135,6 @@ fun AuthScreen(navController: NavController) {
         val jsonAdapter = moshi.adapter(User::class.java).lenient()
         val userJson = jsonAdapter.toJson(user)
 
-        navController.navigate(Screen.Home.route.replace("{user}", userJson))
+        navController.navigate(HOME_ROUTE.replace("{user}", userJson))
     }
 }
