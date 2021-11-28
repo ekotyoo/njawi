@@ -1,8 +1,12 @@
 package com.ekotyoo.njawi.presentation.auth
 
 import android.util.Log
+import android.view.Gravity
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -15,9 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
@@ -31,9 +38,10 @@ import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
-import com.ekotyoo.njawi.presentation.profile.ProfileScreen
+import com.ekotyoo.njawi.presentation.profile.PhotographerCardPreview
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
+import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -51,6 +59,7 @@ fun HomeScreen(
     }
 }
 
+
 @Composable
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
@@ -61,10 +70,38 @@ fun BottomBar(navController: NavHostController) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
-    
-    BottomNavigation {
-        screens.forEach {
-            AddItem(screen = it, currentDestination = currentDestination, navController = navController)
+    Surface(
+        color = Color(0xFFFFAE02),
+        border = BorderStroke(
+            10.dp, brush = Brush.verticalGradient(
+                colors = listOf(
+                    Color(0xFFFFDE02),
+                    Color(0xFFCA7E00),
+                ),
+            )
+        ),
+        modifier = Modifier
+
+            .padding(20.dp)
+            .border(
+                BorderStroke(2.dp, Color.Black), shape = RoundedCornerShape(40)
+            )
+            .shadow(
+                elevation = 10.dp,
+                shape = RoundedCornerShape(40),
+
+                ),
+        shape = RoundedCornerShape(40),
+
+        ) {
+        BottomNavigation(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(65.dp)
+        ) {
+            screens.forEach {
+                AddItem(screen = it, currentDestination = currentDestination, navController = navController)
+            }
         }
     }
 }
@@ -76,6 +113,7 @@ fun RowScope.AddItem(
     navController: NavHostController
 ) {
     BottomNavigationItem(
+        modifier = Modifier.background(Color(0xFFFFAE02)),
         label = {
             Text(text = screen.title)
         },
@@ -118,6 +156,7 @@ sealed class BottomBarScreen(
 @ExperimentalAnimationApi
 @Composable
 fun BottomNavGraph(navController: NavHostController) {
+
     NavHost(navController = navController, startDestination = Screen.Quiz.route) {
         composable(BottomBarScreen.Quiz.route) {
             PlayQuizScreen(viewModel = PlayQuizViewModel())
@@ -126,7 +165,8 @@ fun BottomNavGraph(navController: NavHostController) {
             BelajarScreen()
         }
         composable(BottomBarScreen.Profile.route) {
-            ProfileScreen()
+            PhotographerCardPreview()
         }
     }
 }
+

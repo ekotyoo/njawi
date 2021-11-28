@@ -10,6 +10,7 @@ import com.ekotyoo.njawi.presentation.auth.HomeScreen
 class HomeActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         setContent {
             HomeScreen(navController = rememberNavController())

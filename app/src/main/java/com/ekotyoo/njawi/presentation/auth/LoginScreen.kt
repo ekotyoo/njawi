@@ -57,7 +57,7 @@ fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
-            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(400.dp))
+            Image(painter = painterResource(id = R.drawable.inu5), contentDescription = "App_icon", Modifier.size(400.dp))
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
