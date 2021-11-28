@@ -59,7 +59,8 @@ fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
                 painter = painterResource(R.drawable.chad),
                 contentDescription = "foto",
                 modifier = Modifier
-                    .size(100.dp)
+                    .width(100.dp)
+                    .height(100.dp)
                     .clip(CircleShape)
                     .border(
                         BorderStroke(
