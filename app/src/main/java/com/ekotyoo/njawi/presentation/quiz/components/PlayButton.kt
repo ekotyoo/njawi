@@ -1,6 +1,7 @@
 package com.ekotyoo.njawi.presentation.quiz.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,8 +48,8 @@ fun PlayButton(){
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center) {
-                Icon(painter = painterResource(id = R.drawable.play), contentDescription = "Play",
-                    modifier = Modifier.size(100.dp).padding(start = 10.dp))
+                Image(painter = painterResource(id = R.drawable.play), contentDescription = "Play",
+                    modifier = Modifier.size(100.dp).padding(start = 15.dp))
             }
         }
     }
