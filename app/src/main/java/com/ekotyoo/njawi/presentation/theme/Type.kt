@@ -11,7 +11,7 @@ import com.ekotyoo.njawi.R
 // Set of Material typography styles to start with
 val Typography = Typography(
         body1 = TextStyle(
-                fontFamily = FontFamily.Default,
+                fontFamily = FontFamily(Font(R.font.poppins_semibold)),
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
         ),

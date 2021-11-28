@@ -128,12 +128,18 @@ fun AuthScreen(navController: NavController) {
 
     user?.let {
         mSignInViewModel.hideLoading()
+        val username = it.name
+        val email = it.email
+
+        val intent = Intent(context, HomeActivity::class.java)
+        intent.putExtra("name", username)
+        intent.putExtra("email", email)
 
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(User::class.java).lenient()
         val userJson = jsonAdapter.toJson(user)
 
         val context = LocalContext.current
-        context.startActivity(Intent(context, HomeActivity::class.java))
+        context.startActivity(intent)
     }
 }

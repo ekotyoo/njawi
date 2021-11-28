@@ -3,6 +3,7 @@ package com.ekotyoo.njawi.presentation
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -20,22 +21,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
-import com.ekotyoo.njawi.presentation.profile.ProfileScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.common.BottomBarScreen
+import com.ekotyoo.njawi.presentation.auth.model.User
+import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun HomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    user: User
 ){
     Scaffold (
         bottomBar = {
             BottomBar(navController = navController)
         }
     ) {
-        BottomNavGraph(navController = navController)
+        BottomNavGraph(navController = navController, user = user)
     }
 }
 
@@ -79,9 +83,10 @@ fun RowScope.AddItem(
     )
 }
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, user: User) {
     NavHost(navController = navController, startDestination = Screen.Quiz.route) {
         composable(BottomBarScreen.Quiz.route) {
             PlayQuizScreen(viewModel = PlayQuizViewModel())
@@ -90,7 +95,7 @@ fun BottomNavGraph(navController: NavHostController) {
             BelajarScreen()
         }
         composable(BottomBarScreen.Profile.route) {
-            ProfileScreen()
+            PhotographerCard(user = user, title = "My Profile")
         }
     }
 }
