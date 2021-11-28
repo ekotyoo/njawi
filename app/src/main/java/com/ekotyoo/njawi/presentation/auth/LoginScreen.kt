@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -43,60 +44,41 @@ val pacifico = FontFamily(Font(R.font.pacifico_regular))
 @Composable
 fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
     Scaffold {
-        Box {
-            Circle()
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(19.dp),
-                verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = "Njawi",
-                    fontSize = 72.sp,
-                    fontFamily = pacifico,
-                    color = Color(0xFFFFAE02),
-                    fontWeight = FontWeight.Normal
-                )
-                Image(
-                    painter = painterResource(id = R.drawable.inu5),
-                    contentDescription = "App_icon",
-                    Modifier.size(400.dp)
-                )
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    GoogleButton(
-                        modifier = Modifier.width(280.dp),
-                        shape = RoundedCornerShape(24.dp),
-                        text = "Login with Google",
-                        loadingText = "Login Account...",
-                        onClicked = {
-                            onClick()
-                            Log.d("Login Google button", "clicked")
-                        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFFD24074),
+                            Color(0xFF1268C3)
+                        ),
                     )
-                    Spacer(modifier = Modifier.height(19.dp))
-                    GoogleButton(
-                        modifier = Modifier.width(280.dp),
-                        shape = RoundedCornerShape(24.dp),
-                        onClicked = {
-                            onClick()
-                            Log.d("Sign Up Google button", "clicked")
-                        }
-                    )
+                )
+                .padding(19.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
+            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(400.dp))
+            GoogleButton(
+                modifier = Modifier.width(280.dp),
+                shape = RoundedCornerShape(24.dp),
+                text = "Login with Google",
+                loadingText = "Login Account...",
+                onClicked = {
+                    onClick()
+                    Log.d("Login Google button", "clicked")
                 }
+            )
 //            errorText?.let {
 //                Spacer(modifier = Modifier.height(3.dp))
 //                Text(text = it)
 //            }
-            }
         }
     }
 }
+
 @Composable
 fun AuthScreen(navController: NavController) {
     val signInRequestCode = 1
@@ -135,12 +117,18 @@ fun AuthScreen(navController: NavController) {
 
     user?.let {
         mSignInViewModel.hideLoading()
+        val username = it.name
+        val email = it.email
+
+        val intent = Intent(context, HomeActivity::class.java)
+        intent.putExtra("name", username)
+        intent.putExtra("email", email)
 
         val moshi = Moshi.Builder().build()
         val jsonAdapter = moshi.adapter(User::class.java).lenient()
         val userJson = jsonAdapter.toJson(user)
 
         val context = LocalContext.current
-        context.startActivity(Intent(context, HomeActivity::class.java))
+        context.startActivity(intent)
     }
 }

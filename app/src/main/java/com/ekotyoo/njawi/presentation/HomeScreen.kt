@@ -1,9 +1,9 @@
 package com.ekotyoo.njawi.presentation.auth
 
 import android.util.Log
-import android.view.Gravity
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -29,33 +28,34 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.ekotyoo.njawi.common.navigation.Screen
-import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.profile.PhotographerCardPreview
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
+import com.ekotyoo.njawi.common.BottomBarScreen
+import com.ekotyoo.njawi.presentation.auth.model.User
+import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun HomeScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    user: User
 ){
     Scaffold (
         bottomBar = {
             BottomBar(navController = navController)
         }
     ) {
-        BottomNavGraph(navController = navController)
+        BottomNavGraph(navController = navController, user = user)
     }
 }
 
@@ -155,8 +155,7 @@ sealed class BottomBarScreen(
 
 @ExperimentalAnimationApi
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
-
+fun BottomNavGraph(navController: NavHostController, user: User) {
     NavHost(navController = navController, startDestination = Screen.Quiz.route) {
         composable(BottomBarScreen.Quiz.route) {
             PlayQuizScreen(viewModel = PlayQuizViewModel())
@@ -165,7 +164,7 @@ fun BottomNavGraph(navController: NavHostController) {
             BelajarScreen()
         }
         composable(BottomBarScreen.Profile.route) {
-            PhotographerCardPreview()
+            PhotographerCard(user = user, title = "My Profile")
         }
     }
 }

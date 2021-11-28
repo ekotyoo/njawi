@@ -1,5 +1,8 @@
-package com.ekotyoo.njawi.common.navigation
+package com.ekotyoo.njawi.presentation
 
+const val ROOT_GRAPH_ROUTE = "root"
+const val AUTH_GRAPH_ROUTE = "auth"
+const val HOME_GRAPH_ROUTE = "home"
 
 sealed class Screen(val route: String){
     object Auth: Screen(route = "login")
