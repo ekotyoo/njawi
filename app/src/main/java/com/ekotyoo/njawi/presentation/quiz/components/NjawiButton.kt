@@ -8,9 +8,11 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.ekotyoo.njawi.presentation.quiz.TextWithShadow
 import com.ekotyoo.njawi.presentation.theme.*
 
 @Composable
@@ -27,7 +29,10 @@ fun NjawiButton(text: String, onClick: () -> Unit) {
             .border(5.dp, LightOrange, Shapes.medium)
     ) {
         Box {
-            Text(text = text, style = Typography.button, color = White)
+            TextWithShadow(
+                text = text,
+                modifier = Modifier
+            )
         }
     }
 }

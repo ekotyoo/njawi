@@ -16,3 +16,8 @@ val Orange = Color(0xFFFFAE02)
 val LightOrange = Color(0xFFFFBF39)
 val Black = Color(0xFC0A0000)
 val White = Color(0xFFFFFCFB)
+
+val resultCenter = Color(0xFF4252B9)
+val resultCenterBorder = Color(0xFF293680)
+val resultOutside = Color(0xFF5C6DE0)
+val resultOutsideBorder = Color(0xFFA4B0FF)

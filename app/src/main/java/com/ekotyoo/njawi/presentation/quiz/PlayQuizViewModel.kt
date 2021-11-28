@@ -1,20 +1,17 @@
 package com.ekotyoo.njawi.presentation.quiz
 
-import android.app.Application
-import android.content.Context
-import android.media.MediaPlayer
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.ekotyoo.njawi.R
+import androidx.lifecycle.viewModelScope
 import com.ekotyoo.njawi.common.Constants
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -28,6 +25,8 @@ class PlayQuizViewModel : ViewModel () {
     private var _currentIndex = MutableLiveData<Int>()
     private var _shuffledWords = MutableLiveData<List<String>>()
     private var _correctWords = MutableLiveData<List<String>>()
+    private var _correctQuestions = MutableLiveData<Int>()
+    private var _totalScore = MutableLiveData<Int>()
 
 
     val progress: LiveData<Float> = _progress
@@ -37,17 +36,19 @@ class PlayQuizViewModel : ViewModel () {
     val isCorrect: LiveData<Boolean> = _isCorrect
     val shuffledWords: LiveData<List<String>> = _shuffledWords
     val correctWords: LiveData<List<String>> = _correctWords
+    val correctQuestions: LiveData<Int> = _correctQuestions
+    val totalScore: LiveData<Int> = _totalScore
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
         .interval(0, 10, TimeUnit.MILLISECONDS)
         .subscribeOn(Schedulers.io())
         .takeWhile {
-            (it < 1500) && (isCorrect.value == false)
+            (it < 1500) && !isCorrect.value!!
         }
         .observeOn(AndroidSchedulers.mainThread())
 
-    private val quiz = Constants.getQuiz()
+    val quiz = Constants.getQuiz()
 
 
     init {
@@ -55,6 +56,8 @@ class PlayQuizViewModel : ViewModel () {
     }
 
     private fun startGame() {
+        _totalScore.value = 0
+        _correctQuestions.value = 0
         _currentIndex.value = 0
         _isCorrect.value = false
         _isDone.value = false
@@ -67,12 +70,16 @@ class PlayQuizViewModel : ViewModel () {
 
     fun restartGame() {
         _subscriptions.clear()
-        _currentAnswer.value = mutableListOf<String>()
+        _currentAnswer.value = mutableListOf()
         startGame()
     }
 
     private fun nextQuestion() {
         _subscriptions.clear()
+        if (isCorrect.value == true) {
+            _correctQuestions.value = _correctQuestions.value!! + 1
+            _totalScore.value = (correctQuestions.value!! * 1000f / progress.value!!).toInt()
+        }
         if (_currentIndex.value!! < quiz.questions.size - 1) {
             _currentIndex.value = _currentIndex.value!! + 1
             _isCorrect.value = false
@@ -89,34 +96,27 @@ class PlayQuizViewModel : ViewModel () {
 
     private fun startTimer() {
         _subscriptions.add(disposable.subscribeBy(
-            onNext = this::updateProgress,
-            onError = this::onError,
-            onComplete = this::onComplete),
+            onNext = {
+                _progress.value = it / 1500f * 100
+            },
+            onError = {
+                Log.d("onError", "OnError in Observable Time: $it")
+            },
+            onComplete = {
+                stopTimer()
+                checkResult()
+                nextQuestion()
+            }),
         )
     }
 
-
-    private fun updateProgress(value: Long) {
-        _progress.value = value / 1500f * 100
-    }
-
-    private fun onError(throwable: Throwable) {
-        Log.d("onError", "OnError in Observable Time: $throwable")
-    }
-
-    private fun onComplete() {
-        stopTimer()
-        checkResult()
-        nextQuestion()
-    }
 
     private fun stopTimer() {
         _progress.value = 0f
     }
 
     private fun checkResult() {
-        if (currentAnswer.value != null)
-        {
+        if (currentAnswer.value != null) {
             _isCorrect.value = isEqual(currentAnswer.value!!, correctWords.value!!)
         }
     }

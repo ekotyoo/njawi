@@ -4,21 +4,22 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.material.Surface
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.presentation.auth.LoginScreen
-import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
-import com.ekotyoo.njawi.presentation.profile.PhotographerCard
-import com.ekotyoo.njawi.presentation.profile.PhotographerCardPreview
-import com.ekotyoo.njawi.presentation.profile.components.Circle
+import com.ekotyoo.njawi.common.navigation.NavHostContainer
+import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.ekotyoo.njawi.presentation.auth.HomeScreen
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
-
     private lateinit var mediaPlayer: MediaPlayer
+
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NjawiTheme {
-                PhotographerCardPreview()
+                AuthScreen(navController = rememberNavController())
             }
         }
     }
@@ -40,4 +41,5 @@ class MainActivity : ComponentActivity() {
         mediaPlayer.stop()
     }
 }
+
 
