@@ -17,10 +17,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.belajar.components.ItemView
+import com.ekotyoo.njawi.presentation.profile.PhotographerCard
+import com.ekotyoo.njawi.presentation.profile.components.Circle
 
 @ExperimentalFoundationApi
 @Composable
-fun BelajarScreen(){
+fun BelajarScreen() {
     val number = listOf(
         "Krama Inggil",
         "Sandhangan",
@@ -29,36 +31,31 @@ fun BelajarScreen(){
         "Paribasan",
         "Cangkriman"
     )
-    Column(
-        modifier = Modifier.fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFFD24074),
-                        Color(0xFF1268C3)
-                    ),
-                )
+    Box {
+        Circle()
+        Column(
+            modifier = Modifier.fillMaxSize()
+                .padding(28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.id_sinau_njawi),
+                contentDescription = "icon sinau",
+                Modifier.size(width = 254.dp, height = 122.dp)
             )
-            .padding(28.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.id_sinau_njawi),
-            contentDescription = "icon sinau",
-            Modifier.size(width = 254.dp, height = 122.dp)
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        ){
-            items(number.size){
-                ItemView(
-                    number[it],
-                    modifier = Modifier.size(width = 134.dp, height = 134.dp),
-                    textColor = Color.White
-                )
+            Spacer(modifier = Modifier.height(30.dp))
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+            ) {
+                items(number.size) {
+                    ItemView(
+                        number[it],
+                        modifier = Modifier.size(width = 134.dp, height = 134.dp),
+                        textColor = Color.White
+                    )
+                }
             }
         }
     }

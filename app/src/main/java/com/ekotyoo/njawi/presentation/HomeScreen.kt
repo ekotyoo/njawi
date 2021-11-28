@@ -37,6 +37,7 @@ import com.ekotyoo.njawi.presentation.profile.PhotographerCardPreview
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.common.BottomBarScreen
+import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
@@ -129,30 +130,7 @@ fun RowScope.AddItem(
     )
 }
 
-sealed class BottomBarScreen(
-    val route: String,
-    val title: String,
-    val icon: ImageVector
-) {
-    object Quiz : BottomBarScreen(
-        route = Screen.Quiz.route,
-        title = "Quiz",
-        icon = Icons.Default.Face
-    )
-
-    object Belajar : BottomBarScreen(
-        route = Screen.Belajar.route,
-        title = "Belajar",
-        icon = Icons.Default.Home
-    )
-
-    object Profile : BottomBarScreen(
-        route = Screen.Profile.route,
-        title = "Profile",
-        icon = Icons.Default.Person
-    )
-}
-
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun BottomNavGraph(navController: NavHostController, user: User) {
@@ -164,7 +142,7 @@ fun BottomNavGraph(navController: NavHostController, user: User) {
             BelajarScreen()
         }
         composable(BottomBarScreen.Profile.route) {
-            PhotographerCard(user = user, title = "My Profile")
+            PhotographerCardPreview(user = user, title = "My Profile")
         }
     }
 }

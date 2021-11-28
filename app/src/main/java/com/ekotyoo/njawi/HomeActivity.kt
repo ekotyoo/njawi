@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.navigation.compose.rememberNavController
-import com.ekotyoo.njawi.presentation.HomeScreen
+import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.ekotyoo.njawi.presentation.auth.model.User
 
 class HomeActivity : AppCompatActivity() {

@@ -22,9 +22,9 @@ import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.navigation
-import com.ekotyoo.njawi.presentation.HomeScreen
 import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.squareup.moshi.Moshi
 
 @ExperimentalFoundationApi

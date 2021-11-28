@@ -35,11 +35,14 @@ import com.ekotyoo.njawi.presentation.auth.pacifico
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.profile.components.expandbox
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
-
+import com.ekotyoo.njawi.presentation.auth.model.User
 
 
 @Composable
-fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
+fun PhotographerCard(modifier: Modifier = Modifier,
+                     title: String,
+                     user: User
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -80,9 +83,9 @@ fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically)
             ) {
-                Text("Giga Chad", fontWeight = FontWeight.Medium, color = Color.White, fontSize = 20.sp)
+                user.name?.let { Text(it, fontWeight = FontWeight.Medium, color = Color.White, fontSize = 20.sp) }
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text("gigachad@gmail.com",fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp)
+                    user.email?.let { Text(it,fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp) }
                 }
             }
         }
@@ -101,13 +104,14 @@ fun expandboxreview(){
     }
 }
 
-@Preview
 @Composable
-fun PhotographerCardPreview() {
+fun PhotographerCardPreview(modifier: Modifier = Modifier,
+                            title: String,
+                            user: User) {
     NjawiTheme {
         Box {
             Circle()
-            PhotographerCard(title = "Achievement")
+            PhotographerCard(modifier, title, user)
         }
 
     }
