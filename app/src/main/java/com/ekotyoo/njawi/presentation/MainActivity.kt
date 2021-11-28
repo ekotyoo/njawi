@@ -33,6 +33,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.navigation.NavHostContainer
+import com.ekotyoo.njawi.common.navigation.NavHostContainer
+import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
@@ -52,19 +55,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NjawiTheme {
-                // remember navController so it does not
-                // get recreated on recomposition
-                val navController = rememberNavController()
-                Surface(color = Color.White) {
-//                    Scaffold(
-//                        bottomBar = {
-//                            BottomNavigationBar(navController = navController)
-//                        }, content = {
-//                            NavHostContainer(navController = navController)
-//                        }
-//                    )
-                    NavHostContainer(navController = navController)
-                }
+                AuthScreen(navController = rememberNavController())
             }
         }
     }

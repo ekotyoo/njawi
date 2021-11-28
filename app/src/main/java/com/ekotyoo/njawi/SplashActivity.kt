@@ -22,12 +22,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.presentation.MainActivity
-import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.theme.Blue
-import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import com.ekotyoo.njawi.presentation.theme.Red
 import kotlinx.coroutines.delay
 
