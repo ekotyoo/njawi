@@ -34,6 +34,7 @@ import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.google.firebase.firestore.auth.User
 
 @ExperimentalAnimationApi
@@ -51,15 +52,12 @@ fun PlayQuizScreen(
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
 
 
-    Box() {
+    Box {
+        Circle()
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Red, Blue)
-                    )
-                )
+
                 .padding(all = 16.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -109,7 +107,7 @@ fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
         mainAxisAlignment = FlowMainAxisAlignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.3f)
+            .fillMaxHeight(0.6f)
     ) {
         words.forEach { word ->
 

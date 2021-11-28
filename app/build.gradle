@@ -71,9 +71,11 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation project(':core')
     implementation "com.google.accompanist:accompanist-flowlayout:0.14.0"
-    implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
+    implementation "io.reactivex.rxjava3:rxkotlin:3.0.0"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation("me.nikhilchaudhari:composeNeumorphism:1.0.0-alpha02")
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
