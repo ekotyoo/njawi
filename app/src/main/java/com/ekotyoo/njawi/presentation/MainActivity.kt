@@ -1,33 +1,45 @@
 package com.ekotyoo.njawi.presentation
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.tooling.preview.Preview
-import com.ekotyoo.njawi.domain.models.Question
-import com.ekotyoo.njawi.domain.models.Quiz
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavHostController
+import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.common.navigation.NavHostContainer
+import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
-import com.ekotyoo.njawi.presentation.theme.Blue
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
-import com.ekotyoo.njawi.presentation.theme.Red
 
 class MainActivity : ComponentActivity() {
+    private lateinit var mediaPlayer: MediaPlayer
+
+
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mediaPlayer = MediaPlayer.create(this, R.raw.quiz)
+        mediaPlayer.isLooping = true
+        mediaPlayer.start()
+
+
         setContent {
-            PlayQuizScreen()
+            NjawiTheme {
+                AuthScreen(navController = rememberNavController())
+            }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.stop()
+    }
 }
+
 
