@@ -32,10 +32,19 @@ fun NavHostContainer(
 ){
     NavHost(
         navController = navController,
-        startDestination = "authwrapper",
-        route = "root"
+        startDestination = Screen.Auth.route,
     ) {
-        homeNavGraph(navController)
-        authNavGraph(navController)
+        composable(route = Screen.Auth.route) {
+            AuthScreen(navController = navController)
+        }
+        composable(route = Screen.Home.route) { backStackEntry ->
+            val userJson = backStackEntry.arguments?.getString("user")
+
+            val moshi = Moshi.Builder().build()
+            val jsonAdapter = moshi.adapter(User::class.java)
+            val userObject = jsonAdapter.fromJson(userJson!!)
+
+            HomeScreen(navController)
+        }
     }
 }

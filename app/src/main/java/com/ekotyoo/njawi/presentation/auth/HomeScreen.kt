@@ -1,6 +1,7 @@
 package com.ekotyoo.njawi.presentation.auth
 
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHost
@@ -37,8 +40,8 @@ import kotlinx.coroutines.launch
 @ExperimentalAnimationApi
 @Composable
 fun HomeScreen(
+    navController: NavHostController
 ){
-    val navController = rememberNavController()
     Scaffold (
         bottomBar = {
             BottomBar(navController = navController)

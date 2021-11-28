@@ -11,14 +11,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.common.navigation.NavHostContainer
+import com.ekotyoo.njawi.presentation.auth.AuthScreen
 import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
-
     private lateinit var mediaPlayer: MediaPlayer
 
 
@@ -32,8 +31,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             NjawiTheme {
-                navController = rememberNavController()
-                HomeScreen()
+                AuthScreen(navController = rememberNavController())
             }
         }
     }
