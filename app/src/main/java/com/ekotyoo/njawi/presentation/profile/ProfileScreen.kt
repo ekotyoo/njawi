@@ -14,8 +14,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.BottomNavigationBar
+import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.auth.pacifico
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.profile.components.expandbox
@@ -39,56 +38,65 @@ import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 
 @Composable
-fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
-            ) {
-        Spacer(modifier = Modifier
-            .height(30.dp)
-            .fillMaxWidth())
-        Text(text = "Njawi", fontSize = 30.sp,
-            fontFamily = pacifico, color = Color(0xFFFFAE02),
-            fontWeight = FontWeight.Normal)
-        Row(
-            modifier
-                .padding(16.dp)
-                .align(Alignment.CenterHorizontally)) {
-            Image(
-                painter = painterResource(R.drawable.chad),
-                contentDescription = "foto",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .border(
-                        BorderStroke(
-                            3.dp, brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color(0xFFFFDE02),
-                                    Color(0xFFFF9F00),
-                                    Color(0xFFFFAE02),
-                                ),
-                            )
-                        ), shape = CircleShape
-                    ),
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Column(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                Text("Giga Chad", fontWeight = FontWeight.Medium, color = Color.White, fontSize = 20.sp)
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text("gigachad@gmail.com",fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp)
+fun PhotographerCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    user: User
+) {
+    Box {
+        Circle()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            Spacer(modifier = Modifier
+                .height(30.dp)
+                .fillMaxWidth())
+            Text(text = "Njawi", fontSize = 30.sp,
+                fontFamily = pacifico, color = Color(0xFFFFAE02),
+                fontWeight = FontWeight.Normal)
+            Spacer(modifier = Modifier
+                .height(30.dp)
+                .fillMaxWidth())
+            Row(
+                modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally)) {
+                Image(
+                    painter = painterResource(R.drawable.chad),
+                    contentDescription = "foto",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .border(
+                            BorderStroke(
+                                3.dp, brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(0xFFFFDE02),
+                                        Color(0xFFFF9F00),
+                                        Color(0xFFFFAE02),
+                                    ),
+                                )
+                            ), shape = CircleShape
+                        ),
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Column(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically)
+                ) {
+                    user.name?.let { Text(it, fontWeight = FontWeight.Medium, color = Color.White, fontSize = 20.sp) }
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        user.email?.let { Text(it,fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp) }
+                    }
                 }
             }
+            Spacer(modifier = Modifier.height(50.dp))
+            expandbox(title = "Achievement")
+            Spacer(modifier = Modifier.height(350.dp))
         }
-        Spacer(modifier = Modifier.height(50.dp))
-        expandbox(title = "Achievement")
-        Spacer(modifier = Modifier.height(150.dp))
-
     }
 }
 
@@ -97,17 +105,5 @@ fun PhotographerCard(modifier: Modifier = Modifier, title: String) {
 fun expandboxreview(){
     NjawiTheme {
         expandbox(title = "Achievement")
-    }
-}
-
-@Preview
-@Composable
-fun PhotographerCardPreview() {
-    NjawiTheme {
-        Box {
-            Circle()
-            PhotographerCard(title = "Achievement")
-        }
-
     }
 }

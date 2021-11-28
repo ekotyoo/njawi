@@ -1,6 +1,7 @@
 package com.ekotyoo.njawi.common.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
@@ -16,19 +17,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.ekotyoo.njawi.presentation.auth.HomeScreen
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.navigation
+import com.ekotyoo.njawi.presentation.HomeScreen
+import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.auth.AuthScreen
 import com.squareup.moshi.Moshi
 
+@ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun NavHostContainer(
     navController: NavHostController,
+    user: User
 ){
     NavHost(
         navController = navController,
@@ -44,7 +48,7 @@ fun NavHostContainer(
             val jsonAdapter = moshi.adapter(User::class.java)
             val userObject = jsonAdapter.fromJson(userJson!!)
 
-            HomeScreen(navController)
+            HomeScreen(navController, user = user)
         }
     }
 }
