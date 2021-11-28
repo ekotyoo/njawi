@@ -3,15 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/ARIF/njawi/njawi/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.23703703703703705" />
-        <entry key="..\:/ARIF/njawi/njawi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.23703703703703705" />
-        <entry key="..\:/ARIF/njawi/njawi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_rubah.xml" value="0.23703703703703705" />
-        <entry key="..\:/ARIF/njawi/njawi/app/src/main/res/mipmap-anydpi-v26/ic_launcher_rubah_round.xml" value="0.23703703703703705" />
         <entry key="..\:/Programming/Praktikum PSI/njawi/app/src/main/res/drawable/ic_google_logo.xml" value="0.3609375" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Njawi/app/src/main/res/layout/activity_home.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

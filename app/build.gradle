@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -100,4 +101,14 @@ dependencies {
     //Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+}
+
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
