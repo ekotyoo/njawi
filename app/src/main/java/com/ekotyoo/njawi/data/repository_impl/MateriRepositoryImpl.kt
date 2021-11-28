@@ -20,17 +20,23 @@ class MateriRepositoryImpl @Inject constructor(
 ): MateriRepository {
     @ExperimentalCoroutinesApi
     override fun getMateriFromFirestore() = callbackFlow {
-        val snapshotListener = materiQuery.addSnapshotListener { snapshot, e ->
-            val response = if (snapshot != null) {
-                val materis = snapshot.toObjects(Materi::class.java)
+        val snapshotListener = materiQuery.get().addOnSuccessListener { result ->
+            val response = if (result != null) {
+                val materis = result.documents.map {
+                    Materi(
+                        id = it.id,
+                        title = it["title"] as String,
+                        chapters = it["chapters"] as List<Map<String, String>>?
+                    )
+                }
                 Response.Success(materis)
             } else {
-                Response.Error(e?.message ?: e.toString())
+                Response.Error("Something went wrong")
             }
             trySend(response).isSuccess
         }
         awaitClose {
-            snapshotListener.remove()
+
         }
     }
 }

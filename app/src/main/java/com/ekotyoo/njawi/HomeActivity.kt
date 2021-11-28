@@ -8,7 +8,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.presentation.HomeScreen
 import com.ekotyoo.njawi.presentation.auth.model.User
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     lateinit var user: User
     @ExperimentalFoundationApi

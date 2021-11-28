@@ -19,26 +19,16 @@ import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 @Composable
 fun PlayScreen(){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(painter = painterResource(R.drawable.sinau),
-            contentDescription = "foto",
-            modifier = Modifier.padding(top = 50.dp, bottom = 100.dp))
-        PlayButton()
-    }
-}
-
-
-
-@Preview
-@Composable
-fun HalamanPlay(){
-    NjawiTheme {
-        Box {
-            Circle()
-            PlayScreen()
+    Box {
+        Circle()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(painter = painterResource(R.drawable.sinau),
+                contentDescription = "foto",
+                modifier = Modifier.padding(top = 50.dp, bottom = 100.dp))
+            PlayButton()
         }
     }
 }

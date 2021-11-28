@@ -1,7 +1,7 @@
 package com.ekotyoo.njawi.domain.models
 
 data class Materi(
-    val id: Int,
-    val title: String,
-    val chapters: List<Map<String, Any>>,
+    val id: String? = null,
+    val title: String? = null,
+    val chapters: List<Map<String, String>>? = null,
 )

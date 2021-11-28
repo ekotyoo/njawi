@@ -3,6 +3,7 @@
     package="com.ekotyoo.njawi">
 
     <application
+        android:name=".NjawiApp"
         android:allowBackup="true"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher_rubah"

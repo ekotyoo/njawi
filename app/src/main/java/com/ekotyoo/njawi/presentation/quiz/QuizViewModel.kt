@@ -14,8 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @InternalCoroutinesApi
-@HiltViewModel
-class QuizViewModel @Inject constructor(
+class QuizViewModel (
     private val repository: QuizRepository
 ): ViewModel() {
     private val _quizzesState = mutableStateOf<Response<List<Quiz>>>(Response.Loading)
