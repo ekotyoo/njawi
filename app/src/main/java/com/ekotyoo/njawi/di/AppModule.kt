@@ -17,5 +17,11 @@ object AppModule {
     fun provideBooksRef(db: FirebaseFirestore) = db.collection("quizzes")
 
     @Provides
+    fun provideMateriRef(db: FirebaseFirestore) = db.collection("materis")
+
+    @Provides
+    fun provideMateriQuery(materiRef: CollectionReference) = materiRef.orderBy("title")
+
+    @Provides
     fun provideQuizzesQuery(quizzesRef: CollectionReference) = quizzesRef.orderBy("level")
 }
