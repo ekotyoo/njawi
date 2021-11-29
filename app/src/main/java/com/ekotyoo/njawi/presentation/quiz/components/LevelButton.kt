@@ -25,7 +25,7 @@ import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 @Composable
 fun LevelButton(
-    level: Number,
+    level: String,
     onClick: () -> Unit
 ){
     Column(
@@ -63,15 +63,5 @@ fun LevelButton(
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-    }
-}
-
-@Preview
-@Composable
-fun eek(){
-    NjawiTheme {
-        LevelButton(level = 1) {
-
-        }
     }
 }

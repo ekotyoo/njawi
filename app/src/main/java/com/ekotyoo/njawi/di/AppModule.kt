@@ -11,23 +11,23 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
+    @Singleton
     fun provideFirebaseFirestore() = FirebaseFirestore.getInstance()
 
     @Provides
-    fun provideMateriRef(db: FirebaseFirestore) = db.collection("materis")
-
-
-    @Provides
-    fun provideMateriQuery(materiRef: CollectionReference) = materiRef.orderBy("title")
-
-    @Provides
     fun provideMateriRepository(
-        materiRef: CollectionReference,
-        materiQuery: Query,
-    ): MateriRepository = MateriRepositoryImpl(materiRef, materiQuery)
+        db: FirebaseFirestore,
+    ): MateriRepository = MateriRepositoryImpl(db)
+
+    @Provides
+    fun provideQuizRepository(
+        db: FirebaseFirestore,
+    ): QuizRepository = QuizRepositoryImpl(db)
 }

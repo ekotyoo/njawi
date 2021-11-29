@@ -1,23 +1,33 @@
 package com.ekotyoo.njawi.presentation.quiz
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.*
 import com.ekotyoo.njawi.common.Constants
+import com.ekotyoo.njawi.domain.models.Materi
+import com.ekotyoo.njawi.domain.models.Quiz
+import com.ekotyoo.njawi.domain.models.Response
+import com.ekotyoo.njawi.domain.repository.QuizRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltViewModel
-class PlayQuizViewModel @Inject constructor() : ViewModel () {
+class PlayQuizViewModel @Inject constructor(
+    private val repository: QuizRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel () {
 
+    private var _quizState = mutableStateOf<Response<Quiz>>(Response.Loading)
     private var _progress = MutableLiveData<Float>()
     private var _currentAnswer = MutableLiveData<List<String>>()
     private var _isDone = MutableLiveData<Boolean>()
@@ -27,8 +37,10 @@ class PlayQuizViewModel @Inject constructor() : ViewModel () {
     private var _correctWords = MutableLiveData<List<String>>()
     private var _correctQuestions = MutableLiveData<Int>()
     private var _totalScore = MutableLiveData<Int>()
+    private var _state = mutableStateOf(PlayQuizScreenState())
 
 
+    val quizState: State<Response<Quiz>> = _quizState
     val progress: LiveData<Float> = _progress
     val currentAnswer: LiveData<List<String>> = _currentAnswer
     val currentIndex: LiveData<Int> = _currentIndex
@@ -38,6 +50,7 @@ class PlayQuizViewModel @Inject constructor() : ViewModel () {
     val correctWords: LiveData<List<String>> = _correctWords
     val correctQuestions: LiveData<Int> = _correctQuestions
     val totalScore: LiveData<Int> = _totalScore
+    var state: State<PlayQuizScreenState> = _state
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
@@ -48,11 +61,32 @@ class PlayQuizViewModel @Inject constructor() : ViewModel () {
         }
         .observeOn(AndroidSchedulers.mainThread())
 
-    val quiz = Constants.getQuiz()
-
+    var quiz: Quiz = Constants.getQuiz()
 
     init {
-        startGame()
+        savedStateHandle.get<String>("id")?.let {
+            getQuiz(it)
+        }
+    }
+
+    private fun getQuiz(id: String) {
+        viewModelScope.launch {
+            repository.getQuizById(id).collect { response ->
+                _quizState.value = response
+                when(val quizResponse = quizState.value) {
+                    is Response.Loading -> {
+                        _state.value = PlayQuizScreenState(isLoading = true)
+                    }
+                    is Response.Success -> {
+                        quiz = quizResponse.data
+                        startGame()
+                    }
+                    is Response.Error -> {
+                        _state.value = PlayQuizScreenState(error = "Something went wrong")
+                    }
+                }
+            }
+        }
     }
 
     private fun startGame() {
@@ -61,7 +95,7 @@ class PlayQuizViewModel @Inject constructor() : ViewModel () {
         _currentIndex.value = 0
         _isCorrect.value = false
         _isDone.value = false
-        _correctWords.value = quiz.questions[currentIndex.value!!].targetSentence.split(" ").toMutableList()
+        _correctWords.value = quiz.questions!![currentIndex.value!!].baseSentence.split(" ").toMutableList()
         val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
         shuffle(tempWords)
         _shuffledWords.value = tempWords
@@ -80,11 +114,11 @@ class PlayQuizViewModel @Inject constructor() : ViewModel () {
             _correctQuestions.value = _correctQuestions.value!! + 1
             _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f / progress.value!!).toInt()
         }
-        if (_currentIndex.value!! < quiz.questions.size - 1) {
+        if (_currentIndex.value!! < quiz.questions!!.size - 1) {
             _currentIndex.value = _currentIndex.value!! + 1
             _isCorrect.value = false
             _currentAnswer.value = mutableListOf()
-            _correctWords.value = quiz.questions[currentIndex.value!!].targetSentence.split(" ").toMutableList()
+            _correctWords.value = quiz.questions!![currentIndex.value!!].baseSentence.split(" ").toMutableList()
             val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
             shuffle(tempWords)
             _shuffledWords.value = tempWords

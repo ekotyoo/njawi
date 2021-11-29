@@ -1,4 +1,4 @@
-package com.ekotyoo.njawi.presentation
+package com.ekotyoo.njawi.common.navigation
 
 const val ROOT_GRAPH_ROUTE = "root"
 const val HOME_GRAPH_ROUTE = "home"
@@ -13,7 +13,7 @@ sealed class Screen(val route: String) {
 
     object LevelQuiz: Screen(route = "level_quiz")
 
-    object PlayQuiz: Screen(route = "play_quiz")
+    object PlayQuiz: Screen(route = "play_quiz/{id}")
 
     object Belajar: Screen(route = "belajar")
 

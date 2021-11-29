@@ -36,7 +36,8 @@ import com.ekotyoo.njawi.presentation.profile.components.Circle
 @Composable
 fun PlayQuizScreen(
     viewModel: PlayQuizViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    quizId: String,
 ) {
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
@@ -46,38 +47,50 @@ fun PlayQuizScreen(
     val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
     val deadImages: List<Int> = listOf(R.drawable.dead_1, R.drawable.dead_2, R.drawable.dead_3, R.drawable.dead_4, R.drawable.dead_5, R.drawable.dead_6, R.drawable.dead_6, R.drawable.dead_7)
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
+    val state = viewModel.state.value
 
 
     Box (
-        Modifier.fillMaxSize()
+        Modifier
+            .fillMaxSize()
             .pointerInput(Unit) {}
             ) {
         Circle()
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = 16.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (isDone) {
-                HeaderAnimation(deadImages)
-            } else {
-                HeaderAnimation(runImages)
+        when {
+            state.error.isNotBlank() -> {
+                Text(text = state.error)
             }
-            ScoreIndicator(viewModel = viewModel)
-            TimeLeftIndicator(progress = progress)
-            WordsSlot(words = currentAnswer, viewModel = viewModel)
-            WordsOption(words = words, viewModel = viewModel)
-        }
-        AnimatedVisibility(
-            visible = isDone,
-            enter = fadeIn(
-                initialAlpha = 0f
-            ) ,
-            exit = fadeOut()
-        ) {
-            ResultDialog(viewModel = viewModel, navController = navController)
+            state.isLoading -> {
+                CircularProgressIndicator()
+            }
+            else -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(all = 16.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (isDone) {
+                        HeaderAnimation(deadImages)
+                    } else {
+                        HeaderAnimation(runImages)
+                    }
+                    ScoreIndicator(viewModel = viewModel)
+                    TimeLeftIndicator(progress = progress)
+                    WordsSlot(words = currentAnswer, viewModel = viewModel)
+                    WordsOption(words = words, viewModel = viewModel)
+                }
+                AnimatedVisibility(
+                    visible = isDone,
+                    enter = fadeIn(
+                        initialAlpha = 0f
+                    ) ,
+                    exit = fadeOut()
+                ) {
+                    ResultDialog(viewModel = viewModel, navController = navController)
+                }
+            }
         }
     }
 }
@@ -85,7 +98,7 @@ fun PlayQuizScreen(
 @Composable
 fun ScoreIndicator(viewModel: PlayQuizViewModel) {
     val correct: Int by viewModel.correctQuestions.observeAsState(initial = 0)
-    val total = viewModel.quiz.questions.size
+    val total = viewModel.quiz.questions!!.size
     Row (
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
