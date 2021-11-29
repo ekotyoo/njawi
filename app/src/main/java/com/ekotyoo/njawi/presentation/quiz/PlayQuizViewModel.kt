@@ -4,19 +4,19 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ekotyoo.njawi.common.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.launch
-import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlin.random.Random
 
-class PlayQuizViewModel : ViewModel () {
+@HiltViewModel
+class PlayQuizViewModel @Inject constructor() : ViewModel () {
 
     private var _progress = MutableLiveData<Float>()
     private var _currentAnswer = MutableLiveData<List<String>>()
@@ -78,7 +78,7 @@ class PlayQuizViewModel : ViewModel () {
         _subscriptions.clear()
         if (isCorrect.value == true) {
             _correctQuestions.value = _correctQuestions.value!! + 1
-            _totalScore.value = (correctQuestions.value!! * 1000f / progress.value!!).toInt()
+            _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f / progress.value!!).toInt()
         }
         if (_currentIndex.value!! < quiz.questions.size - 1) {
             _currentIndex.value = _currentIndex.value!! + 1

@@ -1,7 +1,5 @@
 package com.ekotyoo.njawi.presentation.quiz
 
-import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
@@ -12,8 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -21,25 +17,25 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.presentation.quiz.components.NjawiButton
 import com.ekotyoo.njawi.presentation.quiz.components.Slot
 import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.ekotyoo.njawi.R
-import com.google.firebase.firestore.auth.User
+import com.ekotyoo.njawi.presentation.profile.components.Circle
 
 @ExperimentalAnimationApi
 @Composable
 fun PlayQuizScreen(
-    viewModel: PlayQuizViewModel,
+    viewModel: PlayQuizViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
@@ -51,15 +47,11 @@ fun PlayQuizScreen(
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
 
 
-    Box() {
+    Box {
+        Circle()
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Red, Blue)
-                    )
-                )
                 .padding(all = 16.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -75,13 +67,13 @@ fun PlayQuizScreen(
             WordsOption(words = words, viewModel = viewModel)
         }
         AnimatedVisibility(
-            visible = isCorrect,
+            visible = isDone,
             enter = fadeIn(
                 initialAlpha = 0f
             ) ,
             exit = fadeOut()
         ) {
-            ResultDialog(viewModel = viewModel)
+            ResultDialog(viewModel = viewModel, navController = navController)
         }
     }
 }
@@ -109,10 +101,9 @@ fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
         mainAxisAlignment = FlowMainAxisAlignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.3f)
+            .fillMaxHeight(0.6f)
     ) {
         words.forEach { word ->
-
             NjawiButton(text = word.replaceFirstChar { it.uppercase() }, onClick = {
                 viewModel.addAnswer(word)
             })
@@ -142,6 +133,7 @@ fun WordsSlot(words: List<String>, viewModel: PlayQuizViewModel) {
 @Composable
 fun ResultDialog(
     viewModel: PlayQuizViewModel,
+    navController: NavHostController
 ) {
     val totalScore: Int = viewModel.totalScore.value!!
     Box (
@@ -198,6 +190,7 @@ fun ResultDialog(
                         }
                         Spacer(Modifier.width(8.dp))
                         NjawiButton(text = "Lanjut") {
+                            navController.popBackStack()
                         }
                     }
                 }
@@ -336,15 +329,6 @@ fun TimeLeftIndicator(progress: Float) {
                     .border(5.dp, LightOrange, Shapes.medium)
             )
         }
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    NjawiTheme {
-        ResultDialog(viewModel = PlayQuizViewModel())
     }
 }
 

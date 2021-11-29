@@ -1,13 +1,21 @@
 package com.ekotyoo.njawi.presentation
 
 const val ROOT_GRAPH_ROUTE = "root"
-const val AUTH_GRAPH_ROUTE = "auth"
 const val HOME_GRAPH_ROUTE = "home"
 
-sealed class Screen(val route: String){
-    object Auth: Screen(route = "login")
+sealed class Screen(val route: String) {
+
+    object  Auth: Screen(route = "login")
+
+    object Home: Screen(route = "home")
+
     object Quiz: Screen(route = "quiz")
-    object Home: Screen(route = "home/{user}")
+
+    object LevelQuiz: Screen(route = "level_quiz")
+
+    object PlayQuiz: Screen(route = "play_quiz")
+
     object Belajar: Screen(route = "belajar")
+
     object Profile: Screen(route = "profile")
 }

@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
+          "client_id": "660089301295-1607loqnv6vfallki2e7rdrl8r5kt38j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ekotyoo.njawi",
+            "certificate_hash": "96ace85b2cdc4a898f186b828abb8f3c1028afb9"
+          }
+        },
+        {
           "client_id": "660089301295-2if3ijjm1safpjssdsa4q42a426i0s9e.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ekotyoo.njawi",
             "certificate_hash": "cebddb91fe50aa330ab15edf71f4484bd817aac2"
+          }
+        },
+        {
+          "client_id": "660089301295-rcibsbuq86hvrabtm5m4cctborb5lq28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ekotyoo.njawi",
+            "certificate_hash": "9d5c2a94f2b474317e23f18a0a8c13453b91a9d5"
           }
         },
         {

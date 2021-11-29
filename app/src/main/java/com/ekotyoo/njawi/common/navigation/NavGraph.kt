@@ -21,10 +21,12 @@ import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.navigation
 import com.ekotyoo.njawi.presentation.HomeScreen
 import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.ekotyoo.njawi.presentation.quiz.LevelScreen
 import com.squareup.moshi.Moshi
 
 @ExperimentalFoundationApi
@@ -36,18 +38,21 @@ fun NavHostContainer(
 ){
     NavHost(
         navController = navController,
-        startDestination = Screen.Auth.route,
+        startDestination = Screen.Home.route,
     ) {
         composable(route = Screen.Auth.route) {
             AuthScreen(navController = navController)
         }
+
+        composable(route = Screen.LevelQuiz.route) {
+            LevelScreen(navController = navController)
+        }
+
+        composable(route = Screen.PlayQuiz.route) {
+            PlayQuizScreen(navController = navController)
+        }
+        
         composable(route = Screen.Home.route) { backStackEntry ->
-            val userJson = backStackEntry.arguments?.getString("user")
-
-            val moshi = Moshi.Builder().build()
-            val jsonAdapter = moshi.adapter(User::class.java)
-            val userObject = jsonAdapter.fromJson(userJson!!)
-
             HomeScreen(navController, user = user)
         }
     }
