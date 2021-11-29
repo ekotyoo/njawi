@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'com.google.gms.google-services'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -71,9 +72,11 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
     implementation project(':core')
     implementation "com.google.accompanist:accompanist-flowlayout:0.14.0"
-    implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
+    implementation "io.reactivex.rxjava3:rxkotlin:3.0.0"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
     implementation "androidx.navigation:navigation-compose:2.4.0-beta02"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation("me.nikhilchaudhari:composeNeumorphism:1.0.0-alpha02")
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
@@ -98,4 +101,22 @@ dependencies {
     //Moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.12.0")
     kapt "com.squareup.moshi:moshi-kotlin-codegen:1.12.0"
+
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.38.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0-beta01")
+    kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+
+    // Navigation Animation
+    implementation "com.google.accompanist:accompanist-navigation-animation:0.20.0"
+    
+    //pager
+    implementation "com.google.accompanist:accompanist-pager:0.21.3-beta"
+}
+
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

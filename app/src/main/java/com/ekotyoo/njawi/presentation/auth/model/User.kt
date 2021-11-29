@@ -9,5 +9,5 @@ data class User(
     val name: String?,
 
     @Json(name = "email")
-    val email: String?
+    val email: String?,
 )

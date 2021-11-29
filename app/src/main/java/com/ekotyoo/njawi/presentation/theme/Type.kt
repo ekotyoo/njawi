@@ -11,7 +11,7 @@ import com.ekotyoo.njawi.R
 // Set of Material typography styles to start with
 val Typography = Typography(
         body1 = TextStyle(
-                fontFamily = FontFamily.Default,
+                fontFamily = FontFamily(Font(R.font.poppins_semibold)),
                 fontWeight = FontWeight.Normal,
                 fontSize = 16.sp
         ),
@@ -22,6 +22,10 @@ val Typography = Typography(
         body2 = TextStyle(
                 fontFamily = FontFamily(Font(R.font.poppins_bold)),
                 fontSize = 16.sp
+        ),
+        h1 = TextStyle(
+                fontFamily = FontFamily(Font(R.font.poppins_black)),
+                fontSize = 24.sp
         )
         /* Other default text styles to override
     button = TextStyle(

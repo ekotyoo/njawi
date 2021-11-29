@@ -19,7 +19,8 @@ import com.ekotyoo.njawi.presentation.theme.*
 @Composable
 fun ItemView(
     text: String = "Test",
-    modifier: Modifier
+    modifier: Modifier,
+    textColor: Color
 ) {
     Column(
         modifier = modifier,
@@ -58,7 +59,7 @@ fun ItemView(
                     .border(3.dp, color = resultCenterBorder, shape = Shapes.medium)
                     .size(width = 134.dp, height = 107.dp)
             ) {
-                Text(text = text, style = Typography.button)
+                Text(text = text, style = Typography.button, color = textColor)
             }
         }
     }
