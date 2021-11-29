@@ -29,6 +29,7 @@ class PlayQuizViewModel @Inject constructor(
 
     private var _quizState = mutableStateOf<Response<Quiz>>(Response.Loading)
     private var _progress = MutableLiveData<Float>()
+    private var _question = MutableLiveData<String>()
     private var _currentAnswer = MutableLiveData<List<String>>()
     private var _isDone = MutableLiveData<Boolean>()
     private var _isCorrect = MutableLiveData<Boolean>()
@@ -38,10 +39,12 @@ class PlayQuizViewModel @Inject constructor(
     private var _correctQuestions = MutableLiveData<Int>()
     private var _totalScore = MutableLiveData<Int>()
     private var _state = mutableStateOf(PlayQuizScreenState())
+    private var _isTimesUp = mutableStateOf<Boolean>(false)
 
 
     val quizState: State<Response<Quiz>> = _quizState
     val progress: LiveData<Float> = _progress
+    val question: LiveData<String> = _question
     val currentAnswer: LiveData<List<String>> = _currentAnswer
     val currentIndex: LiveData<Int> = _currentIndex
     val isDone: LiveData<Boolean> = _isDone
@@ -51,6 +54,7 @@ class PlayQuizViewModel @Inject constructor(
     val correctQuestions: LiveData<Int> = _correctQuestions
     val totalScore: LiveData<Int> = _totalScore
     var state: State<PlayQuizScreenState> = _state
+    var isTimesUp: State<Boolean> = _isTimesUp
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
@@ -78,6 +82,7 @@ class PlayQuizViewModel @Inject constructor(
                         _state.value = PlayQuizScreenState(isLoading = true)
                     }
                     is Response.Success -> {
+                        PlayQuizScreenState(quiz = quizResponse.data)
                         quiz = quizResponse.data
                         startGame()
                     }
@@ -95,6 +100,7 @@ class PlayQuizViewModel @Inject constructor(
         _currentIndex.value = 0
         _isCorrect.value = false
         _isDone.value = false
+        _question.value = quiz.questions!![currentIndex.value!!].targetSentence
         _correctWords.value = quiz.questions!![currentIndex.value!!].baseSentence.split(" ").toMutableList()
         val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
         shuffle(tempWords)
@@ -108,7 +114,7 @@ class PlayQuizViewModel @Inject constructor(
         startGame()
     }
 
-    private fun nextQuestion() {
+    fun nextQuestion() {
         _subscriptions.clear()
         if (isCorrect.value == true) {
             _correctQuestions.value = _correctQuestions.value!! + 1
@@ -117,6 +123,7 @@ class PlayQuizViewModel @Inject constructor(
         if (_currentIndex.value!! < quiz.questions!!.size - 1) {
             _currentIndex.value = _currentIndex.value!! + 1
             _isCorrect.value = false
+            _isTimesUp.value = false
             _currentAnswer.value = mutableListOf()
             _correctWords.value = quiz.questions!![currentIndex.value!!].baseSentence.split(" ").toMutableList()
             val tempWords: MutableList<String> = correctWords.value!!.toMutableList()
@@ -139,9 +146,17 @@ class PlayQuizViewModel @Inject constructor(
             onComplete = {
                 stopTimer()
                 checkResult()
-                nextQuestion()
+                if (_currentIndex.value!! < quiz.questions!!.size - 1) {
+                    showCorrectAnswerDialog()
+                } else {
+                    nextQuestion()
+                }
             }),
         )
+    }
+
+    private fun showCorrectAnswerDialog() {
+        _isTimesUp.value = true
     }
 
 
@@ -163,9 +178,6 @@ class PlayQuizViewModel @Inject constructor(
 
         if (currentAnswer.value!!.size == correctWords.value!!.size) {
             checkResult()
-            if (isCorrect.value!!) {
-                nextQuestion()
-            }
         }
     }
 
