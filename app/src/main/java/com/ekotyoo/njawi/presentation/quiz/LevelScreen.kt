@@ -34,7 +34,6 @@ fun LevelScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
-                .verticalScroll(rememberScrollState())
         ) {
             Image(painter = painterResource(R.drawable.sinau),
                 contentDescription = "foto",

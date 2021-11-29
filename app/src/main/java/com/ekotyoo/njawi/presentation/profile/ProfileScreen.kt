@@ -1,12 +1,7 @@
 package com.ekotyoo.njawi.presentation.profile
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,8 +15,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,8 +90,9 @@ fun PhotographerCard(modifier: Modifier = Modifier,
             }
             Spacer(modifier = Modifier.height(50.dp))
             expandbox(title = "Achievement")
-            Spacer(modifier = Modifier.height(150.dp))
-
+            Spacer(modifier = Modifier.height(70.dp))
+            Text(text = "Logout", fontSize = 20.sp, color = Color.White,
+            modifier = Modifier.clickable {  })
         }
     }
 }
@@ -119,3 +117,4 @@ fun PhotographerCardPreview(modifier: Modifier = Modifier,
 
     }
 }
+
