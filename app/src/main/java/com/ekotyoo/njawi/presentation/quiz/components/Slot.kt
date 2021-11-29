@@ -28,6 +28,8 @@ fun Slot(text: String = "", onClick: () -> Unit){
                 elevation = 3.dp
             )
     ) {
-        NjawiButton(text = text, onClick = onClick)
+        NjawiButton(text = text, onClick = {
+            onClick()
+        })
     }
 }

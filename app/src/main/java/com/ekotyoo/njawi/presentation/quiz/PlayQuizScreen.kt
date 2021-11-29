@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,7 +48,10 @@ fun PlayQuizScreen(
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
 
 
-    Box {
+    Box (
+        Modifier.fillMaxSize()
+            .pointerInput(Unit) {}
+            ) {
         Circle()
         Column(
             modifier = Modifier

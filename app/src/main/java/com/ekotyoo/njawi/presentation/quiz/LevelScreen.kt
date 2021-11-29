@@ -19,6 +19,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -38,7 +39,9 @@ import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 fun LevelScreen(
     navController: NavHostController
 ){
-    Box {
+    Box(
+        Modifier.pointerInput(Unit) {}
+    ) {
         Circle()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

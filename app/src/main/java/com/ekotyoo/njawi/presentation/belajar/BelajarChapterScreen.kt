@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -26,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.domain.models.Response
+import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -38,67 +40,76 @@ fun BelajarChapter(
     materiId: String
 ) {
     viewModel.getMateri(materiId)
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.id_sinau_njawi),
-            contentDescription = "Header Icon",
-            Modifier.size(width = 254.dp, height = 122.dp)
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        Box() {
-            when (val materiResponse = viewModel.materiState.value) {
-                is Response.Loading -> CircularProgressIndicator()
-                is Response.Success -> HorizontalPager(
-                    count = materiResponse.data.chapters?.size ?: 0,
-                    modifier = Modifier.height(440.dp)
-                ) { page ->
-                    ContentBox(
-                        width = 320,
-                        height = 438,
-                        judul = materiResponse.data.chapters?.get(page)?.get("title") as String,
-                        contents = materiResponse.data.chapters[page]["contents"] as List<String>,
-                        style = Typography.body1
+    Box (
+        modifier = Modifier.pointerInput(Unit){}
+            ) {
+        Circle()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp)
+                .pointerInput(Unit) {},
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.id_sinau_njawi),
+                contentDescription = "Header Icon",
+                Modifier.size(width = 254.dp, height = 122.dp)
+            )
+            Spacer(modifier = Modifier.height(30.dp))
+            Box(
+                modifier = Modifier.pointerInput(Unit){}
+            ) {
+                when (val materiResponse = viewModel.materiState.value) {
+                    is Response.Loading -> CircularProgressIndicator()
+                    is Response.Success -> HorizontalPager(
+                        count = materiResponse.data.chapters?.size ?: 0,
+                        modifier = Modifier.height(440.dp)
+                    ) { page ->
+                        ContentBox(
+                            width = 320,
+                            height = 438,
+                            judul = materiResponse.data.chapters?.get(page)?.get("title") as String,
+                            contents = materiResponse.data.chapters[page]["contents"] as List<String>,
+                            style = Typography.body1
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(1.2f)
+                ) {
+                    val infiniteTransition = rememberInfiniteTransition()
+                    val rotate1 by infiniteTransition.animateFloat(
+                        initialValue = 0f,
+                        targetValue = 20f,
+                        animationSpec = infiniteRepeatable(
+                            tween(2000, easing = FastOutSlowInEasing),
+                            repeatMode = RepeatMode.Reverse
+                        )
+                    )
+                    val pos1 by infiniteTransition.animateValue(
+                        initialValue = 400.dp,
+                        targetValue = 150.dp,
+                        animationSpec = infiniteRepeatable(
+                            tween(2000, easing = FastOutSlowInEasing),
+                            repeatMode = RepeatMode.Reverse
+                        ),
+                        typeConverter = Dp.VectorConverter
+                    )
+                    Image(
+                        modifier = Modifier
+                            .offset(-pos1, 300.dp)
+                            .size(350.dp)
+                            .rotate(rotate1),
+                        painter = painterResource(id = R.drawable.lari4),
+                        contentDescription = "njawi mascot",
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(1.2f)
-            ) {
-                val infiniteTransition = rememberInfiniteTransition()
-                val rotate1 by infiniteTransition.animateFloat(
-                    initialValue = 0f,
-                    targetValue = 20f,
-                    animationSpec = infiniteRepeatable(
-                        tween(2000, easing = FastOutSlowInEasing),
-                        repeatMode = RepeatMode.Reverse
-                    )
-                )
-                val pos1 by infiniteTransition.animateValue(
-                    initialValue = 400.dp,
-                    targetValue = 150.dp,
-                    animationSpec = infiniteRepeatable(
-                        tween(2000, easing = FastOutSlowInEasing),
-                        repeatMode = RepeatMode.Reverse
-                    ),
-                    typeConverter = Dp.VectorConverter
-                )
-                Image(
-                    modifier = Modifier
-                        .offset(-pos1, 300.dp)
-                        .size(350.dp)
-                        .rotate(rotate1),
-                    painter = painterResource(id = R.drawable.lari4),
-                    contentDescription = "njawi mascot",
-                )
-            }
         }
 
     }
