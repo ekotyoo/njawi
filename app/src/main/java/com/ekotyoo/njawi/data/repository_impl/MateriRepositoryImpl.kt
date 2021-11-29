@@ -5,13 +5,17 @@ import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.domain.repository.MateriRepository
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
-@ViewModelScoped
+@Module
+@InstallIn(ViewModelComponent::class)
 class MateriRepositoryImpl @Inject constructor(
     private val materiRef: CollectionReference,
     private val materiQuery: Query

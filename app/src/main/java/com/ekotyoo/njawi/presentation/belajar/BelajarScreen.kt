@@ -29,6 +29,7 @@ import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.HeaderAnimation
 
+
 @ExperimentalFoundationApi
 @Composable
 fun BelajarScreen(
@@ -41,14 +42,6 @@ fun BelajarScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            Color(0xFFD24074),
-                            Color(0xFF1268C3)
-                        ),
-                    )
-                )
                 .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
