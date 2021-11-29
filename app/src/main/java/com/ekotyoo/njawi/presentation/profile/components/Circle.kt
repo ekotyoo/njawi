@@ -63,7 +63,7 @@ fun Circle(modifier: Modifier = Modifier){
                 startAngle = 90f,
                 sweepAngle = 180f,
                 useCenter = true,
-                topLeft = Offset(350f,1000f),
+                topLeft = Offset(350f,700f),
                 size = Size(1500f,1500f)
             )
         }

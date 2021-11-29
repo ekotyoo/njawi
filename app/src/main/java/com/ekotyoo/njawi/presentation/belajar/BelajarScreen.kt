@@ -1,36 +1,36 @@
 package com.ekotyoo.njawi.presentation.belajar
 
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
+import android.widget.Toast.makeText
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.belajar.components.ItemView
 
 @ExperimentalFoundationApi
 @Composable
-fun BelajarScreen(){
-    val number = listOf(
-        "Krama Inggil",
-        "Sandhangan",
-        "Ngoko Alus",
-        "Ngoko Lugu",
-        "Paribasan",
-        "Cangkriman"
-    )
+fun BelajarScreen(
+    viewModel: BelajarViewModel = hiltViewModel()
+){
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(
@@ -49,17 +49,37 @@ fun BelajarScreen(){
             Modifier.size(width = 254.dp, height = 122.dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
-        LazyVerticalGrid(
-            cells = GridCells.Fixed(2),
-            modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-        ){
-            items(number.size){
-                ItemView(
-                    number[it],
-                    modifier = Modifier.size(width = 134.dp, height = 134.dp),
-                    textColor = Color.White
-                )
+        when(val materisResponse = viewModel.materisState.value) {
+            is Response.Loading -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
             }
+
+            is Response.Success -> LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+            ){
+                items(
+                    materisResponse.data.size
+                ){
+                    materisResponse.data[it].title?.let { it1 ->
+                        ItemView(
+                            it1,
+                            modifier = Modifier.size(width = 134.dp, height = 134.dp),
+                            textColor = Color.White
+                        )
+                    }
+                }
+            }
+
+            is Response.Error -> Toast(materisResponse.message)
         }
     }
+}
+
+@Composable
+fun Toast(message: String) {
+    makeText(LocalContext.current, message, LENGTH_SHORT).show()
 }

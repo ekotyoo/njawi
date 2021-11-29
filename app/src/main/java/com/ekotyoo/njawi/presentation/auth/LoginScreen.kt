@@ -1,5 +1,6 @@
 package com.ekotyoo.njawi.presentation.auth
 
+import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.util.Log
@@ -24,10 +25,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.ekotyoo.njawi.HomeActivity
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.MainActivity
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModel
 import com.ekotyoo.njawi.presentation.auth.model.AuthViewModelFactory
 import com.ekotyoo.njawi.presentation.auth.model.User
@@ -56,6 +59,7 @@ fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
+
             Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(400.dp))
             GoogleButton(
                 modifier = Modifier.width(280.dp),
@@ -67,6 +71,7 @@ fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
                     Log.d("Login Google button", "clicked")
                 }
             )
+
 //            errorText?.let {
 //                Spacer(modifier = Modifier.height(3.dp))
 //                Text(text = it)
@@ -120,11 +125,8 @@ fun AuthScreen(navController: NavController) {
         intent.putExtra("name", username)
         intent.putExtra("email", email)
 
-        val moshi = Moshi.Builder().build()
-        val jsonAdapter = moshi.adapter(User::class.java).lenient()
-        val userJson = jsonAdapter.toJson(user)
-
-        val context = LocalContext.current
+        val context = LocalContext.current as Activity
         context.startActivity(intent)
+        context.finish()
     }
 }
