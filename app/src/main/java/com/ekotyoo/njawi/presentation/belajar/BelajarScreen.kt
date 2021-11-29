@@ -22,64 +22,62 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.belajar.components.ItemView
+import com.ekotyoo.njawi.presentation.profile.PhotographerCard
+import com.ekotyoo.njawi.presentation.profile.components.Circle
 
 @ExperimentalFoundationApi
 @Composable
 fun BelajarScreen(
     viewModel: BelajarViewModel = hiltViewModel()
 ){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        Color(0xFFD24074),
-                        Color(0xFF1268C3)
-                    ),
+    Box {
+        Circle()
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFFD24074),
+                            Color(0xFF1268C3)
+                        ),
+                    )
                 )
+                .padding(28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.id_sinau_njawi),
+                contentDescription = "icon sinau",
+                Modifier.size(width = 254.dp, height = 122.dp)
             )
-            .padding(28.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.id_sinau_njawi),
-            contentDescription = "icon sinau",
-            Modifier.size(width = 254.dp, height = 122.dp)
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        when(val materisResponse = viewModel.materisState.value) {
-            is Response.Loading -> Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator()
-            }
+            Spacer(modifier = Modifier.height(30.dp))
+            when(val materisResponse = viewModel.materisState.value) {
+                is Response.Loading -> Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
 
-            is Response.Success -> LazyVerticalGrid(
-                cells = GridCells.Fixed(2),
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
-            ){
-                items(
-                    materisResponse.data.size
+                is Response.Success -> LazyVerticalGrid(
+                    cells = GridCells.Fixed(2),
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
                 ){
-                    materisResponse.data[it].title?.let { it1 ->
-                        ItemView(
-                            it1,
-                            modifier = Modifier.size(width = 134.dp, height = 134.dp),
-                            textColor = Color.White
-                        )
+                    items(
+                        materisResponse.data.size
+                    ){
+                        materisResponse.data[it].title?.let { it1 ->
+                            ItemView(
+                                it1,
+                                modifier = Modifier.size(width = 134.dp, height = 134.dp),
+                                textColor = Color.White
+                            )
+                        }
                     }
                 }
             }
-
-            is Response.Error -> Toast(materisResponse.message)
         }
     }
-}
-
-@Composable
-fun Toast(message: String) {
-    makeText(LocalContext.current, message, LENGTH_SHORT).show()
 }

@@ -51,8 +51,8 @@ fun NavHostContainer(
         composable(route = Screen.PlayQuiz.route) {
             PlayQuizScreen(navController = navController)
         }
-        
-        composable(route = Screen.Home.route) { backStackEntry ->
+
+        composable(route = Screen.Home.route) {
             HomeScreen(navController, user = user)
         }
     }

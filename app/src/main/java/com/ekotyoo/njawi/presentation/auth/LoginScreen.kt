@@ -1,6 +1,5 @@
 package com.ekotyoo.njawi.presentation.auth
 
-import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.util.Log
@@ -43,35 +42,37 @@ val pacifico = FontFamily(Font(R.font.pacifico_regular))
 @Composable
 fun LoginView(onClick: () -> Unit, authViewModel: AuthViewModel) {
     Scaffold {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            Color(0xFFD24074),
-                            Color(0xFF1268C3)
-                        ),
-                    )
+        Box {
+            Circle()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(19.dp),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Njawi",
+                    fontSize = 72.sp,
+                    fontFamily = pacifico,
+                    color = Color(0xFFFFAE02),
+                    fontWeight = FontWeight.Bold
                 )
-                .padding(19.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(text = "Njawi", fontSize = 72.sp, fontFamily = pacifico, color = Color(0xFFFFAE02), fontWeight = FontWeight.Bold)
-
-            Image(painter = painterResource(id = R.drawable.inu_1), contentDescription = "App_icon", Modifier.size(400.dp))
-            GoogleButton(
-                modifier = Modifier.width(280.dp),
-                shape = RoundedCornerShape(24.dp),
-                text = "Login with Google",
-                loadingText = "Login Account...",
-                onClicked = {
-                    onClick()
-                    Log.d("Login Google button", "clicked")
-                }
-            )
-
+                Image(
+                    painter = painterResource(id = R.drawable.inu5),
+                    contentDescription = "App_icon",
+                    Modifier.size(400.dp)
+                )
+                GoogleButton(
+                    modifier = Modifier.width(280.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    text = "Login with Google",
+                    loadingText = "Login Account...",
+                    onClicked = {
+                        onClick()
+                        Log.d("Login Google button", "clicked")
+                    }
+                )
 //            errorText?.let {
 //                Spacer(modifier = Modifier.height(3.dp))
 //                Text(text = it)
