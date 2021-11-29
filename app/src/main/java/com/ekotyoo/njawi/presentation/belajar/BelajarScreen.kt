@@ -24,12 +24,14 @@ import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.belajar.components.ItemView
 import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.profile.components.Circle
+import com.ekotyoo.njawi.presentation.quiz.HeaderAnimation
 
 @ExperimentalFoundationApi
 @Composable
 fun BelajarScreen(
     viewModel: BelajarViewModel = hiltViewModel()
 ){
+    val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
     Box {
         Circle()
         Column(
@@ -58,7 +60,7 @@ fun BelajarScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CircularProgressIndicator()
+                    HeaderAnimation(runImages)
                 }
 
                 is Response.Success -> LazyVerticalGrid(

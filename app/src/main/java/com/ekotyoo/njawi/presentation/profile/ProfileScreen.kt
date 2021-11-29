@@ -43,56 +43,59 @@ fun PhotographerCard(modifier: Modifier = Modifier,
                      title: String,
                      user: User
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
-            ) {
-        Spacer(modifier = Modifier
-            .height(30.dp)
-            .fillMaxWidth())
-        Text(text = "Njawi", fontSize = 30.sp,
-            fontFamily = pacifico, color = Color(0xFFFFAE02),
-            fontWeight = FontWeight.Normal)
-        Row(
-            modifier
-                .padding(16.dp)
-                .align(Alignment.CenterHorizontally)) {
-            Image(
-                painter = painterResource(R.drawable.chad),
-                contentDescription = "foto",
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(100.dp)
-                    .clip(CircleShape)
-                    .border(
-                        BorderStroke(
-                            3.dp, brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color(0xFFFFDE02),
-                                    Color(0xFFFF9F00),
-                                    Color(0xFFFFAE02),
-                                ),
-                            )
-                        ), shape = CircleShape
-                    ),
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Column(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                user.name?.let { Text(it, fontWeight = FontWeight.Medium, color = Color.White, fontSize = 20.sp) }
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    user.email?.let { Text(it,fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp) }
+    Box {
+        Circle()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            Spacer(modifier = Modifier
+                .height(30.dp)
+                .fillMaxWidth())
+            Text(text = "Njawi", fontSize = 30.sp,
+                fontFamily = pacifico, color = Color(0xFFFFAE02),
+                fontWeight = FontWeight.Normal)
+            Row(
+                modifier
+                    .padding(16.dp)
+                    .align(Alignment.CenterHorizontally)) {
+                Image(
+                    painter = painterResource(R.drawable.chad),
+                    contentDescription = "foto",
+                    modifier = Modifier
+                        .width(100.dp)
+                        .height(100.dp)
+                        .clip(CircleShape)
+                        .border(
+                            BorderStroke(
+                                3.dp, brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color(0xFFFFDE02),
+                                        Color(0xFFFF9F00),
+                                        Color(0xFFFFAE02),
+                                    ),
+                                )
+                            ), shape = CircleShape
+                        ),
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Column(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically)
+                ) {
+                    user.name?.let { Text(it, fontWeight = FontWeight.Medium, color = Color.White, fontSize = 20.sp) }
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        user.email?.let { Text(it,fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp) }
+                    }
                 }
             }
-        }
-        Spacer(modifier = Modifier.height(50.dp))
-        expandbox(title = "Achievement")
-        Spacer(modifier = Modifier.height(150.dp))
+            Spacer(modifier = Modifier.height(50.dp))
+            expandbox(title = "Achievement")
+            Spacer(modifier = Modifier.height(150.dp))
 
+        }
     }
 }
 
