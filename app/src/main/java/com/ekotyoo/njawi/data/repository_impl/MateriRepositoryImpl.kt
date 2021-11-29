@@ -5,6 +5,7 @@ import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.domain.repository.MateriRepository
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,6 +31,22 @@ class MateriRepositoryImpl @Inject constructor(
                     )
                 }
                 Response.Success(materis)
+            } else {
+                Response.Error("Something went wrong")
+            }
+            trySend(response).isSuccess
+        }
+        awaitClose {
+
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    override fun getMateryById(materiId: String) = callbackFlow {
+        val snapshotListener = materiRef.document(materiId).get().addOnSuccessListener { result ->
+            val response = if (result != null) {
+                val materi = result.toObject(Materi::class.java)
+                Response.Success(materi)
             } else {
                 Response.Error("Something went wrong")
             }

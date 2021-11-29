@@ -7,4 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MateriRepository {
     fun getMateriFromFirestore(): Flow<Response<List<Materi>>>
+
+    fun getMateryById(materiId: String): Flow<Response<Materi?>>
 }

@@ -21,6 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.presentation.quiz.components.NjawiButton
 import com.ekotyoo.njawi.presentation.quiz.components.Slot
 import com.ekotyoo.njawi.presentation.theme.*
@@ -32,7 +34,8 @@ import com.ekotyoo.njawi.presentation.profile.components.Circle
 @ExperimentalAnimationApi
 @Composable
 fun PlayQuizScreen(
-    viewModel: PlayQuizViewModel,
+    viewModel: PlayQuizViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
@@ -70,7 +73,7 @@ fun PlayQuizScreen(
             ) ,
             exit = fadeOut()
         ) {
-            ResultDialog(viewModel = viewModel)
+            ResultDialog(viewModel = viewModel, navController = navController)
         }
     }
 }
@@ -101,7 +104,6 @@ fun WordsOption(words: List<String>, viewModel: PlayQuizViewModel) {
             .fillMaxHeight(0.6f)
     ) {
         words.forEach { word ->
-
             NjawiButton(text = word.replaceFirstChar { it.uppercase() }, onClick = {
                 viewModel.addAnswer(word)
             })
@@ -131,6 +133,7 @@ fun WordsSlot(words: List<String>, viewModel: PlayQuizViewModel) {
 @Composable
 fun ResultDialog(
     viewModel: PlayQuizViewModel,
+    navController: NavHostController
 ) {
     val totalScore: Int = viewModel.totalScore.value!!
     Box (
@@ -187,6 +190,7 @@ fun ResultDialog(
                         }
                         Spacer(Modifier.width(8.dp))
                         NjawiButton(text = "Lanjut") {
+                            navController.popBackStack()
                         }
                     }
                 }
@@ -325,15 +329,6 @@ fun TimeLeftIndicator(progress: Float) {
                     .border(5.dp, LightOrange, Shapes.medium)
             )
         }
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    NjawiTheme {
-        ResultDialog(viewModel = PlayQuizViewModel())
     }
 }
 

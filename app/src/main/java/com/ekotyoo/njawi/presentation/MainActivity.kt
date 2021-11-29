@@ -39,28 +39,20 @@ import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var navController: NavHostController
-
-    private lateinit var mediaPlayer: MediaPlayer
 
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mediaPlayer = MediaPlayer.create(this, R.raw.quiz)
-        mediaPlayer.isLooping = true
-        mediaPlayer.start()
-
 
         setContent {
             NjawiTheme {
-                AuthScreen(navController = rememberNavController())
+                AuthScreen(rememberNavController())
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.stop()
     }
 }
 

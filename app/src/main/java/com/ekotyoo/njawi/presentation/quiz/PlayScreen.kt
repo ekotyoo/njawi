@@ -1,24 +1,32 @@
 package com.ekotyoo.njawi.presentation.quiz
 
+import android.animation.TypeConverter
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
 import com.ekotyoo.njawi.presentation.quiz.components.PlayButton
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 @Composable
-fun PlayScreen(){
+fun PlayScreen(
+    navController: NavHostController
+){
     Box {
         Circle()
         Column(
@@ -28,7 +36,12 @@ fun PlayScreen(){
             Image(painter = painterResource(R.drawable.sinau),
                 contentDescription = "foto",
                 modifier = Modifier.padding(top = 50.dp, bottom = 100.dp))
-            PlayButton()
+            PlayButton(
+                modifier = Modifier
+                    .clickable {
+                        navController.navigate(Screen.LevelQuiz.route)
+                    }
+            )
         }
     }
 }

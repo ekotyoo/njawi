@@ -2,6 +2,7 @@ package com.ekotyoo.njawi.presentation.quiz.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -21,7 +22,10 @@ import com.ekotyoo.njawi.R
 
 
 @Composable
-fun LevelButton(level: Number){
+fun LevelButton(
+    level: Number,
+    onClick: () -> Unit
+){
     Column(
     ) {
         Surface(
@@ -42,8 +46,8 @@ fun LevelButton(level: Number){
                 .shadow(
                     elevation = 10.dp,
                     shape = RoundedCornerShape(40),
-
-                    ),
+                )
+                .clickable { onClick() },
             shape = RoundedCornerShape(40),
         ){
             Row(

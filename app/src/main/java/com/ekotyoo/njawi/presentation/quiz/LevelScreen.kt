@@ -26,38 +26,52 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 @Composable
-fun LevelScreen(){
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Image(painter = painterResource(R.drawable.sinau),
-            contentDescription = "foto",
-        modifier = Modifier.padding(top = 50.dp, bottom = 50.dp))
-        LevelButton(1)
-        LevelButton(2)
-        LevelButton(3)
-        LevelButton(4)
-        LevelButton(5)
-        LevelButton(6)
-    }
-}
-
-
-
-@Preview
-@Composable
-fun HalamanLevel(){
-    NjawiTheme {
-        Box {
-            Circle()
-            LevelScreen()
+fun LevelScreen(
+    navController: NavHostController
+){
+    Box {
+        Circle()
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(painter = painterResource(R.drawable.sinau),
+                contentDescription = "foto",
+                modifier = Modifier.padding(top = 50.dp, bottom = 50.dp))
+            LevelButton(
+                1, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                2, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                3, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                4, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                5, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                6, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
         }
     }
 }
+

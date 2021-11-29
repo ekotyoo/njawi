@@ -1,5 +1,6 @@
 package com.ekotyoo.njawi.presentation.quiz.components
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -8,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -15,19 +17,32 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ekotyoo.njawi.R
 
 
-@Preview
 @Composable
-fun PlayButton(){
-    Column() {
+fun PlayButton(
+    modifier: Modifier
+){
+    Column(
+        modifier = modifier
+    ) {
+        val infiniteTransition = rememberInfiniteTransition()
+        val size by infiniteTransition.animateValue(
+            initialValue = 200.dp,
+            targetValue = 230.dp,
+            animationSpec = infiniteRepeatable(
+                tween(2000, easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            ),
+            typeConverter = Dp.VectorConverter
+        )
         Surface(
             color = Color(0xFFFFAE02),
             modifier = Modifier
-                .height(200.dp)
-                .width(200.dp)
+                .size(size = size)
                 .border(
                     BorderStroke(
                         10.dp, brush = Brush.verticalGradient(

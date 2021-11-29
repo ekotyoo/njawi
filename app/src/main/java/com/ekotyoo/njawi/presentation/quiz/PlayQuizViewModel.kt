@@ -5,15 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.ekotyoo.njawi.common.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlin.random.Random
 
-class PlayQuizViewModel : ViewModel () {
+@HiltViewModel
+class PlayQuizViewModel @Inject constructor() : ViewModel () {
 
     private var _progress = MutableLiveData<Float>()
     private var _currentAnswer = MutableLiveData<List<String>>()

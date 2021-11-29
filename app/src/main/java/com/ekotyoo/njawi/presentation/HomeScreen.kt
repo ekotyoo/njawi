@@ -2,7 +2,7 @@ package com.ekotyoo.njawi.presentation
 
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -16,18 +16,22 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
@@ -40,15 +44,16 @@ import com.ekotyoo.njawi.presentation.quiz.PlayScreen
 @ExperimentalAnimationApi
 @Composable
 fun HomeScreen(
-    navController: NavHostController,
+    routeNavController: NavHostController,
     user: User
 ){
+    val bottomNavController = rememberNavController()
     Scaffold (
         bottomBar = {
-            BottomBar(navController = navController)
+            BottomBar(navController = bottomNavController)
         }
     ) {
-        BottomNavGraph(navController = navController, user = user)
+        BottomNavGraph(routeNavController = routeNavController, navController = bottomNavController, user = user)
     }
 }
 
@@ -116,7 +121,10 @@ fun RowScope.AddItem(
             it.route == screen.route
         } == true,
         onClick = {
-            navController.navigate(screen.route)
+            navController.navigate(screen.route) {
+                popUpTo(navController.graph.findStartDestination().id)
+                launchSingleTop = true
+            }
         }
     )
 }
@@ -124,10 +132,10 @@ fun RowScope.AddItem(
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
-fun BottomNavGraph(navController: NavHostController, user: User) {
+fun BottomNavGraph(routeNavController: NavHostController, navController: NavHostController, user: User) {
     NavHost(navController = navController, startDestination = Screen.Quiz.route) {
         composable(BottomBarScreen.Quiz.route) {
-            PlayScreen()
+            PlayScreen(routeNavController)
         }
         composable(BottomBarScreen.Belajar.route) {
             BelajarScreen()
@@ -137,3 +145,4 @@ fun BottomNavGraph(navController: NavHostController, user: User) {
         }
     }
 }
+
