@@ -1,10 +1,8 @@
 package com.ekotyoo.njawi.presentation.quiz
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -46,6 +44,7 @@ fun LevelScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             Image(painter = painterResource(R.drawable.sinau),
                 contentDescription = "foto",
@@ -72,6 +71,22 @@ fun LevelScreen(
                 })
             LevelButton(
                 6, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                7, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                8, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                9, onClick = {
+                    navController.navigate(Screen.PlayQuiz.route)
+                })
+            LevelButton(
+                10, onClick = {
                     navController.navigate(Screen.PlayQuiz.route)
                 })
         }

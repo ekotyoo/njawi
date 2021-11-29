@@ -29,10 +29,21 @@ fun PlayButton(
     modifier: Modifier,
     onClick: () -> Unit
 ){
+    val infiniteTransition = rememberInfiniteTransition()
+    val posisi by infiniteTransition.animateValue(
+        initialValue = 20.dp,
+        targetValue = 0.dp,
+        animationSpec = infiniteRepeatable(
+            tween(2000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        typeConverter = Dp.VectorConverter
+    )
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .padding(top = posisi),
     ) {
-        val infiniteTransition = rememberInfiniteTransition()
+
         val size by infiniteTransition.animateValue(
             initialValue = 200.dp,
             targetValue = 230.dp,

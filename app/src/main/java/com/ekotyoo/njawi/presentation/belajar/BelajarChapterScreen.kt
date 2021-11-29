@@ -76,7 +76,6 @@ fun BelajarChapter(
                         )
                     }
                 }
-
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(1.2f)
@@ -109,9 +108,7 @@ fun BelajarChapter(
                     )
                 }
             }
-
         }
-
     }
 }
 @Composable
