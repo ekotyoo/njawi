@@ -47,11 +47,9 @@ fun belajarChapter(isi: String, judul: String) {
         )
         Spacer(modifier = Modifier.height(30.dp))
         HorizontalPager(
-            count = 3, modifier = Modifier.height(440.dp)
+            count = 3, modifier = Modifier.fillMaxHeight(0.6f)
         ) {
             box(
-                width = 320,
-                height = 438,
                 isi = isi,
                 judul = judul,
                 style = Typography.body1,
@@ -86,15 +84,14 @@ fun chapterPreview(){
 
 @Composable
 fun box(
-    width: Int,
-    height: Int,
     isi: String,
     style: TextStyle,
     judul: String,
 ){
     Box(
         modifier = Modifier
-            .size(width = width.dp, height = height.dp)
+            .fillMaxWidth(0.9f)
+            .fillMaxHeight()
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
@@ -122,7 +119,7 @@ fun box(
                     shape = Shapes.medium
                 )
                 .border(3.dp, color = resultCenterBorder, shape = Shapes.medium)
-                .size(width = width.dp, height = height.dp)
+                .fillMaxSize()
                 .padding(10.dp)
         ) {
             Text(
@@ -138,7 +135,6 @@ fun box(
                 color = Color.White,
                 textAlign = TextAlign.Center
             )
-
         }
     }
 }
