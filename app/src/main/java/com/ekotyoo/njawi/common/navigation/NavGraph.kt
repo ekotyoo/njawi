@@ -2,33 +2,23 @@ package com.ekotyoo.njawi.common.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import com.ekotyoo.njawi.presentation.auth.model.User
-import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
-import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.navigation
+import androidx.navigation.navArgument
 import com.ekotyoo.njawi.presentation.HomeScreen
 import com.ekotyoo.njawi.presentation.Screen
-import com.ekotyoo.njawi.presentation.auth.AuthScreen
+import com.ekotyoo.njawi.presentation.auth.model.User
+import com.ekotyoo.njawi.presentation.auth.*
+import com.ekotyoo.njawi.presentation.belajar.BelajarChapter
+import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.quiz.LevelScreen
-import com.squareup.moshi.Moshi
+import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
+import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
@@ -41,7 +31,7 @@ fun NavHostContainer(
         startDestination = Screen.Home.route,
     ) {
         composable(route = Screen.Auth.route) {
-            AuthScreen(navController = navController)
+            LoginScreen(navController = navController)
         }
 
         composable(route = Screen.LevelQuiz.route) {
@@ -51,9 +41,26 @@ fun NavHostContainer(
         composable(route = Screen.PlayQuiz.route) {
             PlayQuizScreen(navController = navController)
         }
-        
-        composable(route = Screen.Home.route) { backStackEntry ->
+
+        composable(
+            route = Screen.BelajarDetail.route,
+            arguments = listOf(
+                navArgument("id") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backstackEntry ->
+            backstackEntry.arguments?.getString("id")?.let {
+                BelajarChapter(
+                    navController = navController,
+                    materiId = it
+                )
+            }
+        }
+
+        composable(route = Screen.Home.route) {
             HomeScreen(navController, user = user)
         }
+
     }
 }

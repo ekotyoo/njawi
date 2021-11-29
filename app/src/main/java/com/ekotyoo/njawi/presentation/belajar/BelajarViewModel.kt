@@ -19,6 +19,9 @@ class BelajarViewModel @Inject constructor(
     private val _materisState = mutableStateOf<Response<List<Materi>>>(Response.Loading)
     val materisState: State<Response<List<Materi>>> = _materisState
 
+    private val _materiState = mutableStateOf<Response<Materi>>(Response.Loading)
+    val materiState: State<Response<Materi>> = _materiState
+
     init {
         getMateris()
     }
@@ -27,6 +30,14 @@ class BelajarViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getMateriFromFirestore().collect { response ->
                 _materisState.value = response
+            }
+        }
+    }
+
+    fun getMateri(id: String) {
+        viewModelScope.launch {
+            repository.getMateryById(id).collect { response ->
+                _materiState.value = response as Response<Materi>
             }
         }
     }

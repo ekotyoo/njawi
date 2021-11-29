@@ -1,8 +1,6 @@
 package com.ekotyoo.njawi.presentation
 
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -10,35 +8,24 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
-import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
-import com.ekotyoo.njawi.presentation.quiz.PlayQuizViewModel
+import androidx.navigation.compose.*
 import com.ekotyoo.njawi.common.BottomBarScreen
 import com.ekotyoo.njawi.presentation.auth.model.User
+import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.profile.PhotographerCard
-import com.ekotyoo.njawi.presentation.quiz.PlayScreen
+import com.ekotyoo.njawi.presentation.quiz.*
+
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -56,6 +43,7 @@ fun HomeScreen(
         BottomNavGraph(routeNavController = routeNavController, navController = bottomNavController, user = user)
     }
 }
+
 
 @Composable
 fun BottomBar(navController: NavHostController) {
@@ -138,7 +126,7 @@ fun BottomNavGraph(routeNavController: NavHostController, navController: NavHost
             PlayScreen(routeNavController)
         }
         composable(BottomBarScreen.Belajar.route) {
-            BelajarScreen()
+            BelajarScreen(navController = routeNavController)
         }
         composable(BottomBarScreen.Profile.route) {
             PhotographerCard(user = user, title = "My Profile")
