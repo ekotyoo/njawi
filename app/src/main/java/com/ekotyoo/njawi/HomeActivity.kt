@@ -9,6 +9,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.common.navigation.NavHostContainer
 import com.ekotyoo.njawi.presentation.auth.model.User
+import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
         mediaPlayer.start()
     }
 
+    @ExperimentalPagerApi
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {

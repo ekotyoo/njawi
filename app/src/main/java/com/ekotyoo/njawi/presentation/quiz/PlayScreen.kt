@@ -37,8 +37,8 @@ fun PlayScreen(
                 contentDescription = "foto",
                 modifier = Modifier.padding(top = 50.dp, bottom = 100.dp))
             PlayButton(
-                modifier = Modifier
-                    .clickable {
+                modifier = Modifier,
+                    onClick =  {
                         navController.navigate(Screen.LevelQuiz.route)
                     }
             )
