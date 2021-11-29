@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,6 +49,7 @@ fun PlayQuizScreen(
     val deadImages: List<Int> = listOf(R.drawable.dead_1, R.drawable.dead_2, R.drawable.dead_3, R.drawable.dead_4, R.drawable.dead_5, R.drawable.dead_6, R.drawable.dead_6, R.drawable.dead_7)
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
     val state = viewModel.state.value
+    val isTimesUp = viewModel.isTimesUp.value
 
 
     Box (
@@ -89,6 +91,40 @@ fun PlayQuizScreen(
                     exit = fadeOut()
                 ) {
                     ResultDialog(viewModel = viewModel, navController = navController)
+                }
+                AnimatedVisibility(
+                    visible = isTimesUp,
+                    enter = slideInVertically(tween(200)) + fadeIn(tween(500)),
+                    exit = slideOutVertically(tween(200)) + fadeOut(tween(200)),
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Black.copy(alpha = 0.6f))
+                            .pointerInput(Unit){}
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.2f)
+                                .background(color = Orange)
+                                .pointerInput(Unit) {}
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(text = "Mantap!!")
+                                Text(text = viewModel.correctWords.value!!.joinToString(separator = " ").capitalize())
+                                Text(text = viewModel.question.value!!.capitalize())
+                                NjawiButton(text = "Lanjut") {
+                                    viewModel.nextQuestion()
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -157,6 +193,7 @@ fun ResultDialog(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .pointerInput(Unit){}
     ) {
         Box(
             modifier = Modifier
