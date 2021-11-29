@@ -13,6 +13,6 @@ object Constants {
         questions.add(Question(targetSentence = "budi nginum arak jawa", baseSentence = "budi minum arak jawa"))
         questions.add(Question(targetSentence = "eko dolanan manuk", baseSentence = "eko bermain burung"))
         questions.add(Question(targetSentence = "simbah sakit paningal", baseSentence = "nenek sakit mata"))
-        return Quiz(theme = "Krama Inggil", questions = questions)
+        return Quiz(level = "Dasar", theme = "Krama Inggil", questions = questions)
     }
 }

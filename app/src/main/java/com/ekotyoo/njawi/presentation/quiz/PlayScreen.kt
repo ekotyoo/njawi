@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.presentation.Screen
+import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
 import com.ekotyoo.njawi.presentation.quiz.components.PlayButton

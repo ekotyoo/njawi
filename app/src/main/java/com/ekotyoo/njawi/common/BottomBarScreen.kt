@@ -5,7 +5,7 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.ekotyoo.njawi.presentation.Screen
+import com.ekotyoo.njawi.common.navigation.Screen
 
 sealed class BottomBarScreen(
     val route: String,
