@@ -126,7 +126,7 @@ fun BottomNavGraph(routeNavController: NavHostController, navController: NavHost
             PlayScreen(routeNavController)
         }
         composable(BottomBarScreen.Belajar.route) {
-            BelajarScreen()
+            BelajarScreen(navController = routeNavController)
         }
         composable(BottomBarScreen.Profile.route) {
             PhotographerCard(user = user, title = "My Profile")
