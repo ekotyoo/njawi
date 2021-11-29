@@ -4,8 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.ScrollableTabRow
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
+
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,16 +16,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 
 @ExperimentalPagerApi
 @Composable
-fun belajarChapter(isi: String, judul: String) {
+fun BelajarChapter(
+    navController: NavHostController,
+    viewModel: BelajarViewModel = hiltViewModel(),
+    materiId: String
+) {
+    viewModel.getMateri(materiId)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,21 +50,26 @@ fun belajarChapter(isi: String, judul: String) {
     ) {
         Image(
             painter = painterResource(id = R.drawable.id_sinau_njawi),
-            contentDescription = "icon sinau",
+            contentDescription = "Header Icon",
             Modifier.size(width = 254.dp, height = 122.dp)
         )
         Spacer(modifier = Modifier.height(30.dp))
-        HorizontalPager(
-            count = 3, modifier = Modifier.height(440.dp)
-        ) {
-            box(
-                width = 320,
-                height = 438,
-                isi = isi,
-                judul = judul,
-                style = Typography.body1,
-            )
+        when(val materiResponse = viewModel.materiState.value) {
+            is Response.Loading -> CircularProgressIndicator()
+            is Response.Success -> HorizontalPager(
+                count = materiResponse.data.chapters?.size ?: 0,
+                modifier = Modifier.height(440.dp)
+            ) { page ->
+                ContentBox(
+                    width = 320,
+                    height = 438,
+                    judul = materiResponse.data.chapters?.get(page)?.get("title") as String,
+                    contents = materiResponse.data.chapters[page]["contents"] as List<String>,
+                    style = Typography.body1
+                )
+            }
         }
+
         Spacer(modifier = Modifier.height(20.dp))
         Row(
             modifier = Modifier.fillMaxWidth(1.2f)
@@ -75,20 +88,11 @@ fun belajarChapter(isi: String, judul: String) {
 
 }
 
-@ExperimentalPagerApi
-@Preview
 @Composable
-fun chapterPreview(){
-    NjawiTheme {
-        belajarChapter(isi = "dskujfhasdfuiasdbfisdbfbasdifusdifhlaskjdfhkasjbdchasdkjfbasdfyuisdhgfuisdfosadf", judul = "Krama Inggil")
-    }
-}
-
-@Composable
-fun box(
+fun ContentBox(
     width: Int,
     height: Int,
-    isi: String,
+    contents: List<String>,
     style: TextStyle,
     judul: String,
 ){
@@ -132,13 +136,20 @@ fun box(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = isi,
-                style = style,
-                color = Color.White,
-                textAlign = TextAlign.Center
+            LazyColumn(
+                content = {
+                    items(
+                            count = contents.size
+                        ) { item ->
+                            Text(
+                                text = contents[item],
+                                style = style,
+                                color = Color.White,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                }
             )
-
         }
     }
 }

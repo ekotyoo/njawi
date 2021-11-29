@@ -6,6 +6,7 @@ import android.widget.Toast.makeText
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -19,8 +20,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.domain.models.Response
+import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.belajar.components.ItemView
 import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.profile.components.Circle
@@ -29,7 +32,8 @@ import com.ekotyoo.njawi.presentation.quiz.HeaderAnimation
 @ExperimentalFoundationApi
 @Composable
 fun BelajarScreen(
-    viewModel: BelajarViewModel = hiltViewModel()
+    viewModel: BelajarViewModel = hiltViewModel(),
+    navController: NavHostController
 ){
     val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
     Box {
@@ -73,7 +77,16 @@ fun BelajarScreen(
                         materisResponse.data[it].title?.let { it1 ->
                             ItemView(
                                 it1,
-                                modifier = Modifier.size(width = 134.dp, height = 134.dp),
+                                modifier = Modifier
+                                    .size(width = 134.dp, height = 134.dp)
+                                    .clickable {
+                                        navController.navigate(
+                                            Screen.BelajarDetail.route.replace("{id}",
+                                                materisResponse.data[it].id!!
+                                            )
+                                        )
+
+                                    },
                                 textColor = Color.White
                             )
                         }
