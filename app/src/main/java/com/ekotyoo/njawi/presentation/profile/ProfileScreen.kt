@@ -26,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.BottomNavigationBar
 import com.ekotyoo.njawi.presentation.auth.pacifico
@@ -33,6 +34,7 @@ import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.profile.components.expandbox
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import com.ekotyoo.njawi.presentation.auth.model.User
+
 
 
 @Composable
@@ -58,7 +60,9 @@ fun PhotographerCard(modifier: Modifier = Modifier,
                     .padding(16.dp)
                     .align(Alignment.CenterHorizontally)) {
                 Image(
-                    painter = painterResource(R.drawable.chad),
+                    painter = rememberImagePainter(
+                        data = "https://firebasestorage.googleapis.com/v0/b/njawi-app.appspot.com/o/profilpicture.jpg?alt=media&token=25aa5751-d036-4a43-b375-cf0961a6c95d"
+                        ),
                     contentDescription = "foto",
                     modifier = Modifier
                         .width(100.dp)

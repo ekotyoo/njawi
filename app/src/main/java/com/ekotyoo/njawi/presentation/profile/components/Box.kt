@@ -1,9 +1,11 @@
 package com.ekotyoo.njawi.presentation.profile.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -74,8 +76,10 @@ fun expandbox(modifier: Modifier = Modifier, title: String) {
                         .align(Alignment.CenterVertically)
                         .padding(bottom = extraPadding.coerceAtLeast(0.dp))
                 ) {
-                    Text(text = title, color = Color.White,
-                        fontWeight = FontWeight.Bold)
+                    Text(
+                        text = title, color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
                 IconButton(onClick = { expanded.value = !expanded.value }) {
                     Icon(
@@ -90,7 +94,21 @@ fun expandbox(modifier: Modifier = Modifier, title: String) {
                     )
                 }
             }
+            val isVisible = remember { mutableStateOf(value = false) }
+            if (expanded.value) {
+                AnimatedVisibility(visible = !isVisible.value) {
+                    Row(modifier = Modifier.background(Color.Black).size(100.dp)) {
+
+                    }
+                }
+            } else {
+                AnimatedVisibility(visible = isVisible.value) {
+                    Row(modifier = Modifier.background(Color.Black).size(100.dp)) {
+
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+            }
         }
-        Spacer(modifier = Modifier.height(10.dp))
     }
 }
