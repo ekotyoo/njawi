@@ -20,13 +20,14 @@ class AuthViewModel (application: Application) : AndroidViewModel(application){
         checkSignedInUser(application.applicationContext)
     }
 
-    fun fetchSignInUser(email: String?, name: String?) {
+    fun fetchSignInUser(email: String?, name: String?, image: String?) {
         _loadingState.value = true
 
         viewModelScope.launch {
             _userState.value = User(
                 email = email,
                 name = name,
+                image = image
             )
         }
 
@@ -41,6 +42,7 @@ class AuthViewModel (application: Application) : AndroidViewModel(application){
             _userState.value = User(
                 email = gsa.email,
                 name = gsa.displayName,
+                image = gsa.photoUrl?.toString() ?: "https://i.pinimg.com/474x/65/25/a0/6525a08f1df98a2e3a545fe2ace4be47.jpg"
             )
         }
 
