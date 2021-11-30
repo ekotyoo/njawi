@@ -82,7 +82,7 @@ fun Expandbox(
                         )
                     )
             ) {
-            Row(modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp)) {
+            Row(modifier = Modifier.padding(start = 24.dp, top = 15.dp, end = 24.dp)) {
                 Column(
                     modifier = Modifier
                         .weight(1f)
@@ -109,20 +109,20 @@ fun Expandbox(
                 }
             }
 
-                Spacer(modifier = Modifier.padding(bottom = 25.dp))
+                Spacer(modifier = Modifier.padding(bottom = 15.dp))
                 //a
                 val isVisible = remember { mutableStateOf(value = false) }
                 if (expanded.value) {
                     AnimatedVisibility(visible = !isVisible.value) {
                         Column(
-                            modifier = Modifier.padding(20.dp)
+                            modifier = Modifier.padding(start = 20.dp, end = 20.dp)
                         ) {
                             items.forEach {
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     koin(koinImages)
-                                    Spacer(modifier = Modifier.width(20.dp))
+                                    Spacer(modifier = Modifier.width(0.dp))
                                     Text(
                                         text = it.description,
                                         color = Color.White,
@@ -130,16 +130,13 @@ fun Expandbox(
                                         fontSize = 14.sp
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(30.dp))
+                                Spacer(modifier = Modifier.height(20.dp))
                             }
                         }
                     }
                 }
-
+            }
         }
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-
     }
 }
 
@@ -178,9 +175,9 @@ fun koin(
             alignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxWidth(0.2f)
-                .height(40.dp)
+                .height(30.dp)
                 .shadow(
-                    elevation = 50.dp,
+                    elevation = 70.dp,
                     shape = RoundedCornerShape(50),
                 )
         )

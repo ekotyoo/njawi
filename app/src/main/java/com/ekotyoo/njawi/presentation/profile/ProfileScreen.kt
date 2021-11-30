@@ -94,7 +94,7 @@ fun PhotographerCard(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Expandbox(title = "Achievement", items = items)
             Spacer(modifier = Modifier.height(150.dp))
 
