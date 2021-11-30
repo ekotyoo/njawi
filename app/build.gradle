@@ -113,6 +113,9 @@ dependencies {
     
     //pager
     implementation "com.google.accompanist:accompanist-pager:0.21.3-beta"
+
+    //junit
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:203-1.6.0-release-798-AS7717.8"
 }
 
 
