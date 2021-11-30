@@ -1,44 +1,33 @@
 package com.ekotyoo.njawi.presentation.quiz
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.presentation.Screen
+import com.ekotyoo.njawi.common.navigation.Screen
+import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
-import com.ekotyoo.njawi.presentation.theme.NjawiTheme
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 @Composable
 fun LevelScreen(
+    viewModel: QuizViewModel = hiltViewModel(),
     navController: NavHostController
 ){
-    Box {
+    Box(
+        Modifier.pointerInput(Unit) {}
+    ) {
         Circle()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -47,30 +36,19 @@ fun LevelScreen(
             Image(painter = painterResource(R.drawable.sinau),
                 contentDescription = "foto",
                 modifier = Modifier.padding(top = 50.dp, bottom = 50.dp))
-            LevelButton(
-                1, onClick = {
-                    navController.navigate(Screen.PlayQuiz.route)
-                })
-            LevelButton(
-                2, onClick = {
-                    navController.navigate(Screen.PlayQuiz.route)
-                })
-            LevelButton(
-                3, onClick = {
-                    navController.navigate(Screen.PlayQuiz.route)
-                })
-            LevelButton(
-                4, onClick = {
-                    navController.navigate(Screen.PlayQuiz.route)
-                })
-            LevelButton(
-                5, onClick = {
-                    navController.navigate(Screen.PlayQuiz.route)
-                })
-            LevelButton(
-                6, onClick = {
-                    navController.navigate(Screen.PlayQuiz.route)
-                })
+
+            when(val quizzesResponse = viewModel.quizzesState.value) {
+                is Response.Loading -> CircularProgressIndicator()
+                is Response.Success -> LazyColumn {
+                    items(quizzesResponse.data.size) {
+                        quizzesResponse.data.forEach {
+                            LevelButton(it.level as String) {
+                                navController.navigate(Screen.PlayQuiz.route.replace("{id}", it.id!!))
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

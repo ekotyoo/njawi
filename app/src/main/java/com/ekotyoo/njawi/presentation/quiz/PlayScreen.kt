@@ -11,13 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
-import com.ekotyoo.njawi.presentation.Screen
+import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
 import com.ekotyoo.njawi.presentation.quiz.components.PlayButton
@@ -27,7 +28,10 @@ import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 fun PlayScreen(
     navController: NavHostController
 ){
-    Box {
+    Box(
+        Modifier.pointerInput(Unit) {}
+    )
+    {
         Circle()
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -37,8 +41,8 @@ fun PlayScreen(
                 contentDescription = "foto",
                 modifier = Modifier.padding(top = 50.dp, bottom = 100.dp))
             PlayButton(
-                modifier = Modifier
-                    .clickable {
+                modifier = Modifier,
+                    onClick =  {
                         navController.navigate(Screen.LevelQuiz.route)
                     }
             )

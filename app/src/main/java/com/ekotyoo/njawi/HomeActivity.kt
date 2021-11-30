@@ -11,6 +11,7 @@ import com.ekotyoo.njawi.common.navigation.NavHostContainer
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -26,6 +27,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     @ExperimentalPagerApi
+    @InternalCoroutinesApi
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {

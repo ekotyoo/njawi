@@ -17,7 +17,9 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,7 +37,8 @@ import com.ekotyoo.njawi.presentation.profile.components.Circle
 @Composable
 fun PlayQuizScreen(
     viewModel: PlayQuizViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
+    quizId: String,
 ) {
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
     val currentAnswer: List<String> by viewModel.currentAnswer
@@ -45,35 +48,85 @@ fun PlayQuizScreen(
     val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
     val deadImages: List<Int> = listOf(R.drawable.dead_1, R.drawable.dead_2, R.drawable.dead_3, R.drawable.dead_4, R.drawable.dead_5, R.drawable.dead_6, R.drawable.dead_6, R.drawable.dead_7)
     val isCorrect: Boolean by viewModel.isCorrect.observeAsState(initial = false)
+    val state = viewModel.state.value
+    val isTimesUp = viewModel.isTimesUp.value
 
 
-    Box {
+    Box (
+        Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {}
+            ) {
         Circle()
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = 16.dp),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (isDone) {
-                HeaderAnimation(deadImages)
-            } else {
-                HeaderAnimation(runImages)
+        when {
+            state.error.isNotBlank() -> {
+                Text(text = state.error)
             }
-            ScoreIndicator(viewModel = viewModel)
-            TimeLeftIndicator(progress = progress)
-            WordsSlot(words = currentAnswer, viewModel = viewModel)
-            WordsOption(words = words, viewModel = viewModel)
-        }
-        AnimatedVisibility(
-            visible = isDone,
-            enter = fadeIn(
-                initialAlpha = 0f
-            ) ,
-            exit = fadeOut()
-        ) {
-            ResultDialog(viewModel = viewModel, navController = navController)
+            state.isLoading -> {
+                CircularProgressIndicator()
+            }
+            else -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(all = 16.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (isDone) {
+                        HeaderAnimation(deadImages)
+                    } else {
+                        HeaderAnimation(runImages)
+                    }
+                    ScoreIndicator(viewModel = viewModel)
+                    TimeLeftIndicator(progress = progress)
+                    WordsSlot(words = currentAnswer, viewModel = viewModel)
+                    WordsOption(words = words, viewModel = viewModel)
+                }
+                AnimatedVisibility(
+                    visible = isDone,
+                    enter = fadeIn(
+                        initialAlpha = 0f
+                    ) ,
+                    exit = fadeOut()
+                ) {
+                    ResultDialog(viewModel = viewModel, navController = navController)
+                }
+                AnimatedVisibility(
+                    visible = isTimesUp,
+                    enter = slideInVertically(tween(200)) + fadeIn(tween(500)),
+                    exit = slideOutVertically(tween(200)) + fadeOut(tween(200)),
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Black.copy(alpha = 0.6f))
+                            .pointerInput(Unit){}
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.2f)
+                                .background(color = Orange)
+                                .pointerInput(Unit) {}
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(text = "Mantap!!")
+                                Text(text = viewModel.correctWords.value!!.joinToString(separator = " ").capitalize())
+                                Text(text = viewModel.question.value!!.capitalize())
+                                NjawiButton(text = "Lanjut") {
+                                    viewModel.nextQuestion()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -81,7 +134,7 @@ fun PlayQuizScreen(
 @Composable
 fun ScoreIndicator(viewModel: PlayQuizViewModel) {
     val correct: Int by viewModel.correctQuestions.observeAsState(initial = 0)
-    val total = viewModel.quiz.questions.size
+    val total = viewModel.quiz.questions!!.size
     Row (
         horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
@@ -140,6 +193,7 @@ fun ResultDialog(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
+            .pointerInput(Unit){}
     ) {
         Box(
             modifier = Modifier

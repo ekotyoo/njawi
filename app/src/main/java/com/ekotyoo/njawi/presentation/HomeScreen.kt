@@ -15,16 +15,19 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.ekotyoo.njawi.common.BottomBarScreen
+import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.quiz.*
+
 
 
 @ExperimentalFoundationApi
@@ -126,7 +129,7 @@ fun BottomNavGraph(routeNavController: NavHostController, navController: NavHost
             PlayScreen(routeNavController)
         }
         composable(BottomBarScreen.Belajar.route) {
-            BelajarScreen(navController = routeNavController)
+            BelajarScreen(navController = routeNavController, viewModel = hiltViewModel())
         }
         composable(BottomBarScreen.Profile.route) {
             PhotographerCard(user = user, title = "My Profile")

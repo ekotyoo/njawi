@@ -16,14 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 
 @Composable
 fun LevelButton(
-    level: Number,
+    level: String,
     onClick: () -> Unit
 ){
     Column(

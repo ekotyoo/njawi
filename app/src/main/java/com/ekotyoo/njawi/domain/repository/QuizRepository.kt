@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface QuizRepository {
     fun getQuizzesFromFirestore(): Flow<Response<List<Quiz>>>
+    fun getQuizById(id: String): Flow<Response<Quiz>>
 }
