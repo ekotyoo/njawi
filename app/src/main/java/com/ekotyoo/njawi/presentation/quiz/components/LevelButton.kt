@@ -56,7 +56,7 @@ fun LevelButton(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text ="Level "+level, fontFamily = FontFamily(Font(R.font.luckiest_guy, FontWeight.W400)),
+                Text(text =level, fontFamily = FontFamily(Font(R.font.luckiest_guy, FontWeight.W400)),
                     fontSize = 30.sp,
                     color = Color.White)
             }

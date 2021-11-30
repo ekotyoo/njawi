@@ -1,5 +1,6 @@
 package com.ekotyoo.njawi.presentation.quiz
 
+import androidx.compose.foundation.Image
 import android.animation.TypeConverter
 import android.transition.Transition
 import android.view.Surface
@@ -12,6 +13,11 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -26,19 +32,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.common.navigation.Screen
+import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
 import com.ekotyoo.njawi.presentation.quiz.components.PlayButton
 import com.ekotyoo.njawi.presentation.theme.*
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 @Composable
 fun PlayScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    user: com.ekotyoo.njawi.presentation.auth.model.User,
+    viewModel: QuizViewModel = hiltViewModel()
 ){
+    LaunchedEffect(key1 = true) {
+        viewModel.getLeaderboards()
+    }
+
     var openDialog: Boolean by remember { mutableStateOf(false) }
     Box(
         Modifier.pointerInput(Unit) {}
@@ -58,6 +74,17 @@ fun PlayScreen(
                         navController.navigate(Screen.LevelQuiz.route)
                     }
             )
+            when(val leaderboardResponse = viewModel.leaderboardState.value) {
+                is Response.Loading -> CircularProgressIndicator()
+                is Response.Success -> LazyColumn {
+                    item {
+                        leaderboardResponse.data.forEach {
+                            Text(text = it.name + it.score)
+                        }
+                    }
+                }
+            }
+
         }
         Surface(
             modifier = Modifier

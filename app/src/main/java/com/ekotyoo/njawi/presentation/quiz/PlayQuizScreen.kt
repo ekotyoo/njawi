@@ -19,8 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +29,7 @@ import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 
 @ExperimentalAnimationApi
@@ -39,8 +38,10 @@ fun PlayQuizScreen(
     viewModel: PlayQuizViewModel = hiltViewModel(),
     navController: NavHostController,
     quizId: String,
+    user: com.ekotyoo.njawi.presentation.auth.model.User
 ) {
     val progress: Float by viewModel.progress.observeAsState(initial = 0f)
+    val question: String by viewModel.question.observeAsState(initial = "")
     val currentAnswer: List<String> by viewModel.currentAnswer
         .observeAsState(initial = mutableListOf())
     val isDone: Boolean by viewModel.isDone.observeAsState(initial = false)
@@ -80,6 +81,7 @@ fun PlayQuizScreen(
                     }
                     ScoreIndicator(viewModel = viewModel)
                     TimeLeftIndicator(progress = progress)
+                    Text(text = question)
                     WordsSlot(words = currentAnswer, viewModel = viewModel)
                     WordsOption(words = words, viewModel = viewModel)
                 }
@@ -90,7 +92,7 @@ fun PlayQuizScreen(
                     ) ,
                     exit = fadeOut()
                 ) {
-                    ResultDialog(viewModel = viewModel, navController = navController)
+                    ResultDialog(viewModel = viewModel, navController = navController, user = user)
                 }
                 AnimatedVisibility(
                     visible = isTimesUp,
@@ -102,7 +104,7 @@ fun PlayQuizScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Black.copy(alpha = 0.6f))
-                            .pointerInput(Unit){}
+                            .pointerInput(Unit) {}
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
@@ -118,7 +120,7 @@ fun PlayQuizScreen(
                             ) {
                                 Text(text = "Mantap!!")
                                 Text(text = viewModel.correctWords.value!!.joinToString(separator = " ").capitalize())
-                                Text(text = viewModel.question.value!!.capitalize())
+                                Text(text = viewModel.quiz.questions!![viewModel.currentIndex.value!!].targetSentence.capitalize())
                                 NjawiButton(text = "Lanjut") {
                                     viewModel.nextQuestion()
                                 }
@@ -186,14 +188,15 @@ fun WordsSlot(words: List<String>, viewModel: PlayQuizViewModel) {
 @Composable
 fun ResultDialog(
     viewModel: PlayQuizViewModel,
-    navController: NavHostController
+    navController: NavHostController,
+    user: User
 ) {
     val totalScore: Int = viewModel.totalScore.value!!
     Box (
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .pointerInput(Unit){}
+            .pointerInput(Unit) {}
     ) {
         Box(
             modifier = Modifier
@@ -244,6 +247,7 @@ fun ResultDialog(
                         }
                         Spacer(Modifier.width(8.dp))
                         NjawiButton(text = "Lanjut") {
+                            viewModel.addUserResultToFirestore(username = user.email.toString().split("@").first())
                             navController.popBackStack()
                         }
                     }

@@ -1,5 +1,6 @@
 package com.ekotyoo.njawi.data.repository_impl
 
+import com.ekotyoo.njawi.domain.models.Leaderboard
 import com.ekotyoo.njawi.domain.models.Question
 import com.ekotyoo.njawi.domain.models.Quiz
 import com.ekotyoo.njawi.domain.models.Response
@@ -15,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 @Module
@@ -75,4 +77,38 @@ class QuizRepositoryImpl @Inject constructor(
         }
         awaitClose {  }
     }
+
+    @ExperimentalCoroutinesApi
+    override fun getLeaderboardFromFirestore() = callbackFlow {
+        val snapshotListener = db.collection("leaderboards").get().addOnSuccessListener { result ->
+            val response = if (result != null) {
+                val leaderboards = result.map { document ->
+                    Leaderboard(
+                        name = document["name"] as String,
+                        score = document["score"] as String,
+                    )
+                }
+                Response.Success(leaderboards)
+            } else {
+                Response.Error("Something went wrong")
+            }
+            trySend(response).isSuccess
+        }
+        awaitClose {
+
+        }
+    }
+
+    override suspend fun addUserResultToFirestore(name: String, score: String) =  flow{
+        try {
+            val leaderboard = Leaderboard(name = name, score = score)
+            val addition = db.collection("leaderboards").document().set(leaderboard)
+            if (addition.isComplete) {
+                emit(Response.Success(null))
+            }
+        } catch (e: Exception) {
+            emit(Response.Error(e.message ?: e.toString()))
+        }
+    }
+
 }
