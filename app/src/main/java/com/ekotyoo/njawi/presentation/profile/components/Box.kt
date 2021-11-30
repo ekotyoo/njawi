@@ -4,10 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -25,10 +24,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.data.dto.AchievementDto
 import com.ekotyoo.njawi.presentation.profile.ProfileViewModel
@@ -40,6 +42,7 @@ fun Expandbox(
     title: String,
     items: List<AchievementDto>
 ) {
+    val koinImages: List<Int> = listOf(R.drawable.koin1,R.drawable.koin2,R.drawable.koin3,R.drawable.koin4,R.drawable.koin5,R.drawable.koin6)
     val expanded = remember { mutableStateOf(false) }
     val extraPadding by animateDpAsState(
         if (expanded.value) 100.dp else 0.dp,
@@ -70,34 +73,27 @@ fun Expandbox(
                     ),
             shape = RoundedCornerShape(15),
         ) {
-            Row(modifier = Modifier.padding(24.dp)) {
+            Column(
+                modifier = Modifier
+                    .animateContentSize(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioLowBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    )
+            ) {
+            Row(modifier = Modifier.padding(start = 24.dp, top = 24.dp, end = 24.dp)) {
                 Column(
                     modifier = Modifier
                         .weight(1f)
                         .align(Alignment.CenterVertically)
-                        .animateContentSize(
-                            animationSpec = spring(
-                                dampingRatio = Spring.DampingRatioMediumBouncy,
-                                stiffness = Spring.StiffnessLow
-                            )
-                        )
+
                 ) {
                     Text(
                         text = title, color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 21.sp
                     )
-                    Spacer(modifier = Modifier.padding(bottom = 20.dp))
-                    val isVisible = remember { mutableStateOf(value = false) }
-                    if (expanded.value) {
-                        AnimatedVisibility(visible = !isVisible.value) {
-                            Column {
-                                Text(text = "Lorem asdasda sda sd asd a sd ads as da sd asd a sda ds" +
-                                        "ansdkajsd alskdna;sd aldm alksdn alksd lkasd lkansdl knas d" +
-                                        "alsjdnalsdnal ksdnl kansl dnal sdnalk sdlka slk dnakls dnlkans d" +
-                                        "lkans dlakns dla sdlkan sldkn alsdn lasndlkansd")
-                            }
-                        }
-                    }
                 }
                 IconButton(onClick = { expanded.value = !expanded.value }) {
                     Icon(
@@ -112,10 +108,80 @@ fun Expandbox(
                     )
                 }
             }
+
+                Spacer(modifier = Modifier.padding(bottom = 25.dp))
+                //a
+                val isVisible = remember { mutableStateOf(value = false) }
+                if (expanded.value) {
+                    AnimatedVisibility(visible = !isVisible.value) {
+                        Column(
+                            modifier = Modifier.padding(20.dp)
+                        ) {
+                            items.forEach {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    koin(koinImages)
+                                    Spacer(modifier = Modifier.width(20.dp))
+                                    Text(
+                                        text = it.description,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Medium,
+                                        fontSize = 14.sp
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(30.dp))
+                            }
+                        }
+                    }
+                }
+
+        }
         }
         Spacer(modifier = Modifier.height(10.dp))
-        items.forEach {
-            Text(text = it.description)
-        }
+
     }
+}
+
+@Composable
+fun koin(
+    images: List<Int>
+    ) {
+        val resource: Painter
+        val infiniteTransition = rememberInfiniteTransition()
+        val animationState = infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 6f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    durationMillis = 500,
+                    easing = LinearEasing
+                )
+            )
+        )
+        if (animationState.value <= 1f)
+            resource = painterResource(id = images[0])
+        else if (animationState.value > 1f && animationState.value <= 2f)
+            resource = painterResource(id = images[1])
+        else if (animationState.value > 2f && animationState.value <= 3f)
+            resource = painterResource(id = images[2])
+        else if (animationState.value > 3f && animationState.value <= 4f)
+            resource = painterResource(id = images[3])
+        else if (animationState.value > 4f && animationState.value <= 5f)
+            resource = painterResource(id = images[4])
+        else
+            resource = painterResource(id = images[5])
+
+        Image(
+            painter = resource,
+            contentDescription = "",
+            alignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxWidth(0.2f)
+                .height(40.dp)
+                .shadow(
+                    elevation = 50.dp,
+                    shape = RoundedCornerShape(50),
+                )
+        )
 }
