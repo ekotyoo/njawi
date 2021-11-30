@@ -4,6 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -20,16 +21,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 
 
 @Composable
 fun PlayButton(
-    modifier: Modifier
+    modifier: Modifier,
+    onClick: () -> Unit
 ){
+    val infiniteTransition = rememberInfiniteTransition()
+    val posisi by infiniteTransition.animateValue(
+        initialValue = 20.dp,
+        targetValue = 0.dp,
+        animationSpec = infiniteRepeatable(
+            tween(2000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        typeConverter = Dp.VectorConverter
+    )
     Column(
         modifier = modifier
+            .padding(top = posisi),
     ) {
-        val infiniteTransition = rememberInfiniteTransition()
+
         val size by infiniteTransition.animateValue(
             initialValue = 200.dp,
             targetValue = 230.dp,
@@ -57,14 +71,17 @@ fun PlayButton(
                     elevation = 10.dp,
                     shape = RoundedCornerShape(50),
 
-                    ),
+                    )
+                .clickable { onClick() },
             shape = RoundedCornerShape(50),
         ){
             Column(modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center) {
                 Image(painter = painterResource(id = R.drawable.play), contentDescription = "Play",
-                    modifier = Modifier.size(100.dp).padding(start = 15.dp))
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(start = 15.dp))
             }
         }
     }

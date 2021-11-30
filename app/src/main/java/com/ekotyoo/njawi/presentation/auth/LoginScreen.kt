@@ -56,7 +56,7 @@ fun LoginScreen(navController: NavController) {
                 val gsa = task?.getResult(ApiException::class.java)
 
                 if (gsa != null) {
-                    mSignInViewModel.fetchSignInUser(gsa.email, gsa.displayName)
+                    mSignInViewModel.fetchSignInUser(gsa.email, gsa.displayName, gsa.photoUrl?.toString() ?: "https://i.pinimg.com/474x/65/25/a0/6525a08f1df98a2e3a545fe2ace4be47.jpg")
                     Log.d("Username", "Gsa Not Null")
                 } else {
                     isError.value = true
@@ -76,10 +76,12 @@ fun LoginScreen(navController: NavController) {
         mSignInViewModel.hideLoading()
         val username = it.name
         val email = it.email
+        val image = it.image
 
         val intent = Intent(context, HomeActivity::class.java)
         intent.putExtra("name", username)
         intent.putExtra("email", email)
+        intent.putExtra("image", image)
 
         val context = LocalContext.current as Activity
         context.startActivity(intent)

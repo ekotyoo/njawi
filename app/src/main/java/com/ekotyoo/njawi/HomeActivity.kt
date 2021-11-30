@@ -9,7 +9,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.navigation.compose.rememberNavController
 import com.ekotyoo.njawi.common.navigation.NavHostContainer
 import com.ekotyoo.njawi.presentation.auth.model.User
+import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -24,10 +26,12 @@ class HomeActivity : AppCompatActivity() {
         mediaPlayer.start()
     }
 
+    @ExperimentalPagerApi
+    @InternalCoroutinesApi
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
-        mediaPlayer = MediaPlayer.create(this, R.raw.quiz)
+        mediaPlayer = MediaPlayer.create(this, R.raw.lofi)
         mediaPlayer.isLooping = true
         mediaPlayer.start()
 
@@ -35,7 +39,8 @@ class HomeActivity : AppCompatActivity() {
         if (extras != null) {
             val username = extras.getString("name")
             val email = extras.getString("email")
-            user = User(username, email)
+            val image = extras.getString("image")
+            user = User(username, email, image)
         }
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)

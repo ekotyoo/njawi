@@ -1,33 +1,27 @@
 package com.ekotyoo.njawi.presentation.belajar
 
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
-import android.widget.Toast.makeText
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.domain.models.Response
-import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.belajar.components.ItemView
-import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.profile.components.Circle
 import com.ekotyoo.njawi.presentation.quiz.HeaderAnimation
+
 
 @ExperimentalFoundationApi
 @Composable
@@ -36,19 +30,13 @@ fun BelajarScreen(
     navController: NavHostController
 ){
     val runImages: List<Int> = listOf(R.drawable.lari1, R.drawable.lari2, R.drawable.lari3, R.drawable.lari4, R.drawable.lari5, R.drawable.lari6, R.drawable.lari7, R.drawable.lari8)
-    Box {
+    Box(
+        Modifier.pointerInput(Unit) {}
+    ) {
         Circle()
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(
-                            Color(0xFFD24074),
-                            Color(0xFF1268C3)
-                        ),
-                    )
-                )
                 .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top

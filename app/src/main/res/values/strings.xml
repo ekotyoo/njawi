@@ -3,4 +3,10 @@
     <string name="google_cloud_server_client_id">381802667272-hkb8lmbln91j1jejpbghasgb4bp1ufh1.apps.googleusercontent.com</string>
     <string name="show_less">Show less</string>
     <string name="show_more">Show more</string>
+    <string name="onBoardingTitle1">Info Jawi</string>
+    <string name="onBoardingText1">Quiz Bahasa Jawa</string>
+    <string name="onBoardingDescription1">Pelajari bahasa jawa dengan menyenangkan melalui game susun kalimat!</string>
+    <string name="onBoardingTitle2">Game</string>
+    <string name="onBoardingText2">Aksara Jawa</string>
+    <string name="onBoardingDescription2">Materi lengkap juga tersedia agar kamu dapat memahami bahasa Jawa dengan lebih mendalam. Ayo segera login!</string>
 </resources>

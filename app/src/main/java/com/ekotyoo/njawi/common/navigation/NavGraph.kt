@@ -9,15 +9,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ekotyoo.njawi.presentation.HomeScreen
-import com.ekotyoo.njawi.presentation.Screen
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.auth.*
 import com.ekotyoo.njawi.presentation.belajar.BelajarChapter
-import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.quiz.LevelScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@InternalCoroutinesApi
 @ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -38,8 +38,14 @@ fun NavHostContainer(
             LevelScreen(navController = navController)
         }
 
-        composable(route = Screen.PlayQuiz.route) {
-            PlayQuizScreen(navController = navController)
+        composable(route = Screen.PlayQuiz.route) { backstackEntry ->
+            backstackEntry.arguments?.getString("id")?.let {
+                PlayQuizScreen(
+                    navController = navController,
+                    quizId = it,
+                    user = user
+                )
+            }
         }
 
         composable(
@@ -64,3 +70,16 @@ fun NavHostContainer(
 
     }
 }
+
+//@Composable
+//fun NavHostContainerMainActivity(
+//    navController: NavHostController,
+//    user: User
+//) {
+//    NavHost(
+//
+//    ) {
+//
+//    }
+//
+//}
