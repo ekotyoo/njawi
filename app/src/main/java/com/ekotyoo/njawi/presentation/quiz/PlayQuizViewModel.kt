@@ -11,7 +11,6 @@ import com.ekotyoo.njawi.domain.models.Materi
 import com.ekotyoo.njawi.domain.models.Quiz
 import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.domain.repository.QuizRepository
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
