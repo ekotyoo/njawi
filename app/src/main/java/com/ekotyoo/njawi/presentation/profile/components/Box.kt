@@ -1,5 +1,7 @@
 package com.ekotyoo.njawi.presentation.profile.components
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -14,10 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -28,15 +27,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ekotyoo.njawi.R
+import com.ekotyoo.njawi.data.dto.AchievementDto
+import com.ekotyoo.njawi.presentation.profile.ProfileViewModel
 
-@Preview
-@Composable
-fun Preview(){
-    expandbox(title = "Achievement")
-}
 
 @Composable
-fun expandbox(modifier: Modifier = Modifier, title: String) {
+fun Expandbox(
+    modifier: Modifier = Modifier,
+    title: String,
+    items: List<AchievementDto>
+) {
     val expanded = remember { mutableStateOf(false) }
     val extraPadding by animateDpAsState(
         if (expanded.value) 100.dp else 0.dp,
@@ -92,5 +92,8 @@ fun expandbox(modifier: Modifier = Modifier, title: String) {
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
+        items.forEach {
+            Text(text = it.description)
+        }
     }
 }

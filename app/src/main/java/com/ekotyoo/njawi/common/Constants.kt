@@ -15,4 +15,7 @@ object Constants {
         questions.add(Question(targetSentence = "simbah sakit paningal", baseSentence = "nenek sakit mata"))
         return Quiz(level = "Dasar", theme = "Krama Inggil", questions = questions)
     }
+
+    const val DATABASE_NAME = "njawi_database"
+    const val ACHIEVEMENT_TABLE = "achievement_table"
 }
