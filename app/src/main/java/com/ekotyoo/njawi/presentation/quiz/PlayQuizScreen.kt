@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -83,7 +84,7 @@ fun PlayQuizScreen(
                     }
                     ScoreIndicator(viewModel = viewModel)
                     TimeLeftIndicator(progress = progress)
-                    Text(text = question, color = Color.White,
+                    Text(text = question.capitalize(), color = Color.White,
                         fontWeight = FontWeight.Light,
                         fontSize = 20.sp,
                         style = Typography.h2,

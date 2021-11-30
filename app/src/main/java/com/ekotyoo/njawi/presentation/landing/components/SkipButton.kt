@@ -24,10 +24,12 @@ import com.ekotyoo.njawi.presentation.theme.*
 fun SkipButton(
     modifier: Modifier = Modifier,
     text: String = "Lewati",
+    loadingText: String = "Loading...",
     shape: Shape = Shapes.medium,
     borderColor: Color = Color(0xFFFFDB02),
     backgroundColor: Color = Color(0xFFFFB002),
     textStyle: TextStyle = Typography.body2,
+    progressIndicatorColor: Color = Color.White,
     onClicked: () -> Unit
 ) {
     val clicked by remember { mutableStateOf(false) }
@@ -58,7 +60,17 @@ fun SkipButton(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = if (clicked) loadingText else text, color = Color.White, style = textStyle)
+            if (clicked) {
+                Spacer(modifier = Modifier.width(16.dp))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .height(16.dp)
+                        .width(16.dp),
+                    strokeWidth = 2.dp,
+                    color = progressIndicatorColor
+                )
+            }
         }
     }
 }

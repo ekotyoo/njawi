@@ -11,8 +11,8 @@ class OnBoardingItem(
         companion object{
             fun get():List<OnBoardingItem> {
                 return listOf(
-                    OnBoardingItem(R.string.onBoardingTitle1, R.string.onBoardingText1, R.string.onBoardingDescription1, R.drawable.fall_inu),
-                    OnBoardingItem(R.string.onBoardingTitle2, R.string.onBoardingText2, R.string.onBoardingDescription2, R.drawable.run_7),
+                    OnBoardingItem(R.string.onBoardingTitle1, R.string.onBoardingText1, R.string.onBoardingDescription1, R.drawable.lari3),
+                    OnBoardingItem(R.string.onBoardingTitle2, R.string.onBoardingText2, R.string.onBoardingDescription2, R.drawable.lari7),
                 )
             }
         }

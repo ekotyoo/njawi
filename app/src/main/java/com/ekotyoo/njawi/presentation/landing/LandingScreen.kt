@@ -3,7 +3,6 @@ package com.ekotyoo.njawi.presentation.landing
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -12,15 +11,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
@@ -29,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -50,36 +44,40 @@ fun LandingScreen(
 ) {
     val context = LocalContext.current as Activity
     val scope = rememberCoroutineScope()
-    Box(
-        modifier = Modifier.pointerInput(Unit){}
-    ) {
-        Circle()
-        Column(
-            Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {}) {
-            val items = OnBoardingItem.get()
-            val state = rememberPagerState(initialPage = items.size)
-
-            HorizontalPager(
-                count = 2,
-                state = state,
+    Scaffold {
+        Box(
+            modifier = Modifier.pointerInput(Unit){}
+        ) {
+            Circle()
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(0.8f),
-            ) {page->
-                OnBoardingItem(items[page])
-            }
+                    .padding(bottom = 19.dp)
+                    .pointerInput(Unit) {}) {
+                val items = OnBoardingItem.get()
+                val state = rememberPagerState(initialPage = items.size)
 
-            TopSection(size = items.size, index = state.currentPage) {
-                if((state.currentPage + 1) < items.size) {
-                    scope.launch {
-                        state.scrollToPage(state.currentPage + 1)
+                HorizontalPager(
+                    count = 2,
+                    state = state,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(0.8f),
+                ) {page->
+                    OnBoardingItem(items[page])
+                }
+
+                TopSection(size = items.size, index = state.currentPage) {
+                    if((state.currentPage + 1) < items.size) {
+                        scope.launch {
+                            state.scrollToPage(state.currentPage + 1)
+                        }
                     }
                 }
-            }
 
-            BottomSection(context)
+                BottomSection(context)
+            }
         }
     }
 }
@@ -114,7 +112,7 @@ fun BottomSection(
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             SkipButton(
-                modifier = Modifier.width(280.dp),
+                modifier = Modifier.fillMaxWidth(0.7f),
                 shape = RoundedCornerShape(24.dp),
                 text = "Lewati",
                 onClicked = {
