@@ -39,7 +39,7 @@ fun PlayScreen(
         ) {
             Image(painter = painterResource(R.drawable.sinau),
                 contentDescription = "foto",
-                modifier = Modifier.padding(top = 50.dp, bottom = 100.dp))
+                modifier = Modifier.padding(top = 50.dp, bottom = 30.dp))
             PlayButton(
                 modifier = Modifier,
                     onClick =  {
