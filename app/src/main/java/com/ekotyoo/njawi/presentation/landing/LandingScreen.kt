@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ekotyoo.njawi.presentation.landing.components.SkipButton
 import com.ekotyoo.njawi.presentation.profile.components.Circle
-import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
