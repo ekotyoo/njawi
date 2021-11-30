@@ -18,4 +18,8 @@ object Constants {
 
     const val DATABASE_NAME = "njawi_database"
     const val ACHIEVEMENT_TABLE = "achievement_table"
+
+    const val PREFS_NAME = "com.ekotyoo.njawi"
+    const val PREF_VERSION_CODE_KEY = "1.0"
+    const val DOESNT_EXIST = -1
 }
