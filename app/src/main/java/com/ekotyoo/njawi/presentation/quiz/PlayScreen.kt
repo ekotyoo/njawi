@@ -14,13 +14,16 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -77,12 +80,16 @@ fun PlayScreen(
         }
         Surface(
             modifier = Modifier
-                .fillMaxWidth(0.6f)
-                .fillMaxHeight(0.1f)
-                .offset(80.dp, 530.dp)
+                .fillMaxWidth(0.35f)
+                .fillMaxHeight(0.07f)
+                .offset(25.dp, 560.dp)
                 .border(
                     2.dp, color = resultOutsideBorder,
-                    RoundedCornerShape(15)
+                    RoundedCornerShape(35)
+                )
+                .shadow(
+                    elevation = 10.dp,
+                    shape = RoundedCornerShape(35),
                 )
                 .background(
                     brush = Brush.verticalGradient(
@@ -91,9 +98,9 @@ fun PlayScreen(
                             resultCenterBorder
                         )
                     ),
-                    shape = RoundedCornerShape(15)
+                    shape = RoundedCornerShape(35)
                 ),
-            shape = RoundedCornerShape(15),
+            shape = RoundedCornerShape(35),
         ){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,22 +119,22 @@ fun PlayScreen(
                     .border(3.dp, color = resultCenterBorder)
             ) {
                 Text(
-                    text = "Dulur - Dulur",
+                    text = "DULUR'' ",
                     color = Color.White,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 30.sp,
+                    fontSize = 25.sp,
                     style = Typography.h1,
                     textAlign = TextAlign.Center)
             }
         }
-                    var posisi by remember { mutableStateOf(600.dp)}
-                    var posisi2 by remember { mutableStateOf(600.dp)}
+                    var posisi by remember { mutableStateOf(1000.dp)}
+                    var posisi2 by remember { mutableStateOf(1000.dp)}
                     val anim by animateDpAsState(
                         targetValue = posisi,
-                    animationSpec = spring(Spring.DampingRatioMediumBouncy,Spring.StiffnessLow))
+                    animationSpec = tween(1000, easing = LinearOutSlowInEasing))
                     val anim1 by animateDpAsState(
                         targetValue = posisi2,
-                        animationSpec = spring(Spring.DampingRatioMediumBouncy,Spring.StiffnessLow))
+                        animationSpec = tween(1000, easing = LinearOutSlowInEasing))
         if (openDialog){
             posisi = 0.dp
             posisi2 = 100.dp
@@ -175,13 +182,15 @@ fun leaderBoard(modifier: Modifier,
     LaunchedEffect(key1 = true) {
         viewModel.getLeaderboards()
     }
-    val scrollState = rememberScrollState()
     val Gold: List<Int> = listOf(R.drawable.gold1,R.drawable.gold2,R.drawable.gold3,R.drawable.gold4,R.drawable.gold5,R.drawable.gold6,R.drawable.gold7,R.drawable.gold8,)
 
     Box(
         modifier
             .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = 0.6f))) {
+            .shadow(
+                elevation = 60.dp,
+                shape = RoundedCornerShape(50),
+            )) {
         Surface(
             modifier = Modifier
                 .padding(50.dp, 100.dp)
