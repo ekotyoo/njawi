@@ -101,9 +101,8 @@ class QuizRepositoryImpl @Inject constructor(
 
     override suspend fun addUserResultToFirestore(name: String, score: Int) =  flow{
         try {
-            val id = db.collection("leaderboards").document().id
             val leaderboard = Leaderboard(name = name, score = score)
-            val addition = db.collection("leaderboards").document(id).set(leaderboard)
+            val addition = db.collection("leaderboards").document().set(leaderboard)
             if (addition.isComplete) {
                 emit(Response.Success(null))
             }

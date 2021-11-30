@@ -156,9 +156,10 @@ class PlayQuizViewModel @Inject constructor(
         }
     }
 
-    private fun addUserResultToFirestore(name: String, score: Int) {
+    private fun addUserResultToFirestore() {
         viewModelScope.launch {
-            repository.addUserResultToFirestore(name, score)
+            repository.addUserResultToFirestore(FirebaseAuth.getInstance().currentUser?.displayName ?: "anonymous", _totalScore.value!!).collect { response ->
+            }
         }
     }
 
@@ -178,7 +179,7 @@ class PlayQuizViewModel @Inject constructor(
                 } else {
                     _isDone.value = true
                     updateUserAchievement()
-                    addUserResultToFirestore(FirebaseAuth.getInstance().currentUser!!.displayName!!, _totalScore.value!!)
+                    addUserResultToFirestore()
                 }
             }),
         )
