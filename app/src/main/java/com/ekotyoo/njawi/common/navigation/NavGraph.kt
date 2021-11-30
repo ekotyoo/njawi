@@ -70,3 +70,16 @@ fun NavHostContainer(
 
     }
 }
+
+//@Composable
+//fun NavHostContainerMainActivity(
+//    navController: NavHostController,
+//    user: User
+//) {
+//    NavHost(
+//
+//    ) {
+//
+//    }
+//
+//}
