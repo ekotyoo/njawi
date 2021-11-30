@@ -40,7 +40,7 @@ fun LevelScreen(
             when(val quizzesResponse = viewModel.quizzesState.value) {
                 is Response.Loading -> CircularProgressIndicator()
                 is Response.Success -> LazyColumn {
-                    items(quizzesResponse.data.size) {
+                    item {
                         quizzesResponse.data.forEach {
                             LevelButton(it.level as String) {
                                 navController.navigate(Screen.PlayQuiz.route.replace("{id}", it.id!!))
