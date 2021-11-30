@@ -147,7 +147,7 @@ class PlayQuizViewModel @Inject constructor(
                 .addAchievement(
                     AchievementDto(
                         title = "${quiz.level}",
-                        description = "Berhasil menyelesaikan level ${quiz.level} pada ${quiz.theme}"
+                        description = "Telah memainkan level ${quiz.level} pada ${quiz.theme}"
                     )
                 )
         }
