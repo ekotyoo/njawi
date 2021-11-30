@@ -31,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
-        mediaPlayer = MediaPlayer.create(this, R.raw.quiz)
+        mediaPlayer = MediaPlayer.create(this, R.raw.lofi)
         mediaPlayer.isLooping = true
         mediaPlayer.start()
 
