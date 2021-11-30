@@ -8,24 +8,22 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,10 +32,9 @@ import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.auth.model.User
 import coil.compose.rememberImagePainter
 import com.ekotyoo.njawi.presentation.MainActivity
-import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.auth.pacifico
 import com.ekotyoo.njawi.presentation.profile.components.Circle
-import com.ekotyoo.njawi.presentation.profile.components.expandbox
+import com.ekotyoo.njawi.presentation.profile.components.Expandbox
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -109,29 +106,45 @@ fun PhotographerCard(
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         user.email?.let { Text(it,fontWeight = FontWeight.Light, color = Color.White, fontSize = 15.sp) }
                     }
+                        Surface(
+                            color = Color(0xFFFFAE02),
+                            modifier = Modifier
+                                .height(40.dp)
+                                .width(100.dp)
+                                .padding(0.dp,10.dp,0.dp,0.dp)
+                                .border(
+                                    BorderStroke(
+                                        3.dp, brush = Brush.verticalGradient(
+                                            colors = listOf(
+                                                Color(0xFFFFDE02),
+                                                Color(0xFFCA7E00),
+                                            ),
+                                        )
+                                    ), shape = RoundedCornerShape(50)
+                                )
+                                .shadow(
+                                    elevation = 10.dp,
+                                    shape = RoundedCornerShape(50),
+
+                                    )
+                                .clickable(onClick = {AuthUI.getInstance().signOut(context).addOnCompleteListener{
+                                    context.startActivity(intent)
+                                    context.finish()
+                                }}),
+                            shape = RoundedCornerShape(50),
+
+                        ) {
+
+                            Text( modifier = Modifier.padding(top = 3.dp),
+                                text = "Logout", fontSize = 16.sp,
+                                color = Color.White, textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Medium)
+                        }
                 }
             }
-            Spacer(modifier = Modifier.height(50.dp))
-            expandbox(title = "Achievement")
+            Spacer(modifier = Modifier.height(10.dp))
+            Expandbox(title = "Achievement", items = items)
             Spacer(modifier = Modifier.height(70.dp))
-            Text(text = "Logout", fontSize = 20.sp, color = Color.White,
-            modifier = Modifier.clickable {
-                AuthUI.getInstance().signOut(context).addOnCompleteListener{
-                    context.startActivity(intent)
-                    context.finish()
-                }
-            })
-        }
-    }
-}
-
-@Preview
-@Composable
-fun expandboxreview(){
-    NjawiTheme {
-        expandbox(title = "Achievement")
-    }
-}
 
         }
     }
