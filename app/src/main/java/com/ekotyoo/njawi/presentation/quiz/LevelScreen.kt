@@ -1,9 +1,7 @@
 package com.ekotyoo.njawi.presentation.quiz
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -42,7 +40,7 @@ fun LevelScreen(
             when(val quizzesResponse = viewModel.quizzesState.value) {
                 is Response.Loading -> CircularProgressIndicator()
                 is Response.Success -> LazyColumn {
-                    item {
+                    item(quizzesResponse.data.size) {
                         quizzesResponse.data.forEach {
                             LevelButton(it.level as String) {
                                 navController.navigate(Screen.PlayQuiz.route.replace("{id}", it.id!!))

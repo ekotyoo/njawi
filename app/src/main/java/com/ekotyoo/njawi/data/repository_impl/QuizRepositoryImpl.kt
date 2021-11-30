@@ -24,9 +24,9 @@ class QuizRepositoryImpl @Inject constructor(
 ): QuizRepository {
     @ExperimentalCoroutinesApi
     override fun getQuizzesFromFirestore() = callbackFlow {
-        val snapshotListener = db.collection("quizzes").addSnapshotListener { snapshot, e ->
-            val response = if (snapshot != null) {
-                val quizzes = snapshot.map { document ->
+        val snapshotListener = db.collection("quizzes").get().addOnSuccessListener { result ->
+            val response = if (result != null) {
+                val quizzes = result.map { document ->
                     val questionsMap = document["questions"] as List<Map<String, Any>>?
                     Quiz(
                         id = document.id,
@@ -42,12 +42,12 @@ class QuizRepositoryImpl @Inject constructor(
                 }
                 Response.Success(quizzes)
             } else {
-                Response.Error(e?.message ?: e.toString())
+                Response.Error("Something went wrong")
             }
             trySend(response).isSuccess
         }
         awaitClose {
-            snapshotListener.remove()
+
         }
     }
 
