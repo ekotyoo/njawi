@@ -5,10 +5,7 @@ import androidx.compose.animation.animateContentSize
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -42,6 +39,8 @@ fun Expandbox(
     title: String,
     items: List<AchievementDto>
 ) {
+
+    val scrollState = rememberScrollState()
     val koinImages: List<Int> = listOf(R.drawable.koin1,R.drawable.koin2,R.drawable.koin3,R.drawable.koin4,R.drawable.koin5,R.drawable.koin6)
     val expanded = remember { mutableStateOf(false) }
     val extraPadding by animateDpAsState(
@@ -51,7 +50,9 @@ fun Expandbox(
             stiffness = Spring.StiffnessLow
         )
     )
-    Column() {
+    Column(
+        modifier.fillMaxHeight(0.5f)
+    ) {
         Surface(
             color = Color(0xFFFFAE02),
             modifier = Modifier
@@ -66,6 +67,7 @@ fun Expandbox(
                         )
                     ), shape = RoundedCornerShape(15)
                 )
+
                 .shadow(
                     elevation = 10.dp,
                     shape = RoundedCornerShape(15),
@@ -75,12 +77,14 @@ fun Expandbox(
         ) {
             Column(
                 modifier = Modifier
+                    .verticalScroll(scrollState)
                     .animateContentSize(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioLowBouncy,
                             stiffness = Spring.StiffnessLow
                         )
                     )
+
             ) {
             Row(modifier = Modifier.padding(start = 24.dp, top = 15.dp, end = 24.dp)) {
                 Column(
@@ -116,6 +120,7 @@ fun Expandbox(
                     AnimatedVisibility(visible = !isVisible.value) {
                         Column(
                             modifier = Modifier.padding(start = 20.dp, end = 20.dp)
+
                         ) {
                             items.forEach {
                                 Row(

@@ -19,6 +19,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,7 +83,11 @@ fun PlayQuizScreen(
                     }
                     ScoreIndicator(viewModel = viewModel)
                     TimeLeftIndicator(progress = progress)
-                    Text(text = question)
+                    Text(text = question, color = Color.White,
+                        fontWeight = FontWeight.Light,
+                        fontSize = 20.sp,
+                        style = Typography.h2,
+                        textAlign = TextAlign.Center)
                     WordsSlot(words = currentAnswer, viewModel = viewModel)
                     WordsOption(words = words, viewModel = viewModel)
                 }
@@ -110,7 +116,7 @@ fun PlayQuizScreen(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight(0.2f)
+                                .fillMaxHeight(0.3f)
                                 .background(color = Orange)
                                 .pointerInput(Unit) {}
                         ) {
@@ -118,9 +124,29 @@ fun PlayQuizScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center,
                             ) {
-                                Text(text = "Mantap!!")
-                                Text(text = viewModel.correctWords.value!!.joinToString(separator = " ").capitalize())
-                                Text(text = viewModel.quiz.questions!![viewModel.currentIndex.value!!].targetSentence.capitalize())
+                                Text(text = "MANTAP!!", color = Color.White,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 30.sp,
+                                    style = Typography.h1,
+                                    textAlign = TextAlign.Center)
+                                Text(text = viewModel.correctWords.value!!.joinToString(separator = " ").capitalize(),
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Light,
+                                    fontSize = 15.sp,
+                                    style = Typography.h2,
+                                    textAlign = TextAlign.Center)
+                                Text(text = "Artinya : ", color = Color.Black,
+                                    fontWeight = FontWeight.Light,
+                                    fontSize = 15.sp,
+                                    style = Typography.h2,
+                                    textAlign = TextAlign.Center)
+                                Text(text = viewModel.quiz.questions!![viewModel.currentIndex.value!!].targetSentence.capitalize(),
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Light,
+                                    fontSize = 15.sp,
+                                    style = Typography.h2,
+                                    textAlign = TextAlign.Center)
+                                Spacer(modifier = Modifier.height(15.dp))
                                 NjawiButton(text = "Lanjut") {
                                     viewModel.nextQuestion()
                                 }
