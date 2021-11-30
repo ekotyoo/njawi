@@ -26,6 +26,10 @@ val Typography = Typography(
         h1 = TextStyle(
                 fontFamily = FontFamily(Font(R.font.poppins_black)),
                 fontSize = 24.sp
+        ),
+        h2 = TextStyle(
+                fontFamily = FontFamily(Font(R.font.poppins_medium)),
+                fontSize = 20.sp
         )
         /* Other default text styles to override
     button = TextStyle(

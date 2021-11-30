@@ -39,6 +39,7 @@ import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.common.navigation.Screen
 import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.presentation.profile.components.Circle
+import com.ekotyoo.njawi.presentation.quiz.components.Animation
 import com.ekotyoo.njawi.presentation.quiz.components.LevelButton
 import com.ekotyoo.njawi.presentation.quiz.components.PlayButton
 import com.ekotyoo.njawi.presentation.theme.*
@@ -51,9 +52,6 @@ fun PlayScreen(
     user: com.ekotyoo.njawi.presentation.auth.model.User,
     viewModel: QuizViewModel = hiltViewModel()
 ){
-    LaunchedEffect(key1 = true) {
-        viewModel.getLeaderboards()
-    }
 
     var openDialog: Boolean by remember { mutableStateOf(false) }
     Box(
@@ -74,16 +72,7 @@ fun PlayScreen(
                         navController.navigate(Screen.LevelQuiz.route)
                     }
             )
-            when(val leaderboardResponse = viewModel.leaderboardState.value) {
-                is Response.Loading -> CircularProgressIndicator()
-                is Response.Success -> LazyColumn {
-                    item {
-                        leaderboardResponse.data.forEach {
-                            Text(text = it.name + it.score)
-                        }
-                    }
-                }
-            }
+
 
         }
         Surface(
@@ -123,10 +112,10 @@ fun PlayScreen(
                     .border(3.dp, color = resultCenterBorder)
             ) {
                 Text(
-                    text = "LEADERBOARD",
+                    text = "Dulur - Dulur",
                     color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 30.sp,
                     style = Typography.h1,
                     textAlign = TextAlign.Center)
             }
@@ -145,7 +134,7 @@ fun PlayScreen(
             AnimatedVisibility(visible = openDialog,
                 enter = fadeIn(tween(1000)),
                 exit = fadeOut(tween(1000)),) {
-                leaderBoard(modifier = Modifier.offset(0.dp,anim))
+                leaderBoard(modifier = Modifier.offset(0.dp,anim), user)
             }
             Image(
                     painter = painterResource(id = R.drawable.close),
@@ -178,9 +167,17 @@ fun PlayScreen(
     }
 }
 
+@InternalCoroutinesApi
 @Composable
-fun leaderBoard(modifier: Modifier) {
+fun leaderBoard(modifier: Modifier,
+                user: com.ekotyoo.njawi.presentation.auth.model.User,
+                viewModel: QuizViewModel = hiltViewModel()) {
+    LaunchedEffect(key1 = true) {
+        viewModel.getLeaderboards()
+    }
     val scrollState = rememberScrollState()
+    val Gold: List<Int> = listOf(R.drawable.gold1,R.drawable.gold2,R.drawable.gold3,R.drawable.gold4,R.drawable.gold5,R.drawable.gold6,R.drawable.gold7,R.drawable.gold8,)
+
     Box(
         modifier
             .fillMaxSize()
@@ -208,7 +205,6 @@ fun leaderBoard(modifier: Modifier) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
-                    .verticalScroll(scrollState)
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
@@ -219,14 +215,36 @@ fun leaderBoard(modifier: Modifier) {
                     )
                     .border(3.dp, color = resultCenterBorder)
             ) {
+                Spacer(modifier = Modifier.height(30.dp))
                 Text(
-                    text = "LEADERBOARD",
+                    text = "Dulur - Dulur",
                     color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 30.sp,
                     style = Typography.h1,
                     textAlign = TextAlign.Center
                 )
+                when(val leaderboardResponse = viewModel.leaderboardState.value) {
+                    is Response.Loading -> CircularProgressIndicator()
+                    is Response.Success -> LazyColumn {
+                        item {
+                            leaderboardResponse.data.forEach {
+                                Row() {
+                                    Column(modifier.size(30.dp)) {
+                                        Animation(Gold)
+                                    }
+                                    Text(text = it.name +" : "+ it.score,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Light,
+                                        fontSize = 20.sp,
+                                        style = Typography.h2,
+                                        textAlign = TextAlign.Center)
+                                    Spacer(modifier = Modifier.height(20.dp))
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
         }
