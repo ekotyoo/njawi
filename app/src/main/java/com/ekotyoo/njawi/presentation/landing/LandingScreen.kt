@@ -3,12 +3,14 @@ package com.ekotyoo.njawi.presentation.landing
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -27,12 +29,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ekotyoo.njawi.presentation.MainActivity
 import com.ekotyoo.njawi.presentation.landing.components.SkipButton
 import com.ekotyoo.njawi.presentation.profile.components.Circle
+import com.ekotyoo.njawi.presentation.theme.White
+import com.ekotyoo.njawi.presentation.theme.blueIce
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -83,7 +88,6 @@ fun LandingScreen(
 fun TopSection(
     size: Int,
     index: Int,
-    onNextClicked:()->Unit
 ) {
     Box(
         modifier = Modifier
@@ -92,15 +96,6 @@ fun TopSection(
             .pointerInput(Unit) {},
     ) {
         Indicators(size = size, index = index)
-
-        FloatingActionButton(
-            onClick = onNextClicked,
-            modifier = Modifier.align(CenterEnd),
-            backgroundColor = MaterialTheme.colors.primary,
-            contentColor = MaterialTheme.colors.onPrimary,
-        ) {
-            Icon(Icons.Outlined.KeyboardArrowRight, null)
-        }
     }
 }
 
@@ -111,7 +106,6 @@ fun BottomSection(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp)
             .pointerInput(Unit) {}
     ) {
         FloatingActionButton(
@@ -120,8 +114,9 @@ fun BottomSection(
         ) {
             SkipButton(
                 modifier = Modifier.width(280.dp),
+                shape = RoundedCornerShape(24.dp),
                 text = "Lewati",
-                onClick = {
+                onClicked = {
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
                 }
@@ -155,8 +150,8 @@ fun Indicator(isSelected: Boolean) {
             .width(width.value)
             .clip(CircleShape)
             .background(
-                if (isSelected) MaterialTheme.colors.primary
-                else MaterialTheme.colors.onBackground.copy(alpha = 0.5f)
+                if (isSelected) blueIce
+                else White.copy(alpha = 0.5f)
             )
     ) {
 
@@ -170,31 +165,36 @@ fun OnBoardingItem(
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(18.dp),
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp),
     ) {
         Text(text = stringResource(item.title),
             fontSize = 24.sp,
-            color = MaterialTheme.colors.onBackground,
+            color = White,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.End
         )
 
         Text(
+            fontSize = 20.sp,
             text = stringResource(item.text),
-            color = MaterialTheme.colors.onBackground.copy(alpha = 0.8f),
+            color = White,
             textAlign = TextAlign.End
         )
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(15.dp),
     ) {
         androidx.compose.foundation.Image(painter = painterResource(item.image), contentDescription = null )
 
         Text(
             text = stringResource(item.description),
-            color = MaterialTheme.colors.onBackground.copy(alpha = 0.8f),
+            color = White,
             textAlign = TextAlign.Center
         )
     }

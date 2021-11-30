@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.compose.rememberNavController
+import com.ekotyoo.njawi.BuildConfig
 import com.ekotyoo.njawi.presentation.auth.LoginScreen
 import com.ekotyoo.njawi.presentation.landing.LandingScreen
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
@@ -12,7 +13,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.ekotyoo.njawi.common.Constants.DOESNT_EXIST
 import com.ekotyoo.njawi.common.Constants.PREFS_NAME
 import com.ekotyoo.njawi.common.Constants.PREF_VERSION_CODE_KEY
-import com.firebase.ui.auth.BuildConfig
 
 class MainActivity : ComponentActivity() {
     @ExperimentalPagerApi
