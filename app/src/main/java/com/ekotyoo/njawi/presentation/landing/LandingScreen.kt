@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,8 +24,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ekotyoo.njawi.presentation.theme.*
 import com.ekotyoo.njawi.presentation.landing.components.SkipButton
+import com.ekotyoo.njawi.presentation.profile.components.Circle
+import com.ekotyoo.njawi.presentation.theme.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -35,30 +37,37 @@ import kotlinx.coroutines.launch
 @Preview
 fun LandingScreen() {
     val scope = rememberCoroutineScope()
-
-    Column(Modifier.fillMaxSize()) {
-        val items = OnBoardingItem.get()
-        val state = rememberPagerState(initialPage = items.size)
-
-        HorizontalPager(
-            count = 2,
-            state = state,
-            modifier = Modifier
+    Box(
+        modifier = Modifier.pointerInput(Unit){}
+    ) {
+        Circle()
+        Column(
+            Modifier
                 .fillMaxSize()
-                .weight(0.8f),
-        ) {page->
-            OnBoardingItem(items[page])
-        }
+                .pointerInput(Unit) {}) {
+            val items = OnBoardingItem.get()
+            val state = rememberPagerState(initialPage = items.size)
 
-        TopSection(size = items.size, index = state.currentPage) {
-            if((state.currentPage + 1) < items.size) {
-                scope.launch {
-                    state.scrollToPage(state.currentPage + 1)
+            HorizontalPager(
+                count = 2,
+                state = state,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(0.8f),
+            ) {page->
+                OnBoardingItem(items[page])
+            }
+
+            TopSection(size = items.size, index = state.currentPage) {
+                if((state.currentPage + 1) < items.size) {
+                    scope.launch {
+                        state.scrollToPage(state.currentPage + 1)
+                    }
                 }
             }
-        }
 
-        BottomSection()
+            BottomSection()
+        }
     }
 }
 
@@ -71,7 +80,8 @@ fun TopSection(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(12.dp)
+            .pointerInput(Unit) {},
     ) {
         Indicators(size = size, index = index)
 
@@ -92,6 +102,7 @@ fun BottomSection() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
+            .pointerInput(Unit) {}
     ) {
         FloatingActionButton(
             onClick = { /*TODO*/ },
