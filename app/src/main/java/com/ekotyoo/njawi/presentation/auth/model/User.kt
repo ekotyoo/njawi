@@ -10,4 +10,7 @@ data class User(
 
     @Json(name = "email")
     val email: String?,
+
+    @Json(name = "image")
+    val image: String?,
 )

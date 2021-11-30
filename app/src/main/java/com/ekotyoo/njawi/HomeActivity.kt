@@ -39,7 +39,8 @@ class HomeActivity : AppCompatActivity() {
         if (extras != null) {
             val username = extras.getString("name")
             val email = extras.getString("email")
-            user = User(username, email)
+            val image = extras.getString("image")
+            user = User(username, email, image)
         }
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
