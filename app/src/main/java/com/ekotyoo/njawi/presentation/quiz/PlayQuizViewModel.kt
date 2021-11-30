@@ -11,6 +11,7 @@ import com.ekotyoo.njawi.domain.models.Materi
 import com.ekotyoo.njawi.domain.models.Quiz
 import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.domain.repository.QuizRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -44,6 +45,7 @@ class PlayQuizViewModel @Inject constructor(
     private var _totalScore = MutableLiveData<Int>()
     private var _state = mutableStateOf(PlayQuizScreenState())
     private var _isTimesUp = mutableStateOf(false)
+    private val _scoreMultiplier = MutableLiveData<Float>()
 
 
     val quizState: State<Response<Quiz>> = _quizState
@@ -59,6 +61,7 @@ class PlayQuizViewModel @Inject constructor(
     val totalScore: LiveData<Int> = _totalScore
     var state: State<PlayQuizScreenState> = _state
     var isTimesUp: State<Boolean> = _isTimesUp
+    var scoreMultiplier: LiveData<Float> = _scoreMultiplier
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
@@ -124,7 +127,7 @@ class PlayQuizViewModel @Inject constructor(
         if (_currentIndex.value!! < quiz.questions!!.size - 1) {
             if (isCorrect.value == true) {
                 _correctQuestions.value = _correctQuestions.value!! + 1
-                _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f).toInt()
+                _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f / _scoreMultiplier.value!!).toInt()
             }
             _currentIndex.value = _currentIndex.value!! + 1
             _isCorrect.value = false
@@ -153,6 +156,12 @@ class PlayQuizViewModel @Inject constructor(
         }
     }
 
+    private fun addUserResultToFirestore(name: String, score: Int) {
+        viewModelScope.launch {
+            repository.addUserResultToFirestore(name, score)
+        }
+    }
+
     private fun startTimer() {
         _subscriptions.add(disposable.subscribeBy(
             onNext = {
@@ -168,9 +177,8 @@ class PlayQuizViewModel @Inject constructor(
                     showCorrectAnswerDialog()
                 } else {
                     _isDone.value = true
-                    if(correctQuestions.value == quiz.questions!!.size) {
-                        updateUserAchievement()
-                    }
+                    updateUserAchievement()
+                    addUserResultToFirestore(FirebaseAuth.getInstance().currentUser!!.displayName!!, _totalScore.value!!)
                 }
             }),
         )
@@ -183,6 +191,7 @@ class PlayQuizViewModel @Inject constructor(
 
 
     private fun stopTimer() {
+        _scoreMultiplier.value = _progress.value
         _progress.value = 0f
     }
 
