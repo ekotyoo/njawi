@@ -26,8 +26,8 @@ class HomeActivity : AppCompatActivity() {
         mediaPlayer.start()
     }
 
-    @InternalCoroutinesApi
     @ExperimentalPagerApi
+    @InternalCoroutinesApi
     @ExperimentalAnimationApi
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {

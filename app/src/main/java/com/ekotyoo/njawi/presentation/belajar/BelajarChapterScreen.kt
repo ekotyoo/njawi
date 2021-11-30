@@ -71,8 +71,6 @@ fun BelajarChapter(
                         modifier = Modifier.height(440.dp)
                     ) { page ->
                         ContentBox(
-                            width = 320,
-                            height = 438,
                             judul = materiResponse.data.chapters?.get(page)?.get("title") as String,
                             contents = materiResponse.data.chapters[page]["contents"] as List<String>,
                             style = Typography.body1
@@ -118,15 +116,14 @@ fun BelajarChapter(
 }
 @Composable
 fun ContentBox(
-    width: Int,
-    height: Int,
     contents: List<String>,
     style: TextStyle,
     judul: String,
 ){
     Box(
         modifier = Modifier
-            .size(width = width.dp, height = height.dp)
+            .fillMaxHeight()
+            .fillMaxWidth(0.9f)
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
@@ -154,7 +151,7 @@ fun ContentBox(
                     shape = Shapes.medium
                 )
                 .border(3.dp, color = resultCenterBorder, shape = Shapes.medium)
-                .size(width = width.dp, height = height.dp)
+                .fillMaxSize()
                 .padding(10.dp)
         ) {
             Text(
