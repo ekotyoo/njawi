@@ -168,9 +168,7 @@ class PlayQuizViewModel @Inject constructor(
                     showCorrectAnswerDialog()
                 } else {
                     _isDone.value = true
-                    if(correctQuestions.value == quiz.questions!!.size) {
-                        updateUserAchievement()
-                    }
+                    updateUserAchievement()
                 }
             }),
         )

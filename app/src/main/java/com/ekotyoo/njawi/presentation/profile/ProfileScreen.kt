@@ -31,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.auth.pacifico
 import com.ekotyoo.njawi.presentation.profile.components.Circle
-import com.ekotyoo.njawi.presentation.profile.components.expandbox
 import com.ekotyoo.njawi.presentation.theme.NjawiTheme
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
@@ -105,8 +104,6 @@ fun PhotographerCard(
                 }
             }
             Spacer(modifier = Modifier.height(50.dp))
-            expandbox(title = "Achievement")
-            Spacer(modifier = Modifier.height(70.dp))
             Text(text = "Logout", fontSize = 20.sp, color = Color.White,
             modifier = Modifier.clickable {
                 AuthUI.getInstance().signOut(context).addOnCompleteListener{
@@ -116,28 +113,6 @@ fun PhotographerCard(
             })
             Expandbox(title = "Achievement", items = items)
             Spacer(modifier = Modifier.height(150.dp))
-
         }
-    }
-}
-
-@Preview
-@Composable
-fun expandboxreview(){
-    NjawiTheme {
-        expandbox(title = "Achievement")
-    }
-}
-
-@Composable
-fun PhotographerCardPreview(modifier: Modifier = Modifier,
-                            title: String,
-                            user: User) {
-    NjawiTheme {
-        Box {
-            Circle()
-            PhotographerCard(modifier, title, user)
-        }
-
     }
 }
