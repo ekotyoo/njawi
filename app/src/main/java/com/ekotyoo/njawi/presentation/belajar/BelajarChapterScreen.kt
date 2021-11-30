@@ -170,7 +170,7 @@ fun ContentBox(
                                 text = contents[item],
                                 style = style,
                                 color = Color.White,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Justify
                             )
                         }
                 }
