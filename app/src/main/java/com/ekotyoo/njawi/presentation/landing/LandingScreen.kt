@@ -88,6 +88,7 @@ fun LandingScreen(
 fun TopSection(
     size: Int,
     index: Int,
+    onNextClicked:()->Unit
 ) {
     Box(
         modifier = Modifier
