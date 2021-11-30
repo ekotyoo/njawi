@@ -102,7 +102,7 @@ fun PlayQuizScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Black.copy(alpha = 0.6f))
-                            .pointerInput(Unit){}
+                            .pointerInput(Unit) {}
                     ) {
                         Box(
                             contentAlignment = Alignment.Center,
@@ -118,7 +118,7 @@ fun PlayQuizScreen(
                             ) {
                                 Text(text = "Mantap!!")
                                 Text(text = viewModel.correctWords.value!!.joinToString(separator = " ").capitalize())
-                                Text(text = viewModel.question.value!!.capitalize())
+                                Text(text = viewModel.quiz.questions!![viewModel.currentIndex.value!!].targetSentence.capitalize())
                                 NjawiButton(text = "Lanjut") {
                                     viewModel.nextQuestion()
                                 }
@@ -193,7 +193,7 @@ fun ResultDialog(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .pointerInput(Unit){}
+            .pointerInput(Unit) {}
     ) {
         Box(
             modifier = Modifier

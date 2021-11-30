@@ -5,6 +5,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import com.ekotyoo.njawi.common.Constants
+import com.ekotyoo.njawi.data.dto.AchievementDto
+import com.ekotyoo.njawi.data.repository_impl.AchievementRepositoryImpl
 import com.ekotyoo.njawi.domain.models.Materi
 import com.ekotyoo.njawi.domain.models.Quiz
 import com.ekotyoo.njawi.domain.models.Response
@@ -15,6 +17,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -24,6 +27,7 @@ import kotlin.random.Random
 @HiltViewModel
 class PlayQuizViewModel @Inject constructor(
     private val repository: QuizRepository,
+    private val achievementRepository: AchievementRepositoryImpl,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel () {
 
@@ -39,7 +43,7 @@ class PlayQuizViewModel @Inject constructor(
     private var _correctQuestions = MutableLiveData<Int>()
     private var _totalScore = MutableLiveData<Int>()
     private var _state = mutableStateOf(PlayQuizScreenState())
-    private var _isTimesUp = mutableStateOf<Boolean>(false)
+    private var _isTimesUp = mutableStateOf(false)
 
 
     val quizState: State<Response<Quiz>> = _quizState
@@ -58,7 +62,7 @@ class PlayQuizViewModel @Inject constructor(
 
     private var _subscriptions: CompositeDisposable = CompositeDisposable()
     private var disposable = Observable
-        .interval(0, 10, TimeUnit.MILLISECONDS)
+        .interval(1000, 10, TimeUnit.MILLISECONDS)
         .subscribeOn(Schedulers.io())
         .takeWhile {
             (it < 1500) && !isCorrect.value!!
@@ -95,6 +99,7 @@ class PlayQuizViewModel @Inject constructor(
     }
 
     private fun startGame() {
+        _isTimesUp.value = false
         _totalScore.value = 0
         _correctQuestions.value = 0
         _currentIndex.value = 0
@@ -116,11 +121,11 @@ class PlayQuizViewModel @Inject constructor(
 
     fun nextQuestion() {
         _subscriptions.clear()
-        if (isCorrect.value == true) {
-            _correctQuestions.value = _correctQuestions.value!! + 1
-            _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f / progress.value!!).toInt()
-        }
         if (_currentIndex.value!! < quiz.questions!!.size - 1) {
+            if (isCorrect.value == true) {
+                _correctQuestions.value = _correctQuestions.value!! + 1
+                _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f).toInt()
+            }
             _currentIndex.value = _currentIndex.value!! + 1
             _isCorrect.value = false
             _isTimesUp.value = false
@@ -132,6 +137,19 @@ class PlayQuizViewModel @Inject constructor(
             startTimer()
         } else {
             _isDone.value = true
+        }
+    }
+
+    private fun updateUserAchievement() {
+        Log.d("updateUserAchievement", "ok")
+        viewModelScope.launch(Dispatchers.IO) {
+            achievementRepository
+                .addAchievement(
+                    AchievementDto(
+                        title = "${quiz.level}",
+                        description = "Berhasil menyelesaikan level ${quiz.level} pada ${quiz.theme}"
+                    )
+                )
         }
     }
 
@@ -149,13 +167,17 @@ class PlayQuizViewModel @Inject constructor(
                 if (_currentIndex.value!! < quiz.questions!!.size - 1) {
                     showCorrectAnswerDialog()
                 } else {
-                    nextQuestion()
+                    _isDone.value = true
+                    if(correctQuestions.value == quiz.questions!!.size) {
+                        updateUserAchievement()
+                    }
                 }
             }),
         )
     }
 
     private fun showCorrectAnswerDialog() {
+        _subscriptions.clear()
         _isTimesUp.value = true
     }
 
