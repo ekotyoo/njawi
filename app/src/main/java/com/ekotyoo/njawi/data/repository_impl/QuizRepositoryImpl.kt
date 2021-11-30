@@ -85,7 +85,7 @@ class QuizRepositoryImpl @Inject constructor(
                 val leaderboards = result.map { document ->
                     Leaderboard(
                         name = document["name"] as String,
-                        score = document["score"] as Int,
+                        score = document["score"] as String,
                     )
                 }
                 Response.Success(leaderboards)
@@ -99,7 +99,7 @@ class QuizRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addUserResultToFirestore(name: String, score: Int) =  flow{
+    override suspend fun addUserResultToFirestore(name: String, score: String) =  flow{
         try {
             val leaderboard = Leaderboard(name = name, score = score)
             val addition = db.collection("leaderboards").document().set(leaderboard)

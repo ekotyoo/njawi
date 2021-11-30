@@ -12,7 +12,6 @@ import com.ekotyoo.njawi.presentation.HomeScreen
 import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.auth.*
 import com.ekotyoo.njawi.presentation.belajar.BelajarChapter
-import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.quiz.LevelScreen
 import com.ekotyoo.njawi.presentation.quiz.PlayQuizScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -43,7 +42,8 @@ fun NavHostContainer(
             backstackEntry.arguments?.getString("id")?.let {
                 PlayQuizScreen(
                     navController = navController,
-                    quizId = it
+                    quizId = it,
+                    user = user
                 )
             }
         }

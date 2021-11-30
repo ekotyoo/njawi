@@ -11,6 +11,7 @@ import com.ekotyoo.njawi.domain.models.Materi
 import com.ekotyoo.njawi.domain.models.Quiz
 import com.ekotyoo.njawi.domain.models.Response
 import com.ekotyoo.njawi.domain.repository.QuizRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -45,6 +46,7 @@ class PlayQuizViewModel @Inject constructor(
     private var _state = mutableStateOf(PlayQuizScreenState())
     private var _isTimesUp = mutableStateOf(false)
     private val _scoreMultiplier = MutableLiveData<Float>()
+    private val _currentQuestion = MutableLiveData<String>()
 
 
     val quizState: State<Response<Quiz>> = _quizState
@@ -129,6 +131,7 @@ class PlayQuizViewModel @Inject constructor(
                 _totalScore.value = totalScore.value!! + (correctQuestions.value!! * 10000f / _scoreMultiplier.value!!).toInt()
             }
             _currentIndex.value = _currentIndex.value!! + 1
+            _question.value = quiz.questions!![currentIndex.value!!].targetSentence
             _isCorrect.value = false
             _isTimesUp.value = false
             _currentAnswer.value = mutableListOf()
@@ -155,9 +158,9 @@ class PlayQuizViewModel @Inject constructor(
         }
     }
 
-    private fun addUserResultToFirestore() {
+    fun addUserResultToFirestore(username: String) {
         viewModelScope.launch {
-            repository.addUserResultToFirestore(FirebaseAuth.getInstance().currentUser?.displayName ?: "anonymous", _totalScore.value!!).collect { response ->
+            repository.addUserResultToFirestore( username, _totalScore.value!!.toString()).collect { response ->
             }
         }
     }
@@ -178,7 +181,6 @@ class PlayQuizViewModel @Inject constructor(
                 } else {
                     _isDone.value = true
                     updateUserAchievement()
-                    addUserResultToFirestore()
                 }
             }),
         )

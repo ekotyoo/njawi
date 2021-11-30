@@ -2,14 +2,13 @@ package com.ekotyoo.njawi.presentation.profile
 
 import android.app.Activity
 import android.content.Intent
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -19,24 +18,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.ekotyoo.njawi.presentation.MainActivity
 import com.ekotyoo.njawi.presentation.auth.model.User
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.ekotyoo.njawi.R
 import com.ekotyoo.njawi.presentation.auth.pacifico
 import com.ekotyoo.njawi.presentation.profile.components.Circle
-import com.ekotyoo.njawi.presentation.theme.NjawiTheme
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.ekotyoo.njawi.presentation.profile.components.Expandbox
+import com.firebase.ui.auth.AuthUI
 
 
 @Composable

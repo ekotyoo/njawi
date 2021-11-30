@@ -27,9 +27,10 @@ import com.ekotyoo.njawi.presentation.auth.model.User
 import com.ekotyoo.njawi.presentation.belajar.BelajarScreen
 import com.ekotyoo.njawi.presentation.profile.PhotographerCard
 import com.ekotyoo.njawi.presentation.quiz.*
+import kotlinx.coroutines.InternalCoroutinesApi
 
 
-
+@InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
@@ -120,13 +121,14 @@ fun RowScope.AddItem(
     )
 }
 
+@InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @Composable
 fun BottomNavGraph(routeNavController: NavHostController, navController: NavHostController, user: User) {
     NavHost(navController = navController, startDestination = Screen.Quiz.route) {
         composable(BottomBarScreen.Quiz.route) {
-            PlayScreen(routeNavController)
+            PlayScreen(routeNavController, user = user)
         }
         composable(BottomBarScreen.Belajar.route) {
             BelajarScreen(navController = routeNavController, viewModel = hiltViewModel())

@@ -9,5 +9,5 @@ interface QuizRepository {
     fun getQuizzesFromFirestore(): Flow<Response<List<Quiz>>>
     fun getQuizById(id: String): Flow<Response<Quiz>>
     fun getLeaderboardFromFirestore(): Flow<Response<List<Leaderboard>>>
-    suspend fun addUserResultToFirestore(name: String, score: Int): Flow<Response<Void?>>
+    suspend fun addUserResultToFirestore(name: String, score: String): Flow<Response<Void?>>
 }
