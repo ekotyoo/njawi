@@ -6,10 +6,6 @@ import androidx.compose.material.icons.filled.Gamepad
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.ekotyoo.njawi.common.navigation.Screen
-import compose.icons.FontAwesomeIcons
-import compose.icons.fontawesomeicons.Solid
-import compose.icons.fontawesomeicons.solid.Book
-import compose.icons.fontawesomeicons.solid.Gamepad
 
 sealed class BottomBarScreen(
     val route: String,
